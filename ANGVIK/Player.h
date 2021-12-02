@@ -41,9 +41,6 @@ private:
 	// 캐릭터 상태관리
 	PlayerAction action = PlayerAction::NORMAL;
 
-	// 픽셀 충돌
-	//PixelCollider* playerPixelCollision = nullptr;
-
 
 	//디버그용
 	Image* DBbackArm = nullptr;

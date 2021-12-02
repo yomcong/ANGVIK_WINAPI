@@ -20,7 +20,6 @@ private:
 	int DBammoMaxCount = 20;
 
 	vector<KongAmmo*> vecAmmos = {};
-	//vector<KongAmmo*>::iterator itAmmos;
 
 
 };

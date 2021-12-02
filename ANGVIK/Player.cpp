@@ -1,12 +1,5 @@
 #include "Player.h"
-//#include "PixelCollider.h"
 #include "Image.h"
-
-// 픽셀충돌 관리해주기
-// 포인터 변수 물어보기(바디사이즈)
-// 각 애니매이션 맥스프레임을 변수로 적을지 상수로 적을지
-// 픽셀충돌 싱글톤 으로 사용하기
-
 
 // 캐릭터 이동 
 // 팔 자연스럽게 해주기
@@ -34,7 +27,7 @@ HRESULT Player::Init()
 		return E_FAIL;
 	}
 
-	// DB
+	// 디버깅
 	DBbackArm = ImageManager::GetSingleton()->FindImage("image/player/unarmed/arm_back.bmp");
 	if (DBbackArm == nullptr)
 	{
@@ -80,7 +73,6 @@ HRESULT Player::Init()
 	{
 		return E_FAIL;
 	}
-	//
 
 	pos.x = 120.0f;
 	pos.y = 425.0f;
@@ -95,22 +87,17 @@ HRESULT Player::Init()
 	shape.right = (int)pos.x + (bodySize.x / 2);
 	shape.bottom = (int)pos.y + (bodySize.y / 2);
 
-	//playerPixelCollision = new PixelCollider;
-	//playerPixelCollision->Init();
-
 
 	return S_OK;
 }
 
 void Player::Update()
 {
-	//playerPixelCollision->Update();
 
 	// 점프중이 아닐때 낙하
 	if (false == (action == PlayerAction::JUMP))
 	{
 		pos.y = MapColliderManager::GetSingleton()->autoMove(pos.x, pos.y, shape, moveSpeed);
-		//pos.y = playerPixelCollision->autoMove(pos.x, pos.y, shape, moveSpeed);
 	}
 
 	//플레이어 이동
@@ -118,7 +105,6 @@ void Player::Update()
 	{
 		// 이동(픽셀충돌검사)
 		pos = MapColliderManager::GetSingleton()->Move(pos, shape, moveSpeed, -1, bodySize.y);
-		//pos = playerPixelCollision->Move(pos, shape, moveSpeed, -1, bodySize.y);
 		// 상태 변경
 		action = PlayerAction::LEFTMOVE;
 
@@ -127,7 +113,6 @@ void Player::Update()
 	{
 		// 이동(픽셀충돌검사)
 		pos = MapColliderManager::GetSingleton()->Move(pos, shape, moveSpeed, 1, bodySize.y);
-		//pos = playerPixelCollision->Move(pos, shape, moveSpeed, 1, bodySize.y);
 		// 상태 변경
 		action = PlayerAction::RIGHTMOVE;
 		
@@ -215,7 +200,7 @@ void Player::Update()
 		pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 	}
 
-	// 액션중이 아닐때 기본자세
+	// 액션중이 아닐때 기본자세 이후에 좀더 디테일 수정
 	if (!KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT) &&
 		!KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT) &&
 		!KeyManager::GetSingleton()->IsStayKeyDown(VK_UP) &&
@@ -293,6 +278,7 @@ void Player::Update()
 
 void Player::Render(HDC hdc)
 {
+	//디버그
 	DBbackArm->Render(hdc, 100, 100, DBarmPos.x, DBarmPos.y);
 	DBfrontArm->Render(hdc, 200, 100, DBarmPos.x, DBarmPos.y);
 	DBbody->Render(hdc, 300, 100, DBbodyPos.x, DBbodyPos.y);
@@ -303,9 +289,12 @@ void Player::Render(HDC hdc)
 
 	DBgoldBody->Render(hdc, 350, 100, DBbodyPos.x, DBbodyPos.y);
 	DBgoldFoot->Render(hdc, 350, 100, DBbodyPos.x, DBbodyPos.y);
+	//디버그
+
 
 	Rectangle(hdc, 320, 90, 340, 115);	// 몸통 렉트
 	Rectangle(hdc, 325, 115, 335, 125);	// 신발 렉트
+	
 
 	backArm->Render(hdc, pos.x + 5, pos.y, backArmFrame.x, backArmFrame.y);	// 왼팔
 	body->Render(hdc, pos.x, pos.y, bodyFrame.x, bodyFrame.y);				// 몸
@@ -318,5 +307,5 @@ void Player::Render(HDC hdc)
 
 void Player::Release()
 {
-	//SAFE_DELETE(playerPixelCollision);
+
 }

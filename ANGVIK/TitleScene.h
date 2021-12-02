@@ -9,8 +9,6 @@ enum class SeletedTitle { START, OPTION, EXIT };
 //int maxNumber = (int)SeletedTitle::EXIT;
 
 
-
-
 //SeletedTitle operator++ (SeletedTitle &s, int)
 //{
 //	//const SeletedTitle ePrev = s;
@@ -63,8 +61,8 @@ private:
 	FrameHeight frameHeight = FrameHeight::DOWN; // 텍스트 위아래 흔들흔들
 	SeletedTitle seletedTitle = SeletedTitle::START;
 
-	float elepsedcount = 0.0f;		// 텍스트 위아래 흔들흔들
-
+	float boxFramecount = 0.0f;	// 셀렉박스 프레임
+	float elepsedCount = 0.0f;	// 텍스트 위아래 흔들흔들
 
 	POINTFLOAT startTextPos = {};		// 스타트 텍스트 Y 위치 변수
 	POINTFLOAT optionTextPos = {};		// 옵션 텍스트	Y 위치 변수

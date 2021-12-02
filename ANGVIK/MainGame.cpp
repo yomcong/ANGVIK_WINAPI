@@ -18,10 +18,8 @@ HRESULT MainGame::Init()
 	hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
 
 	backBuffer = new Image;
-	int maxSizeX = WIN_SIZE_X > TILEMAPTOOL_SIZE_X ? WIN_SIZE_X : TILEMAPTOOL_SIZE_X;
-	int maxSizeY = WIN_SIZE_Y > TILEMAPTOOL_SIZE_Y ? WIN_SIZE_Y : TILEMAPTOOL_SIZE_Y;
 
-	backBuffer->Init("Image/mapImage.bmp", maxSizeX, maxSizeY);
+	backBuffer->Init("Image/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
 	return S_OK;
 }
 
@@ -47,6 +45,7 @@ void MainGame::Render(HDC hdc)
 	//fps Ç¥½Ã.
 #ifdef _DEBUG
 	TimerManager::GetSingleton()->Render(hBackBufferDC);
+
 	wsprintf(mxText, "Mouse x : %d", g_ptMouse.x);
 	TextOut(hdc, WIN_SIZE_X - 150, 50, mxText, strlen(mxText));
 	wsprintf(myText, "Mouse y : %d", g_ptMouse.y);

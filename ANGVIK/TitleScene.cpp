@@ -8,13 +8,7 @@
 // 일렙시트카운트를 델타타임으로 증가시키는데, 소수점으로 증가되다보니, 최소,최대치에 도달했을때 부자연스러움
 
 // 선택된 텍스트에 파란박스 일렁거리는 모션
-// 델타타임이 소수점이라 프레임 증감이 자연스럽지 못함 
-
-
-// 질문
-
-// 이넘클래스 증감연산자 오퍼레이터 오버로딩 질문
-// 이미지 파인드 함수로 묶기
+// 델타타임이 소수점이라 프레임 증감이 자연스럽지 못함
 
 HRESULT TitleScene::Init()
 {
@@ -81,8 +75,8 @@ HRESULT TitleScene::Init()
 
 void TitleScene::Update()
 {
-
-	elepsedcount += TimerManager::GetSingleton()->GetDeltaTime();
+	elepsedCount += TimerManager::GetSingleton()->GetDeltaTime();
+	boxFramecount += TimerManager::GetSingleton()->GetDeltaTime();
 
 	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_SPACE))	// 씬 전환
 	{
@@ -140,17 +134,22 @@ void TitleScene::Update()
 	// 현재 선택된 씬에 따른 랜더 업데이트
 	ChooseTitle();
 
-
 	// 셀렉 박스 애니메이션 프레임
-	seletedBoxFrame = ((int)elepsedcount) % 8;
-	/*++seletedBoxFrame;
-	if (seletedBoxFrame > 8)
+	if (boxFramecount > 0.125)
 	{
-		seletedBoxFrame = 0;
-	}*/
+		if (seletedBoxFrame == 7)
+		{
+			seletedBoxFrame = 0;
+		}
+		else
+		{
+			++seletedBoxFrame;
+		}
+		boxFramecount = 0;
+	}
 
-	if (elepsedcount > 1000)
-		elepsedcount = 0.0f;
+	if (boxFramecount > 1000)
+		boxFramecount = 0.0f;
 }
 
 void TitleScene::Render(HDC hdc)
@@ -224,7 +223,7 @@ void TitleScene::ChooseTitle()
 	}
 
 	// 흔들흔들 애니메이션
-	if (((int)elepsedcount)%2 < 1)
+	if (((int)elepsedCount)%2 < 1)
 	{
 		frameHeight = FrameHeight::UP;
 	}

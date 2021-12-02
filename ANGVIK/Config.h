@@ -19,11 +19,6 @@ using namespace std;
 #define WIN_SIZE_X	960
 #define WIN_SIZE_Y	540
 
-#define TILEMAPTOOL_SIZE_X	800
-#define TILEMAPTOOL_SIZE_Y	600
-#define PIXELMAP_SIZE_X	1000
-#define PIXELMAP_SIZE_Y	800
-
 #define PI 3.14159265357989
 #define PI2 (3.14159265357989 * 2)
 
@@ -40,9 +35,6 @@ using namespace std;
 #define DBG_NEW new
 #endif
 
-enum class MoveDir { Left = 2, Right = 6, Up = 0, Down = 4 };
-enum class TankType { Player, Normal, Speed, Rapid, Defensive };
-
 #include "TimerManager.h"
 #include "ImageManager.h"
 #include "KeyManager.h"
@@ -54,42 +46,27 @@ extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;
 extern POINT g_ptMouse;
 
-//타일 관련
-#define TILE_SIZE	16
-#define TILE_COUNT_X	26
-#define TILE_COUNT_Y	26
-#define SAMPLE_TILE_COUNT_X 8
-#define SAMPLE_TILE_COUNT_Y	2
-#define STAGE_SIZE_X (WIN_SIZE_X / 2 - 8 * TILE_COUNT_X - 16)
-#define STAGE_SIZE_Y (WIN_SIZE_Y / 2 - 8 * TILE_COUNT_Y)
-
 #define RANDOM(min, max) (rand() % ((max) - (min) + 1) + (min))
-#define CORRECTION_POS_MIN 8
-#define CORRECTION_POS_MAX 8
 
-enum class Terrain { Earth, Wall, Water, Grass, BreakableWall, End };
+/*
 
-enum class TileType { Ground, Wall, Water, Iced, Grass, Brick, Nexus };
-typedef struct tagSampleTile
-{
-	RECT rc;
-	int frameX, frameY;
-} SAMPLE_TILE_INFO;
+스테이지 씬
+카메라 스크롤 만들기
+경고 물어보기
+(ex : int 에서 float 으로 변환)
 
-typedef struct tagTile
-{
-	TileType tileType;
-	RECT rc;				
-	//image
-	// sample tile의 아이디 (프레임 X, 프레임 Y)
-	int frameX, frameY;
+타이틀씬
+이넘클래스 증감연산자 오퍼레이터 오버로딩 질문
+이미지 파인드 함수로 묶기
 
-	RECT collider;		// bullet Hit Collider
-	RECT bodyCollider;	// Body Collider
+플레이어
+POINT 변수 물어보기(애니메이션프레임, 바디사이즈) 
+각 애니매이션 맥스프레임을 변수로 적을지 상수로 적을지
 
-	int leftHit;
-	int rightHit;
-	int topHit;
-	int bottomHit;
 
-} TILE_INFO;
+해야할것 
+
+인벤토리구현,
+
+
+*/

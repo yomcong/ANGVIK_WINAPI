@@ -21,6 +21,7 @@ HRESULT Kong::Init(Player* target)
 
 	this->target = target;
 
+	// 임시 테스트
 	pos.x = 350;
 	pos.y = 350;
 
@@ -51,25 +52,19 @@ void Kong::Update()
 		{
 			++atackFrame.x;
 		}
-
-
 		frameCount = 0;
 	}
 
-
+	// 디버깅용 아모발싸
 	if (KeyManager::GetSingleton()->IsOnceKeyDown('G'))
 	{
 		float targetAngle = atan2f(-(target->GetPos().y - pos.y),
 			(target->GetPos().x - pos.x));
 
-		int dir = target->GetPos().x - pos.x;
-		
-
+		int dir = (int)target->GetPos().x - (int)pos.x;
 
 		ammoManager->Fire(pos, targetAngle, dir);
 	}
-
-	
 }
 
 void Kong::Render(HDC hdc)
@@ -84,4 +79,5 @@ void Kong::Render(HDC hdc)
 void Kong::Release()
 {
 	SAFE_DELETE(ammoManager);
+	//SAFE_RELEASE(target);	
 }

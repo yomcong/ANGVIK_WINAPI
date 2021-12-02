@@ -42,7 +42,7 @@ float MapColliderManager::autoMove(float x, float y, RECT shape, float moveSpeed
 	for (int i = 0; i < 10; i++)
 	{
 		color = GetPixel(pixelMap->GetMemDC(),
-			x + pixelPos.x, shape.bottom + i + pixelPos.y);
+			(int)x + (int)pixelPos.x, shape.bottom + i + (int)pixelPos.y);
 
 		r = GetRValue(color);
 		g = GetGValue(color);
@@ -56,7 +56,6 @@ float MapColliderManager::autoMove(float x, float y, RECT shape, float moveSpeed
 		else
 		{
 			return tempPosY;
-			break;
 		}
 	}
 
@@ -72,12 +71,12 @@ POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed,
 		if (dir > 0)
 		{
 			color = GetPixel(pixelMap->GetMemDC(),
-				shape.right + 1 + pixelPos.x, shape.bottom - i + pixelPos.y);
+				shape.right + 1 + (int)pixelPos.x, shape.bottom - i + (int)pixelPos.y);
 		}
 		else
 		{
 			color = GetPixel(pixelMap->GetMemDC(),
-				shape.left - 1 + pixelPos.x, shape.bottom - i + pixelPos.y);
+				shape.left - 1 + (int)pixelPos.x, shape.bottom - i + (int)pixelPos.y);
 		}
 
 		r = GetRValue(color);
@@ -85,7 +84,7 @@ POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed,
 		b = GetBValue(color);
 
 		// 낮은 높이는 이동 가능
-		if (i < 7)
+		if (i < 10)
 		{
 			if (false == (r == 255 && g == 0 && b == 255))
 			{
@@ -105,4 +104,77 @@ POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed,
 	pos.x += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()) * dir;
 	pos.y -= height;
 	return pos;
+}
+
+bool MapColliderManager::checkCollision(RECT shape)
+{
+	// 포문으로 검사하는방법 생각하기
+
+	/*for (int i = 0; i < 4; i++)
+	{
+		//0 = laft, top , 1 = left, bottom, 2 = right, top, 3= right, bottom
+
+		color = GetPixel(pixelMap->GetMemDC(),
+			shape.left, shape.bottom);
+
+		r = GetRValue(color);
+		g = GetGValue(color);
+		b = GetBValue(color);
+
+
+		if (false == (r == 255 && g == 0 && b == 255))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}*/
+	color = GetPixel(pixelMap->GetMemDC(),
+		shape.left, shape.top);
+
+	r = GetRValue(color);
+	g = GetGValue(color);
+	b = GetBValue(color);
+
+	if (false == (r == 255 && g == 0 && b == 255))
+	{
+		return true;
+	}
+
+	color = GetPixel(pixelMap->GetMemDC(),
+		shape.left, shape.bottom);
+	r = GetRValue(color);
+	g = GetGValue(color);
+	b = GetBValue(color);
+
+	if (false == (r == 255 && g == 0 && b == 255))
+	{
+		return true;
+	}
+
+	color = GetPixel(pixelMap->GetMemDC(),
+		shape.right, shape.bottom);
+	r = GetRValue(color);
+	g = GetGValue(color);
+	b = GetBValue(color);
+
+	if (false == (r == 255 && g == 0 && b == 255))
+	{
+		return true;
+	}
+
+	color = GetPixel(pixelMap->GetMemDC(),
+		shape.right, shape.bottom);
+	r = GetRValue(color);
+	g = GetGValue(color);
+	b = GetBValue(color);
+
+	if (false == (r == 255 && g == 0 && b == 255))
+	{
+		return true;
+	}
+
+	return false;
 }

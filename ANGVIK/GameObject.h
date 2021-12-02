@@ -22,7 +22,7 @@ protected:
 	POINTFLOAT pos = {};
 	RECT shape = {};
 	float moveSpeed = 0.0f;
-	//int bodySize = 0;
+	int bodySize = 0;
 
 	Image* img = nullptr;
 
@@ -32,9 +32,9 @@ public:
 
 	inline const POINTFLOAT GetPos() { return this->pos; }
 	inline const RECT GetShape() { return this->shape; }
+	inline const int GetBodySize() { return this->bodySize; }
 
 
-	//inline int GetBodySize() { return this->bodySize; }
 	//inline const RECT* GetShapeAddress() { return &this->shape; }
 
 	GameObject() = default;

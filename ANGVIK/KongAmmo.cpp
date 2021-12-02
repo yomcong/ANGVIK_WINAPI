@@ -16,6 +16,13 @@ HRESULT KongAmmo::Init()
 
 	moveSpeed = 100.0f;
 
+	bodySize = 10;
+
+	shape.left = (int)pos.x - bodySize;
+	shape.top = (int)pos.y - bodySize;
+	shape.right = (int)pos.x + bodySize / 2;
+	shape.bottom = (int)pos.y + bodySize / 2;
+
 
 	return S_OK;
 }
@@ -43,10 +50,19 @@ void KongAmmo::Update()
 		pos.x += cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 		pos.y -= sin(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 
-		
+		if (MapColliderManager::GetSingleton()->checkCollision(shape))
+		{
+			b_IsAlive = false;
+		}
 	}
+	shape.left = (int)pos.x - bodySize;
+	shape.top = (int)pos.y - bodySize ;
+	shape.right = (int)pos.x + bodySize / 2;
+	shape.bottom = (int)pos.y + bodySize / 2;
 
-
+	// µð¹ö±ë
+	if (KeyManager().GetSingleton()->IsStayKeyDown(VK_NUMPAD1))
+		DBrect == false ? DBrect = true : DBrect = false;
 }
 
 void KongAmmo::Render(HDC hdc)
@@ -55,13 +71,17 @@ void KongAmmo::Render(HDC hdc)
 	{
 		if (direction > 0)
 		{
-			ammoRight->Render(hdc, pos.x, pos.y, ammoFrame.x, ammoFrame.y);
+			ammoRight->Render(hdc, (int)pos.x, (int)pos.y, ammoFrame.x, ammoFrame.y);
 		}
 		else
 		{
-			ammoLeft->Render(hdc, pos.x, pos.y, ammoFrame.x, ammoFrame.y);
+			ammoLeft->Render(hdc, (int)pos.x, (int)pos.y, ammoFrame.x, ammoFrame.y);
 
 		}
+
+		// µð¹ö±ë
+		if (DBrect)
+			Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
 	}
 }
 
@@ -75,5 +95,4 @@ void KongAmmo::IsFire(POINTFLOAT pos, float angle, int dir)
 	this->moveAngle = angle;
 	this->direction = dir;
 	this->pos = pos;
-
 }

@@ -23,7 +23,6 @@ private:
 	POINT atackFrame = { 0,0 };
 
 	KongAmmoManager* ammoManager = nullptr;
-	
 	Player* target = nullptr;
 
 	float frameCount = 0.0f;

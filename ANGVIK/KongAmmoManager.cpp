@@ -6,7 +6,6 @@ HRESULT KongAmmoManager::Init(Player* target)
 {
 	vecAmmos.resize(DBammoMaxCount);
 
-
 	for (int i = 0; i < DBammoMaxCount; ++i)
 	{
 		vecAmmos[i] = new KongAmmo;
@@ -34,8 +33,11 @@ void KongAmmoManager::Render(HDC hdc)
 
 void KongAmmoManager::Release()
 {
+	for (int i = 0; i < DBammoMaxCount; ++i)
+	{
+		SAFE_RELEASE(vecAmmos[i]);
+	}
 	vecAmmos.clear();
-
 }
 
 void KongAmmoManager::Fire(POINTFLOAT pos, float angle, int dir)
@@ -47,7 +49,6 @@ void KongAmmoManager::Fire(POINTFLOAT pos, float angle, int dir)
 		{
 			continue;
 		}
-		// 방향 확인
 
 		vecAmmos[i]->IsFire(pos, angle, dir);
 		break;

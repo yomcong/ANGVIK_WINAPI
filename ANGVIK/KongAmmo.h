@@ -30,5 +30,7 @@ private:
 	// °¢µµ
 	float moveAngle = 0.0f;
 
+	// µð¹ö±ë
+	bool DBrect = false;
 };
 

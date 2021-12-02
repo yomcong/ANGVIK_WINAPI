@@ -5,18 +5,11 @@
 #include "Player.h"
 #include "Kong.h"
 
-
 #define stage1Width 6709
 #define stage1Height 1290
 
-
 // ¸Ê ÀÌµ¿ µð¹ö±ë¿ë
 #define moveSpeed 5.0f
-
-// Ä«¸Þ¶ó ½ºÅ©·Ñ ¸¸µé±â
-
-// °æ°í ¹°¾îº¸±â
-// (ex : int ¿¡¼­ float À¸·Î º¯È¯)
 
 
 HRESULT StageScene::Init()
@@ -93,9 +86,10 @@ void StageScene::Render(HDC hdc)
 	player->Render(hdc);
 	kong->Render(hdc);
 
+	// ÇÈ¼¿ ¸Ê µð¹ö±ë
 	if (debugPixelMap)
 	{
-		stagePixelMap->Render(hdc, mapPos.x, mapPos.y);	//ÇÈ¼¿ ¸Ê
+		stagePixelMap->Render(hdc, mapPos.x, mapPos.y);
 	}
 }
 
