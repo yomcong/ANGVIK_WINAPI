@@ -38,12 +38,16 @@ void MainGame::Render(HDC hdc)
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
 	backBuffer->Render(hdc);
-
 	SceneManager::GetSingleton()->Render(hBackBufferDC);
+	
 
 	//fps Ç¥½Ã.
 #ifdef _DEBUG
 	TimerManager::GetSingleton()->Render(hBackBufferDC);
+	wsprintf(mxText, "Mouse x : %d", g_ptMouse.x);
+	TextOut(hdc, WIN_SIZE_X - 150, 50, mxText, strlen(mxText));
+	wsprintf(myText, "Mouse y : %d", g_ptMouse.y);
+	TextOut(hdc, WIN_SIZE_X - 150, 70, myText, strlen(myText));
 #endif
 
 }

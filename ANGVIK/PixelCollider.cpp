@@ -29,15 +29,15 @@ void PixelCollider::Release()
 
 }
 
-float PixelCollider::autoMove(float x, float y, RECT shape)
+// 낙하
+float PixelCollider::autoMove(float x, float y, RECT shape, float moveSpeed)
 {
-	float tempPosY = y + 100 * TimerManager::GetSingleton()->GetDeltaTime();
+	float tempPosY = y + moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 
 	for (int i = 0; i < 10; i++)
 	{
 		color = GetPixel(pixelMap->GetMemDC(),
 			x, shape.bottom + i);
-
 
 		r = GetRValue(color);
 		g = GetGValue(color);
@@ -56,26 +56,48 @@ float PixelCollider::autoMove(float x, float y, RECT shape)
 	}
 }
 
-POINTFLOAT PixelCollider::Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir)
+//이동
+POINTFLOAT PixelCollider::Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir, int bodySize)
 {
-	for (int i = 0; i < 10; ++i)
+	int height = 0;
+
+	for (int i = 1; i < bodySize; ++i)
 	{
-		i *= dir;	// laft = -1, right = +1
-		color = GetPixel(pixelMap->GetMemDC(),
-			shape.left + i, shape.bottom);
+		// laft = -1, right = +1
+		if (dir > 0)
+		{
+			color = GetPixel(pixelMap->GetMemDC(),
+				shape.right + 1, shape.bottom - i);
+		}
+		else
+		{
+			color = GetPixel(pixelMap->GetMemDC(),
+				shape.left - 1, shape.bottom - i);
+		}
 
 		r = GetRValue(color);
 		g = GetGValue(color);
 		b = GetBValue(color);
 
-		if (r == 255 && g == 0 && b == 255)
+		// 낮은 높이는 이동 가능
+		if (i < 6)
 		{
-			cout << "pos : " << shape.left - i << ", ";
-			cout << "r, g, b, " << r << ", " << g << ", " << b << "\n";
-			pos.x -= moveSpeed;
-			break;
+			if (false == (r == 255 && g == 0 && b == 255))
+			{
+				height = max(height, i);
+			}
+		}
+		else
+		{
+			if (false == (r == 255 && g == 0 && b == 255))
+			{
+				return pos;
+			}
 		}
 
-		return POINTFLOAT();
 	}
+
+	pos.x += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()) * dir;
+	pos.y -= height;
+	return pos;
 }

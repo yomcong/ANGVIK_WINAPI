@@ -15,8 +15,8 @@ public:
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 
-	float autoMove(float x, float y, RECT shape);
-	POINTFLOAT Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir);
+	float autoMove(float x, float y, RECT shape, float moveSpeed);
+	POINTFLOAT Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir, int bodySize);
 
 private:
 	Image* pixelMap = nullptr;

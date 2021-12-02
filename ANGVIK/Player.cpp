@@ -3,7 +3,16 @@
 #include "Image.h"
 
 // 픽셀충돌 관리해주기
+// 픽셀충돌 2중포문 물어보기
 
+
+// 캐릭터 이동 
+// 팔 자연스럽게 해주기
+// 갑옷 신발 위치 조정
+// 캐릭터 랙트 세분화 해주기(몸통 머리 발)
+// 렉트 세분화 후 발 부분으로 픽셀충돌다시
+
+// 캐릭터가 왼쪽을볼떄는 랜더 순서 바꿔주기 ( 왼팔이 먼저보이게) 및 이미지 가로회전
 
 HRESULT Player::Init()
 {
@@ -74,7 +83,7 @@ HRESULT Player::Init()
 	pos.x = 120.0f;
 	pos.y = 425.0f;
 
-	moveSpeed = 1.0f;
+	moveSpeed = 50.0f;
 
 	bodySize_X = 20;
 	bodySize_Y = 50;
@@ -93,73 +102,44 @@ HRESULT Player::Init()
 
 void Player::Update()
 {
-	pos.y = playerPixelCollision->autoMove(pos.x, pos.y, shape);
+	// 점프중이 아닐때 낙하
+	if (false == (action == PlayerAction::JUMP))
+	{
+		pos.y = playerPixelCollision->autoMove(pos.x, pos.y, shape, moveSpeed);
+	}
 
 	//플레이어 이동
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT))
 	{
+		// 이동(픽셀충돌검사)
+		pos = playerPixelCollision->Move(pos, shape, moveSpeed, -1, bodySize_Y);
+		// 상태 변경
+		action = PlayerAction::LEFTMOVE;
 
-		//pos = playerPixelCollision->Move(pos, shape, moveSpeed, -1);
-		//for (int i = 0; i < 10; ++i)
-		//{
-		//	color = GetPixel(stagePixelMap->GetMemDC(),
-		//		shape.left, shape.bottom - i);
-
-		//	r = GetRValue(color);
-		//	g = GetGValue(color);
-		//	b = GetBValue(color);
-
-		//	if (r == 255 && g == 0 && b == 255)
-		//	{
-		//		cout << "pos : " << shape.left - i << ", ";
-		//		cout << "r, g, b, " << r << ", " << g << ", " << b << "\n";
-		//		pos.x -= moveSpeed;
-		//		break;
-		//	}
-
-		//}
-
-		/*cout << "pos.x : " << player.pos.x << ", ";
-		cout << "left : " << player.collider.left << ", ";
-		cout << "r, g, b, " << r << ", " << g << ", " << b << "\n";*/
-		//pos.x -= moveSpeed;
-
-		pos.x -= moveSpeed;
-
-		if (frontArmFrame.x == 0)
-		{
-			frontArmFrame.x = 15;
-		}
-		else
-		{
-			--frontArmFrame.x;
-		}
-		if (backArmFrame.x == 0)
-		{
-			backArmFrame.x = 15;
-		}
-		else
-		{
-
-			--backArmFrame.x;
-		}
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT))
 	{
-		pos.x += moveSpeed;
-
-		++frameCount;
-
-		if (frameCount > 5)
+		// 이동(픽셀충돌검사)
+		pos = playerPixelCollision->Move(pos, shape, moveSpeed, 1, bodySize_Y);
+		// 상태 변경
+		action = PlayerAction::RIGHTMOVE;
+		
+		// 애니메이션 프레임
+		frameCount += TimerManager::GetSingleton()->GetDeltaTime();
+		if (frameCount > 0.125)
 		{
+			// 손 구부리기, 몸통 뛰는모션
 			frontArmFrame.y = 1;
+			backArmFrame.y = 1;
+			bodyFrame.y = 1;
 
-			if (frontArmMove)
+			// 오른손 프레임관리
+			if (b_frontArmMove)
 			{
 				if (frontArmFrame.x == 15)
 				{
 					--frontArmFrame.x;
-					frontArmMove = false;
+					b_frontArmMove = false;
 				}
 				else
 				{
@@ -171,20 +151,20 @@ void Player::Update()
 				if (frontArmFrame.x == 9)
 				{
 					++frontArmFrame.x;
-					frontArmMove = true;
+					b_frontArmMove = true;
 				}
 				else
 				{
 					--frontArmFrame.x;
 				}
 			}
-
-			if (backArmMove)
+			// 왼손 프레임 관리
+			if (b_backArmMove)
 			{
 				if (backArmFrame.x == 15)
 				{
 					--backArmFrame.x;
-					backArmMove = false;
+					b_backArmMove = false;
 				}
 				else
 				{
@@ -196,29 +176,64 @@ void Player::Update()
 				if (backArmFrame.x == 9)
 				{
 					++backArmFrame.x;
-					backArmMove = true;
+					b_backArmMove = true;
 				}
 				else
 				{
 					--backArmFrame.x;
 				}
 			}
+			// 몸,발 프레임 관리
+			if (bodyFrame.x == 11)
+			{
+				bodyFrame.x = 0;
+			}
+			else
+			{
+				++bodyFrame.x;
+			}
 
-
-			frameCount = 0;
+			frameCount = 0.0f;
 		}
 	}
+
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
 	{
-		pos.y -= moveSpeed;
+		action = PlayerAction::JUMP;
+		pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
-		pos.y += moveSpeed;
+		action = PlayerAction::SITDOWN;
+		pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 	}
 
+	// 액션중이 아닐때 기본자세
+	if (!KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT) &&
+		!KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT) &&
+		!KeyManager::GetSingleton()->IsStayKeyDown(VK_UP) &&
+		!KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
+	{
+		action = PlayerAction::NORMAL;
+
+		frontArmFrame.x = 11;
+		frontArmFrame.y = 0;
+
+		backArmFrame.x = 13;
+		backArmFrame.y = 0;
+
+		bodyFrame.y = 0;
+		bodyFrame.x = 0;
+	}
+
+	shape.left = (int)pos.x - (bodySize_X / 2);
+	shape.top = (int)pos.y - (bodySize_Y / 2);
+	shape.right = (int)pos.x + (bodySize_X / 2);
+	shape.bottom = (int)pos.y + (bodySize_Y / 2);
 
 
+	//디버그용 인체실험
+#ifdef _DEBUG
 	// 디버깅용
 	if (KeyManager::GetSingleton()->IsOnceKeyDown('Y'))
 		if (DBarmPos.y == 2)
@@ -260,20 +275,8 @@ void Player::Update()
 			DBbodyPos.y = 1;
 		else
 			--DBbodyPos.y;
-
-	if (false == KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT) ||
-		false == KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT))
-	{
-		frontArmFrame.y = 0;
-		backArmFrame.y = 0;
-
-	}
-
-	shape.left = (int)pos.x - (bodySize_X / 2);
-	shape.top = (int)pos.y - (bodySize_Y / 2);
-	shape.right = (int)pos.x + (bodySize_X / 2);
-	shape.bottom = (int)pos.y + (bodySize_Y / 2);
-
+#endif
+	// 디버그용 캐릭터 랙트표시
 	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_NUMPAD9))
 	{
 		DBplayerRect == false ? DBplayerRect = true : DBplayerRect = false;
@@ -294,12 +297,12 @@ void Player::Render(HDC hdc)
 	DBgoldBody->Render(hdc, 350, 100, DBbodyPos.x, DBbodyPos.y);
 	DBgoldFoot->Render(hdc, 350, 100, DBbodyPos.x, DBbodyPos.y);
 
-	Rectangle(hdc, 320, 90, 340, 115); // 몸통
-	Rectangle(hdc, 325, 115, 335, 125); // 발
+	Rectangle(hdc, 320, 90, 340, 115);	// 몸통 렉트
+	Rectangle(hdc, 325, 115, 335, 125);	// 신발 렉트
 
-	backArm->Render(hdc, pos.x + 5, pos.y, backArmFrame.x, backArmFrame.y);
-	body->Render(hdc, pos.x, pos.y, bodyFrame.x, bodyFrame.y);
-	frontArm->Render(hdc, pos.x, pos.y, frontArmFrame.x, frontArmFrame.y);
+	backArm->Render(hdc, pos.x + 5, pos.y, backArmFrame.x, backArmFrame.y);	// 왼팔
+	body->Render(hdc, pos.x, pos.y, bodyFrame.x, bodyFrame.y);				// 몸
+	frontArm->Render(hdc, pos.x, pos.y, frontArmFrame.x, frontArmFrame.y);	// 오른팔
 
 	if (DBplayerRect)
 		Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);

@@ -38,8 +38,8 @@ private:
 	Player* player = nullptr;
 
 	// ÇÈ¼¿ Ãæµ¹
-	COLORREF color = {};
-	WORD r, g, b = {};
+	//COLORREF color = {};
+	//WORD r, g, b = {};
 
 	bool debugPixelMap = false;
 	
