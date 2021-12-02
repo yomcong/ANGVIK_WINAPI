@@ -3,6 +3,7 @@
 #include "Image.h"
 #include "CommonFunction.h"
 #include "Player.h"
+#include "Kong.h"
 
 
 #define stage1Width 6709
@@ -44,12 +45,17 @@ HRESULT StageScene::Init()
 	player = new Player;
 	player->Init();
 
+	// ¸ó½ºÅÍ Äá
+	kong = new Kong;
+	kong->Init(player);
+
 	return S_OK;
 }
 
 void StageScene::Update()
 {
 	player->Update();
+	kong->Update();
 	
 	// µð¹ö±×¿ë ¸ÊÀÌµ¿
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD6))
@@ -58,7 +64,8 @@ void StageScene::Update()
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD4))
 	{
-		mapPos.x += (int)moveSpeed;
+		if(mapPos.x < 6709/2)
+			mapPos.x += (int)moveSpeed;
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD2))
 	{
@@ -66,7 +73,8 @@ void StageScene::Update()
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD8))
 	{
-		mapPos.y += (int)moveSpeed;
+		if (mapPos.y < 1290 / 2)
+			mapPos.y += (int)moveSpeed;
 	}
 
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë ¿ë
@@ -83,7 +91,8 @@ void StageScene::Render(HDC hdc)
 	stageBackgruond->Render(hdc, mapPos.x, mapPos.y);	// ¸Ê 
 
 	player->Render(hdc);
-	
+	kong->Render(hdc);
+
 	if (debugPixelMap)
 	{
 		stagePixelMap->Render(hdc, mapPos.x, mapPos.y);	//ÇÈ¼¿ ¸Ê
@@ -93,4 +102,6 @@ void StageScene::Render(HDC hdc)
 void StageScene::Release()
 {
 	SAFE_RELEASE(player);
+	SAFE_RELEASE(kong);
+
 }

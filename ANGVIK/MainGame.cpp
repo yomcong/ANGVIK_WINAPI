@@ -9,6 +9,7 @@ HRESULT MainGame::Init()
 	TimerManager::GetSingleton()->Init();
 	SceneManager::GetSingleton()->Init();
 	GameManager::GetSingleton()->Init();
+	MapColliderManager::GetSingleton()->Init();
 
 	SceneManager::GetSingleton()->ChangeScene("TitleScene");
 
@@ -29,6 +30,8 @@ void MainGame::Update()
 	TimerManager::GetSingleton()->Update();
 
 	SceneManager::GetSingleton()->Update();
+
+	MapColliderManager::GetSingleton()->Update();
 
 	InvalidateRect(g_hWnd, NULL, false);
 }

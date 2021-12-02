@@ -28,11 +28,14 @@ protected:
 
 public:
 	inline void SetPos(POINTFLOAT pos) { this->pos = pos; }
-	inline POINTFLOAT GetPos() { return this->pos; }
 	inline void SetMoveSpeed(float speed) { this->moveSpeed = speed; }
+
+	inline const POINTFLOAT GetPos() { return this->pos; }
+	inline const RECT GetShape() { return this->shape; }
+
+
 	//inline int GetBodySize() { return this->bodySize; }
-	inline RECT GetShape() { return this->shape; }
-	inline RECT* GetShapeAddress() { return &this->shape; }
+	//inline const RECT* GetShapeAddress() { return &this->shape; }
 
 	GameObject() = default;
 	virtual ~GameObject() = default;

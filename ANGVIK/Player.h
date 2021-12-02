@@ -4,7 +4,7 @@
 
 enum class PlayerAction { NORMAL, LEFTMOVE, RIGHTMOVE, JUMP, SITDOWN, ATTACK, HIT };
 
-class PixelCollider;
+//class PixelCollider;
 class Imgae;
 class Player : public GameObject
 {
@@ -16,7 +16,6 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
-
 private:
 	Image* backArm = nullptr;	// 왼팔
 	Image* frontArm = nullptr;	// 오른팔
@@ -26,6 +25,7 @@ private:
 	POINT bodyFrame = { 0, 0 };
 	POINT frontArmFrame = { 11, 0 };
 	POINT backArmFrame = { 13, 0 };
+	POINT bodySize = { 0, 0 };
 
 	// 팔 흔들기 위한 변수
 	bool b_frontArmMove = true;
@@ -35,14 +35,14 @@ private:
 	float frameCount = 0.0f;
 
 	// 캐릭터 사이즈
-	int bodySize_X = 0;
-	int bodySize_Y = 0;
+	/*int bodySize_X = 0;
+	int bodySize_Y = 0;*/
 
 	// 캐릭터 상태관리
 	PlayerAction action = PlayerAction::NORMAL;
 
 	// 픽셀 충돌
-	PixelCollider* playerPixelCollision = nullptr;
+	//PixelCollider* playerPixelCollision = nullptr;
 
 
 	//디버그용
@@ -61,13 +61,7 @@ private:
 	POINT DBbodyPos = { 0, 0 };
 
 	bool DBplayerRect = false;
-	//
-
-
-	// 픽셀 충돌
-	//COLORREF color = {};
-	//WORD r, g, b = {};
-
+	
 
 };
 

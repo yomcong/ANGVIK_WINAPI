@@ -48,6 +48,7 @@ enum class TankType { Player, Normal, Speed, Rapid, Defensive };
 #include "KeyManager.h"
 #include "SceneManager.h"
 #include "GameManager.h"
+#include "MapColliderManager.h"
 
 extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;

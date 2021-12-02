@@ -15,6 +15,7 @@
 //
 
 class Player;
+class Kong;
 class Image;
 class StageScene : public GameEntity	
 {
@@ -26,8 +27,6 @@ public:
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 
-
-
 private:
 	Image* stageBackgruond = nullptr;
 	Image* stageBackgruond2 = nullptr;
@@ -35,12 +34,15 @@ private:
 
 
 	POINT mapPos = {};
+
 	Player* player = nullptr;
+	Kong* kong = nullptr;
 
 	// 픽셀 충돌
 	//COLORREF color = {};
 	//WORD r, g, b = {};
 
+	//디버그용
 	bool debugPixelMap = false;
 	
 

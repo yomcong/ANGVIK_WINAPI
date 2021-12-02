@@ -24,15 +24,15 @@ void ImageManager::Init()
 
 
 	// 스테이지 
-	AddImage("image/Stage/Stage1-Background.bmp", 6709, 1290, true , RGB(255, 255, 255)); // 스테이지1 백그라운드
+	AddImage("image/Stage/Stage1-Background.bmp", 6709, 1290, true, RGB(255, 255, 255)); // 스테이지1 백그라운드
 	AddImage("image/Stage/Stage1-Background2.bmp", 6709, 1290); // 스테이지1 백그라운드(배경)
 
 	// 픽셀 맵
-	AddImage("image/Stage/Stage1-test.bmp", 6709, 1290, true , RGB(255, 0, 255)); // 스테이지1 백그라운드(픽셀ver)
+	AddImage("image/Stage/Stage1-test.bmp", 6709, 1290, true, RGB(255, 0, 255)); // 스테이지1 백그라운드(픽셀ver)
 
 	// 플레이어
-	AddImage("image/player/unarmed/arm_back.bmp", 640, 120,16, 3, true, RGB(255, 255, 255));	// 왼팔
-	AddImage("image/player/unarmed/arm_front.bmp", 640, 120,16, 3, true, RGB(255, 255, 255));	// 오른팔
+	AddImage("image/player/unarmed/arm_back.bmp", 640, 120, 16, 3, true, RGB(255, 255, 255));	// 왼팔
+	AddImage("image/player/unarmed/arm_front.bmp", 640, 120, 16, 3, true, RGB(255, 255, 255));	// 오른팔
 	AddImage("image/player/unarmed/body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));		// 몸통
 	AddImage("image/player/unarmed/head_0.bmp", 40, 40, true, RGB(255, 255, 255));	// 머리 1
 	AddImage("image/player/unarmed/head_1.bmp", 40, 40, true, RGB(255, 255, 255));	// 머리 2
@@ -42,8 +42,16 @@ void ImageManager::Init()
 	AddImage("image/player/gold/body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 갑옷
 	AddImage("image/player/gold/foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 신발
 
+	// 몬스터
+	// --콩--
+	AddImage("image/monster/kong_atk_8f.bmp", 272, 40, 8, 1, true, RGB(255, 255, 255));	// 공격모션 
+	AddImage("image/monster/kong_idle_6f.bmp", 192, 54, 6, 1, true, RGB(255, 255, 255));// 기본자세
 
-	
+	// --콩 총알--
+	AddImage("image/monster/kongtan.bmp", 168, 18, 6, 1, true, RGB(255, 255, 255));		// 총알 오른방향
+	AddImage("image/monster/kongtan22.bmp", 168, 18, 6, 1, true, RGB(255, 255, 255));	// 총알 왼쪽방향
+
+
 	//로딩 씬	
 }
 

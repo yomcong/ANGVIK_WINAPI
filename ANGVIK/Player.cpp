@@ -1,9 +1,11 @@
 #include "Player.h"
-#include "PixelCollider.h"
+//#include "PixelCollider.h"
 #include "Image.h"
 
 // 픽셀충돌 관리해주기
-// 픽셀충돌 2중포문 물어보기
+// 포인터 변수 물어보기(바디사이즈)
+// 각 애니매이션 맥스프레임을 변수로 적을지 상수로 적을지
+// 픽셀충돌 싱글톤 으로 사용하기
 
 
 // 캐릭터 이동 
@@ -83,18 +85,18 @@ HRESULT Player::Init()
 	pos.x = 120.0f;
 	pos.y = 425.0f;
 
-	moveSpeed = 50.0f;
+	moveSpeed = 100.0f;
 
-	bodySize_X = 20;
-	bodySize_Y = 50;
+	bodySize.x = 20;
+	bodySize.y = 50;
 
-	shape.left = (int)pos.x - (bodySize_X / 2);
-	shape.top = (int)pos.y - (bodySize_Y / 2);
-	shape.right = (int)pos.x + (bodySize_X / 2);
-	shape.bottom = (int)pos.y + (bodySize_Y / 2);
+	shape.left = (int)pos.x - (bodySize.x / 2);
+	shape.top = (int)pos.y - (bodySize.y / 2);
+	shape.right = (int)pos.x + (bodySize.x / 2);
+	shape.bottom = (int)pos.y + (bodySize.y / 2);
 
-	playerPixelCollision = new PixelCollider;
-	playerPixelCollision->Init();
+	//playerPixelCollision = new PixelCollider;
+	//playerPixelCollision->Init();
 
 
 	return S_OK;
@@ -102,17 +104,21 @@ HRESULT Player::Init()
 
 void Player::Update()
 {
+	//playerPixelCollision->Update();
+
 	// 점프중이 아닐때 낙하
 	if (false == (action == PlayerAction::JUMP))
 	{
-		pos.y = playerPixelCollision->autoMove(pos.x, pos.y, shape, moveSpeed);
+		pos.y = MapColliderManager::GetSingleton()->autoMove(pos.x, pos.y, shape, moveSpeed);
+		//pos.y = playerPixelCollision->autoMove(pos.x, pos.y, shape, moveSpeed);
 	}
 
 	//플레이어 이동
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT))
 	{
 		// 이동(픽셀충돌검사)
-		pos = playerPixelCollision->Move(pos, shape, moveSpeed, -1, bodySize_Y);
+		pos = MapColliderManager::GetSingleton()->Move(pos, shape, moveSpeed, -1, bodySize.y);
+		//pos = playerPixelCollision->Move(pos, shape, moveSpeed, -1, bodySize.y);
 		// 상태 변경
 		action = PlayerAction::LEFTMOVE;
 
@@ -120,7 +126,8 @@ void Player::Update()
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT))
 	{
 		// 이동(픽셀충돌검사)
-		pos = playerPixelCollision->Move(pos, shape, moveSpeed, 1, bodySize_Y);
+		pos = MapColliderManager::GetSingleton()->Move(pos, shape, moveSpeed, 1, bodySize.y);
+		//pos = playerPixelCollision->Move(pos, shape, moveSpeed, 1, bodySize.y);
 		// 상태 변경
 		action = PlayerAction::RIGHTMOVE;
 		
@@ -226,10 +233,10 @@ void Player::Update()
 		bodyFrame.x = 0;
 	}
 
-	shape.left = (int)pos.x - (bodySize_X / 2);
-	shape.top = (int)pos.y - (bodySize_Y / 2);
-	shape.right = (int)pos.x + (bodySize_X / 2);
-	shape.bottom = (int)pos.y + (bodySize_Y / 2);
+	shape.left = (int)pos.x - (bodySize.x / 2);
+	shape.top = (int)pos.y - (bodySize.y / 2);
+	shape.right = (int)pos.x + (bodySize.x / 2);
+	shape.bottom = (int)pos.y + (bodySize.y / 2);
 
 
 	//디버그용 인체실험
@@ -311,5 +318,5 @@ void Player::Render(HDC hdc)
 
 void Player::Release()
 {
-
+	//SAFE_DELETE(playerPixelCollision);
 }

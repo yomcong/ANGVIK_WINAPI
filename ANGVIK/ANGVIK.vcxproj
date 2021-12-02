@@ -149,8 +149,12 @@
     <ClCompile Include="ItemFactory.cpp" />
     <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="KeyManager.cpp" />
+    <ClCompile Include="Kong.cpp" />
+    <ClCompile Include="KongAmmo.cpp" />
+    <ClCompile Include="KongAmmoManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="MapColliderManager.cpp" />
     <ClCompile Include="PixelCollider.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -172,7 +176,11 @@
     <ClInclude Include="ItemFactory.h" />
     <ClInclude Include="ItemManager.h" />
     <ClInclude Include="KeyManager.h" />
+    <ClInclude Include="Kong.h" />
+    <ClInclude Include="KongAmmo.h" />
+    <ClInclude Include="KongAmmoManager.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="MapColliderManager.h" />
     <ClInclude Include="PixelCollider.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
