@@ -13,7 +13,7 @@ public:
 
 	bool autoMove(POINTFLOAT pos, RECT shape, float moveSpeed, int bodySize);
 	POINTFLOAT Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir, int bodySize);
-	bool checkCollision(RECT shape);
+	bool checkCollision(RECT shape, int dir, int bodySize);
 
 private:
 	Image* pixelMap = nullptr;

@@ -25,6 +25,7 @@ private:
 	KongAmmoManager* ammoManager = nullptr;
 	Player* target = nullptr;
 
+	POINTFLOAT renderPos = { 0, 0 };
 	float frameCount = 0.0f;
 
 	

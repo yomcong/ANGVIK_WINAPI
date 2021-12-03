@@ -50,19 +50,25 @@ void KongAmmo::Update()
 		pos.x += cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();// +CameraManager::GetSingleton()->GetPos().x;
 		pos.y -= sin(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();// +CameraManager::GetSingleton()->GetPos().y;
 
-		//cout << "포스, (코싸인+무브스피드+델타타임) - 카메라 : " << pos.x << ", " << cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime() << ", " << CameraManager::GetSingleton()->GetPos().x << "\n";
-		//cout << "콩 아모 포스 : " << pos.x << ", " << pos.y << "\n";
-
-		if (MapColliderManager::GetSingleton()->checkCollision(shape))
+		if (MapColliderManager::GetSingleton()->checkCollision(shape, direction, bodySize))
 		{
 			b_IsAlive = false;
 		}
-	}
-	shape.left = (int)pos.x - bodySize;
-	shape.top = (int)pos.y - bodySize ;
-	shape.right = (int)pos.x + bodySize / 2;
-	shape.bottom = (int)pos.y + bodySize / 2;
+		renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
+		renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
 
+		shape.left = (int)pos.x - bodySize;
+		shape.top = (int)pos.y - bodySize;
+		shape.right = (int)pos.x + bodySize / 2;
+		shape.bottom = (int)pos.y + bodySize / 2;
+
+		if (renderPos.x <0 || renderPos.x >WIN_SIZE_X ||
+			renderPos.y <0 || renderPos.y > WIN_SIZE_Y)
+		{
+			b_IsAlive = false;
+		}
+
+	}
 	// 디버깅
 	if (KeyManager().GetSingleton()->IsStayKeyDown(VK_NUMPAD1))
 		DBrect == false ? DBrect = true : DBrect = false;
@@ -74,11 +80,11 @@ void KongAmmo::Render(HDC hdc)
 	{
 		if (direction > 0)
 		{
-			ammoRight->Render(hdc, (int)pos.x /*- CameraManager::GetSingleton()->GetPos().x*/, (int)pos.y, ammoFrame.x, ammoFrame.y);
+			ammoRight->Render(hdc, (int)renderPos.x, (int)renderPos.y, ammoFrame.x, ammoFrame.y);
 		}
 		else
 		{
-			ammoLeft->Render(hdc, (int)pos.x/* - CameraManager::GetSingleton()->GetPos().x*/, (int)pos.y, ammoFrame.x, ammoFrame.y);
+			ammoLeft->Render(hdc, (int)renderPos.x, (int)renderPos.y, ammoFrame.x, ammoFrame.y);
 
 		}
 
@@ -98,4 +104,5 @@ void KongAmmo::IsFire(POINTFLOAT pos, float angle, int dir)
 	this->moveAngle = angle;
 	this->direction = dir;
 	this->pos = pos;
+	renderPos = pos;
 }

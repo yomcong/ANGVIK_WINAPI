@@ -8,6 +8,7 @@
 // 렉트 세분화 후 발 부분으로 픽셀충돌다시
 
 // 캐릭터가 왼쪽을볼떄는 랜더 순서 바꿔주기 ( 왼팔이 먼저보이게) 및 이미지 가로회전
+#define JumpPower 90.0f
 
 HRESULT Player::Init()
 {
@@ -23,6 +24,11 @@ HRESULT Player::Init()
 	}
 	body = ImageManager::GetSingleton()->FindImage("image/player/unarmed/body.bmp");
 	if (body == nullptr)
+	{
+		return E_FAIL;
+	}
+	head = ImageManager::GetSingleton()->FindImage("image/player/unarmed/head_1.bmp");
+	if (head == nullptr)
 	{
 		return E_FAIL;
 	}
@@ -96,13 +102,30 @@ HRESULT Player::Init()
 void Player::Update()
 {
 	// 점프중이 아닐때 낙하
-	if (false == (action == PlayerAction::JUMP))
+	if (false == (state == State::JUMP))
 	{
 		if (MapColliderManager::GetSingleton()->autoMove(renderPos, shape, moveSpeed, bodySize.x))
 		{
-			CameraManager::GetSingleton()->SetPosY(1);
+			CameraManager::GetSingleton()->SetPosY(3);
+		}
+		else
+		{
+			if (state == State::Fall)
+			{
+				state = State::Idel;
+			}
 		}
 
+	}
+	// 점프 상태
+	else
+	{
+		jumpPower -= 3;
+		CameraManager::GetSingleton()->SetPosY(-3);
+		if (jumpPower <= 0)
+		{
+			state = State::Fall;
+		}
 	}
 
 	//플레이어 이동
@@ -113,7 +136,7 @@ void Player::Update()
 		CameraManager::GetSingleton()->SetPos((MapColliderManager::GetSingleton()->Move(renderPos, shape, moveSpeed, -1, bodySize.y)));
 
 		// 상태 변경
-		action = PlayerAction::LEFTMOVE;
+		action = Action::LEFTMOVE;
 
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT))
@@ -124,7 +147,7 @@ void Player::Update()
 		CameraManager::GetSingleton()->SetPos(MapColliderManager::GetSingleton()->Move(renderPos, shape, moveSpeed, 1, bodySize.y));
 
 		// 상태 변경
-		action = PlayerAction::RIGHTMOVE;
+		action = Action::RIGHTMOVE;
 
 		// 애니메이션 프레임
 		frameCount += TimerManager::GetSingleton()->GetDeltaTime();
@@ -198,25 +221,29 @@ void Player::Update()
 			frameCount = 0.0f;
 		}
 	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
+	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_UP))
 	{
-		action = PlayerAction::JUMP;
-		CameraManager::GetSingleton()->SetPosY(-1);
-
+		if (false == (state == State::JUMP) && 
+			false == (state == State::Fall))
+		{
+			state = State::JUMP;
+			jumpPower = JumpPower;
+		}
 		//renderPos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
-		action = PlayerAction::SITDOWN;
+		state = State::SITDOWN;
 		pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 	}
+
 	// 액션중이 아닐때 기본자세 이후에 좀더 디테일 수정
 	if (!KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT) &&
 		!KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT) &&
 		!KeyManager::GetSingleton()->IsStayKeyDown(VK_UP) &&
 		!KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
-		action = PlayerAction::NORMAL;
+		action = Action::Idle;
 
 		frontArmFrame.x = 11;
 		frontArmFrame.y = 0;
@@ -316,6 +343,7 @@ void Player::Render(HDC hdc)
 
 	backArm->Render(hdc, (int)renderPos.x, (int)renderPos.y, backArmFrame.x, backArmFrame.y);	// 왼팔
 	body->Render(hdc, (int)renderPos.x, (int)renderPos.y, bodyFrame.x, bodyFrame.y);			// 몸
+	head->Render(hdc, (int)renderPos.x + 2, (int)renderPos.y - 20);
 	frontArm->Render(hdc, (int)renderPos.x, (int)renderPos.y, frontArmFrame.x, frontArmFrame.y);// 오른팔
 
 	if (DBplayerRect)

@@ -21,6 +21,9 @@ private:
 	Image* ammoLeft = nullptr;
 
 	bool b_IsAlive = false;
+	
+	POINTFLOAT renderPos = { 0,0 };
+
 	// πÊ«‚
 	int direction = 1;
 

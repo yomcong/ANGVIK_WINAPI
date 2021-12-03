@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="Extern.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -165,8 +166,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="Common.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="Extern.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
@@ -179,6 +182,7 @@
     <ClInclude Include="Kong.h" />
     <ClInclude Include="KongAmmo.h" />
     <ClInclude Include="KongAmmoManager.h" />
+    <ClInclude Include="Macro.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MapColliderManager.h" />
     <ClInclude Include="PixelCollider.h" />

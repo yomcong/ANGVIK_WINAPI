@@ -2,7 +2,6 @@
 #include "Config.h"
 #include "GameObject.h"
 
-enum class PlayerAction { NORMAL, LEFTMOVE, RIGHTMOVE, JUMP, SITDOWN, ATTACK, HIT };
 
 //class PixelCollider;
 class Imgae;
@@ -18,9 +17,14 @@ public:
 	virtual void Release();
 
 private:
+	enum class State { Idel, JUMP,Fall, SITDOWN };
+	enum class Action { Idle, LEFTMOVE, RIGHTMOVE, ATTACK, HIT };
+
+
 	Image* backArm = nullptr;	// 왼팔
 	Image* frontArm = nullptr;	// 오른팔
 	Image* body = nullptr;		// 몸통
+	Image* head = nullptr;		// 머리
 
 	// 캐릭터 바디프레임 관리
 	POINT bodyFrame = { 0, 0 };
@@ -28,7 +32,7 @@ private:
 	POINT backArmFrame = { 13, 0 };
 	POINT bodySize = { 0, 0 };
 
-	// 테스트 좌표
+	// 랜더 좌표
 	POINTFLOAT renderPos = { 0, 0 };
 
 	// 팔 흔들기 위한 변수
@@ -37,13 +41,15 @@ private:
 
 	// 프레임 관리
 	float frameCount = 0.0f;
-
+	
+	// 점프력
+	float jumpPower = 0.0f;
 
 	// 캐릭터 상태관리
-	PlayerAction action = PlayerAction::NORMAL;
+	Action action = Action::Idle;
+	State state = State::Idel;
 
-
-	//디버그용
+	// 디버그용
 	Image* DBbackArm = nullptr;
 	Image* DBfrontArm = nullptr;
 	Image* DBbody = nullptr;
