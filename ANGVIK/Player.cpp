@@ -77,7 +77,9 @@ HRESULT Player::Init()
 	pos.x = 120.0f;
 	pos.y = 425.0f;
 
-	moveSpeed = 100.0f;
+	renderPos = pos;
+
+	moveSpeed = 200.0f;
 
 	bodySize.x = 20;
 	bodySize.y = 50;
@@ -93,18 +95,23 @@ HRESULT Player::Init()
 
 void Player::Update()
 {
-
 	// 점프중이 아닐때 낙하
 	if (false == (action == PlayerAction::JUMP))
 	{
-		pos.y = MapColliderManager::GetSingleton()->autoMove(pos.x, pos.y, shape, moveSpeed);
+		if (MapColliderManager::GetSingleton()->autoMove(renderPos, shape, moveSpeed, bodySize.x))
+		{
+			CameraManager::GetSingleton()->SetPosY(1);
+		}
+
 	}
 
 	//플레이어 이동
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT))
 	{
 		// 이동(픽셀충돌검사)
-		pos = MapColliderManager::GetSingleton()->Move(pos, shape, moveSpeed, -1, bodySize.y);
+		
+		CameraManager::GetSingleton()->SetPos((MapColliderManager::GetSingleton()->Move(renderPos, shape, moveSpeed, -1, bodySize.y)));
+
 		// 상태 변경
 		action = PlayerAction::LEFTMOVE;
 
@@ -112,10 +119,13 @@ void Player::Update()
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT))
 	{
 		// 이동(픽셀충돌검사)
-		pos = MapColliderManager::GetSingleton()->Move(pos, shape, moveSpeed, 1, bodySize.y);
+		//pos = MapColliderManager::GetSingleton()->Move(pos, shape, moveSpeed, 1, bodySize.y);
+
+		CameraManager::GetSingleton()->SetPos(MapColliderManager::GetSingleton()->Move(renderPos, shape, moveSpeed, 1, bodySize.y));
+
 		// 상태 변경
 		action = PlayerAction::RIGHTMOVE;
-		
+
 		// 애니메이션 프레임
 		frameCount += TimerManager::GetSingleton()->GetDeltaTime();
 		if (frameCount > 0.125)
@@ -188,18 +198,18 @@ void Player::Update()
 			frameCount = 0.0f;
 		}
 	}
-
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_UP))
 	{
 		action = PlayerAction::JUMP;
-		pos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+		CameraManager::GetSingleton()->SetPosY(-1);
+
+		//renderPos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
 		action = PlayerAction::SITDOWN;
 		pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 	}
-
 	// 액션중이 아닐때 기본자세 이후에 좀더 디테일 수정
 	if (!KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT) &&
 		!KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT) &&
@@ -218,11 +228,15 @@ void Player::Update()
 		bodyFrame.x = 0;
 	}
 
+	pos.x = renderPos.x + CameraManager::GetSingleton()->GetPos().x;
+	pos.y = renderPos.y + CameraManager::GetSingleton()->GetPos().y;
+
 	shape.left = (int)pos.x - (bodySize.x / 2);
 	shape.top = (int)pos.y - (bodySize.y / 2);
 	shape.right = (int)pos.x + (bodySize.x / 2);
 	shape.bottom = (int)pos.y + (bodySize.y / 2);
 
+	//cout << "플레이어 포스 : " << pos.x << "\n";
 
 	//디버그용 인체실험
 #ifdef _DEBUG
@@ -294,14 +308,18 @@ void Player::Render(HDC hdc)
 
 	Rectangle(hdc, 320, 90, 340, 115);	// 몸통 렉트
 	Rectangle(hdc, 325, 115, 335, 125);	// 신발 렉트
-	
 
-	backArm->Render(hdc, pos.x + 5, pos.y, backArmFrame.x, backArmFrame.y);	// 왼팔
-	body->Render(hdc, pos.x, pos.y, bodyFrame.x, bodyFrame.y);				// 몸
-	frontArm->Render(hdc, pos.x, pos.y, frontArmFrame.x, frontArmFrame.y);	// 오른팔
+
+	//backArm->Render(hdc, (int)pos.x + 5 - CameraManager::GetSingleton()->GetPos().x, (int)pos.y - CameraManager::GetSingleton()->GetPos().y, backArmFrame.x, backArmFrame.y);	// 왼팔
+	//body->Render(hdc, (int)pos.x - CameraManager::GetSingleton()->GetPos().x, (int)pos.y - CameraManager::GetSingleton()->GetPos().y, bodyFrame.x, bodyFrame.y);				// 몸
+	//frontArm->Render(hdc, (int)pos.x - CameraManager::GetSingleton()->GetPos().x, (int)pos.y - CameraManager::GetSingleton()->GetPos().y, frontArmFrame.x, frontArmFrame.y);	// 오른팔
+
+	backArm->Render(hdc, (int)renderPos.x, (int)renderPos.y, backArmFrame.x, backArmFrame.y);	// 왼팔
+	body->Render(hdc, (int)renderPos.x, (int)renderPos.y, bodyFrame.x, bodyFrame.y);			// 몸
+	frontArm->Render(hdc, (int)renderPos.x, (int)renderPos.y, frontArmFrame.x, frontArmFrame.y);// 오른팔
 
 	if (DBplayerRect)
-		Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+		Rectangle(hdc, shape.left - CameraManager::GetSingleton()->GetPos().x, shape.top - CameraManager::GetSingleton()->GetPos().y, shape.right - CameraManager::GetSingleton()->GetPos().x, shape.bottom - CameraManager::GetSingleton()->GetPos().y);
 
 }
 

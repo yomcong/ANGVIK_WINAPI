@@ -1,13 +1,12 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 중간 디렉터리(x64\Debug\)에 다른 프로젝트(210830_WinMain.vcxproj)에서 공유하는 파일이 포함되어 있습니다.  이로 인해 잘못된 정리 및 다시 빌드 동작이 수행될 수 있습니다.
-  Kong.cpp
-  Player.cpp
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Player.cpp(299,37): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Player.cpp(299,29): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Player.cpp(300,30): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Player.cpp(300,23): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Player.cpp(301,34): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Player.cpp(301,27): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  StageScene.cpp
-  TitleScene.cpp
-  코드를 생성하고 있습니다...
+  MapColliderManager.cpp
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\MapColliderManager.cpp(106,10): warning C4244: '=': 'int'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\MapColliderManager.cpp(136,69): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\MapColliderManager.cpp(136,14): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\MapColliderManager.cpp(148,72): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\MapColliderManager.cpp(148,14): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\MapColliderManager.cpp(159,73): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\MapColliderManager.cpp(159,15): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\MapColliderManager.cpp(170,73): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\MapColliderManager.cpp(170,15): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   ANGVIK.vcxproj -> C:\Users\LEE\Desktop\ANGVIK\ANGVIK\x64\Debug\ANGVIK.exe

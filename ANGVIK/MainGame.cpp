@@ -10,6 +10,7 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->Init();
 	GameManager::GetSingleton()->Init();
 	MapColliderManager::GetSingleton()->Init();
+	CameraManager::GetSingleton()->Init();
 
 	SceneManager::GetSingleton()->ChangeScene("TitleScene");
 
@@ -31,6 +32,8 @@ void MainGame::Update()
 
 	MapColliderManager::GetSingleton()->Update();
 
+	CameraManager::GetSingleton()->Update();
+
 	InvalidateRect(g_hWnd, NULL, false);
 }
 
@@ -38,7 +41,8 @@ void MainGame::Render(HDC hdc)
 {
 	HDC hBackBufferDC = backBuffer->GetMemDC();
 
-	backBuffer->Render(hdc);
+	PatBlt(hBackBufferDC, 0, 0, WIN_SIZE_X, WIN_SIZE_Y, WHITENESS);
+
 	SceneManager::GetSingleton()->Render(hBackBufferDC);
 	
 
@@ -47,11 +51,12 @@ void MainGame::Render(HDC hdc)
 	TimerManager::GetSingleton()->Render(hBackBufferDC);
 
 	wsprintf(mxText, "Mouse x : %d", g_ptMouse.x);
-	TextOut(hdc, WIN_SIZE_X - 150, 50, mxText, strlen(mxText));
+	TextOut(hBackBufferDC, WIN_SIZE_X - 150, 50, mxText, strlen(mxText));
 	wsprintf(myText, "Mouse y : %d", g_ptMouse.y);
-	TextOut(hdc, WIN_SIZE_X - 150, 70, myText, strlen(myText));
+	TextOut(hBackBufferDC, WIN_SIZE_X - 150, 70, myText, strlen(myText));
 #endif
 
+	backBuffer->Render(hdc);
 }
 
 void MainGame::Release()
@@ -70,34 +75,34 @@ void MainGame::Release()
 }
 
 
-LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
-{
-	switch (iMessage)
-	{
-	case WM_KEYDOWN:
-		switch (wParam)
-		{
-		case VK_SPACE:
-			break;
-		case VK_UP:
-			break;
-		case VK_DOWN:
-			break;
-		case VK_LEFT:
-			break;
-		case VK_RIGHT:
-			break;
-		}
-		break;
-
-	case WM_LBUTTONDOWN:
-		break;
-	case WM_LBUTTONUP:
-		break;
-	case WM_RBUTTONDOWN:
-		break;
-	case WM_MOUSEMOVE:
-		break;
-	}
-	return DefWindowProc(hWnd, iMessage, wParam, lParam);
-}
+//LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
+//{
+//	switch (iMessage)
+//	{
+//	case WM_KEYDOWN:
+//		switch (wParam)
+//		{
+//		case VK_SPACE:
+//			break;
+//		case VK_UP:
+//			break;
+//		case VK_DOWN:
+//			break;
+//		case VK_LEFT:
+//			break;
+//		case VK_RIGHT:
+//			break;
+//		}
+//		break;
+//
+//	case WM_LBUTTONDOWN:
+//		break;
+//	case WM_LBUTTONUP:
+//		break;
+//	case WM_RBUTTONDOWN:
+//		break;
+//	case WM_MOUSEMOVE:
+//		break;
+//	}
+//	return DefWindowProc(hWnd, iMessage, wParam, lParam);
+//}

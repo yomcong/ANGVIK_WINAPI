@@ -49,26 +49,39 @@ void StageScene::Update()
 {
 	player->Update();
 	kong->Update();
-	
+
 	// µð¹ö±×¿ë ¸ÊÀÌµ¿
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD6))
 	{
-		mapPos.x -= (int)moveSpeed;
+		mapPos.x = 6709 / 2 - CameraManager::GetSingleton()->GetPos().x;	//(int)moveSpeed;
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD4))
 	{
-		if(mapPos.x < 6709/2)
-			mapPos.x += (int)moveSpeed;
+		if (mapPos.x > 6709 / 2)
+		{
+			mapPos.x = 6709 / 2;
+		}
+		else
+		{
+			mapPos.x = 6709 / 2 - CameraManager::GetSingleton()->GetPos().x;	//(int)moveSpeed;
+		}
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD2))
 	{
-		mapPos.y -= (int)moveSpeed;
+		mapPos.y = 1290 / 2 - CameraManager::GetSingleton()->GetPos().y; //(int)moveSpeed;
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD8))
 	{
-		if (mapPos.y < 1290 / 2)
-			mapPos.y += (int)moveSpeed;
+		if (mapPos.y > 1290 / 2)
+		{
+			mapPos.y = 1290 / 2;
+		}
+		else
+		{
+			mapPos.y = 1290 / 2 - CameraManager::GetSingleton()->GetPos().y; //(int)moveSpeed
+		}
 	}
+
 
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë ¿ë
 	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_NUMPAD7))
@@ -80,8 +93,8 @@ void StageScene::Update()
 
 void StageScene::Render(HDC hdc)
 {
-	stageBackgruond2->Render(hdc, mapPos.x, mapPos.y);	// ¹è°æ
-	stageBackgruond->Render(hdc, mapPos.x, mapPos.y);	// ¸Ê 
+	stageBackgruond2->Render(hdc, mapPos.x - CameraManager::GetSingleton()->GetPos().x, mapPos.y - CameraManager::GetSingleton()->GetPos().y);	// ¹è°æ
+	stageBackgruond->Render(hdc, mapPos.x - CameraManager::GetSingleton()->GetPos().x, mapPos.y - CameraManager::GetSingleton()->GetPos().y);	// ¸Ê 
 
 	player->Render(hdc);
 	kong->Render(hdc);
@@ -89,7 +102,7 @@ void StageScene::Render(HDC hdc)
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë
 	if (debugPixelMap)
 	{
-		stagePixelMap->Render(hdc, mapPos.x, mapPos.y);
+		stagePixelMap->Render(hdc, mapPos.x - CameraManager::GetSingleton()->GetPos().x, mapPos.y - CameraManager::GetSingleton()->GetPos().y);
 	}
 }
 

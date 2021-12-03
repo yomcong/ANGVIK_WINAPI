@@ -34,15 +34,15 @@ void MapColliderManager::Update()
 	}
 }
 
-float MapColliderManager::autoMove(float x, float y, RECT shape, float moveSpeed)
+bool MapColliderManager::autoMove(POINTFLOAT pos, RECT shape, float moveSpeed, int bodySize)
 {
-	float tempPosY = y + moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+	//float tempPosY = y + moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < bodySize/2; i++)
 	{
 		color = GetPixel(pixelMap->GetMemDC(),
-			(int)x + (int)pixelPos.x, shape.bottom + i + (int)pixelPos.y);
+			shape.left + i + bodySize/4, shape.bottom + 1)/*+ (int)pixelPos.y)*/;
 
 		r = GetRValue(color);
 		g = GetGValue(color);
@@ -51,13 +51,12 @@ float MapColliderManager::autoMove(float x, float y, RECT shape, float moveSpeed
 
 		if (false == (r == 255 && g == 0 && b == 255))
 		{
-			return y;
+			return false;
 		}
-		else
-		{
-			return tempPosY;
-		}
+		//cout << (y + (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime())) << "\n";
+		//cout << pos.y << "\n";
 	}
+	return true;
 
 }
 
@@ -71,12 +70,12 @@ POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed,
 		if (dir > 0)
 		{
 			color = GetPixel(pixelMap->GetMemDC(),
-				shape.right + 1 + (int)pixelPos.x, shape.bottom - i + (int)pixelPos.y);
+				shape.right + 1 /*+ (int)pixelPos.x*/, shape.bottom - i /*+ (int)pixelPos.y)*/);
 		}
 		else
 		{
 			color = GetPixel(pixelMap->GetMemDC(),
-				shape.left - 1 + (int)pixelPos.x, shape.bottom - i + (int)pixelPos.y);
+				shape.left - 1 /*+ (int)pixelPos.x*/, shape.bottom - i /*+ (int)pixelPos.y)*/);
 		}
 
 		r = GetRValue(color);
@@ -95,25 +94,27 @@ POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed,
 		{
 			if (false == (r == 255 && g == 0 && b == 255))
 			{
+				pos.x = 0;
+				pos.y = 0;
 				return pos;
 			}
 		}
 
 	}
 
-	pos.x += (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()) * dir;
-	pos.y -= height;
+	pos.x = (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()) * dir;
+	pos.y = -height;
 	return pos;
 }
 
 bool MapColliderManager::checkCollision(RECT shape)
 {
 	// 포문으로 검사하는방법 생각하기
+	// 렉트 사각형 범위
+	// 또는 움직이는 방향 레프트 또는 라이트 ,바텀 에서부터 탑
 
 	/*for (int i = 0; i < 4; i++)
 	{
-		//0 = laft, top , 1 = left, bottom, 2 = right, top, 3= right, bottom
-
 		color = GetPixel(pixelMap->GetMemDC(),
 			shape.left, shape.bottom);
 
@@ -132,7 +133,7 @@ bool MapColliderManager::checkCollision(RECT shape)
 		}
 	}*/
 	color = GetPixel(pixelMap->GetMemDC(),
-		shape.left, shape.top);
+		shape.left - CameraManager::GetSingleton()->GetPos().x, shape.top - CameraManager::GetSingleton()->GetPos().y);
 
 	r = GetRValue(color);
 	g = GetGValue(color);
@@ -144,7 +145,7 @@ bool MapColliderManager::checkCollision(RECT shape)
 	}
 
 	color = GetPixel(pixelMap->GetMemDC(),
-		shape.left, shape.bottom);
+		shape.left - CameraManager::GetSingleton()->GetPos().x, shape.bottom - CameraManager::GetSingleton()->GetPos().y);
 	r = GetRValue(color);
 	g = GetGValue(color);
 	b = GetBValue(color);
@@ -155,7 +156,7 @@ bool MapColliderManager::checkCollision(RECT shape)
 	}
 
 	color = GetPixel(pixelMap->GetMemDC(),
-		shape.right, shape.bottom);
+		shape.right - CameraManager::GetSingleton()->GetPos().x, shape.bottom - CameraManager::GetSingleton()->GetPos().y);
 	r = GetRValue(color);
 	g = GetGValue(color);
 	b = GetBValue(color);
@@ -166,7 +167,7 @@ bool MapColliderManager::checkCollision(RECT shape)
 	}
 
 	color = GetPixel(pixelMap->GetMemDC(),
-		shape.right, shape.bottom);
+		shape.right - CameraManager::GetSingleton()->GetPos().x, shape.bottom - CameraManager::GetSingleton()->GetPos().y);
 	r = GetRValue(color);
 	g = GetGValue(color);
 	b = GetBValue(color);

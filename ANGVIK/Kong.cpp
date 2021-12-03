@@ -22,7 +22,7 @@ HRESULT Kong::Init(Player* target)
 	this->target = target;
 
 	// 임시 테스트
-	pos.x = 350;
+	pos.x = WIN_SIZE_X - 100;
 	pos.y = 350;
 
 	return S_OK;
@@ -58,18 +58,27 @@ void Kong::Update()
 	// 디버깅용 아모발싸
 	if (KeyManager::GetSingleton()->IsOnceKeyDown('G'))
 	{
-		float targetAngle = atan2f(-(target->GetPos().y - pos.y),
-			(target->GetPos().x - pos.x));
+		float targetAngle = atan2f(-(target->GetPos().y - (pos.y - CameraManager::GetSingleton()->GetPos().y)),
+			(target->GetPos().x - (pos.x - CameraManager::GetSingleton()->GetPos().x)));
 
-		int dir = (int)target->GetPos().x - (int)pos.x;
+		int dir = (int)target->GetPos().x > (int)pos.x - CameraManager::GetSingleton()->GetPos().x;
 
+		cout << dir << "\n";
 		ammoManager->Fire(pos, targetAngle, dir);
 	}
+
+	pos.x = WIN_SIZE_X - 100;	// - CameraManager::GetSingleton()->GetPos().x;
+	pos.y = 350;				// - CameraManager::GetSingleton()->GetPos().y;
+
+	
+
+	//cout << pos.x << "\n";
+	
 }
 
 void Kong::Render(HDC hdc)
 {
-	basicMotion->Render(hdc, 350, 350, basicFrame.x, basicFrame.y);
+	basicMotion->Render(hdc, (int)pos.x - CameraManager::GetSingleton()->GetPos().x, (int)pos.y - CameraManager::GetSingleton()->GetPos().y, basicFrame.x, basicFrame.y);
 
 	attackMotion->Render(hdc, 375, 350, atackFrame.x, atackFrame.y);
 

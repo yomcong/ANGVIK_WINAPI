@@ -47,8 +47,11 @@ void KongAmmo::Update()
 			frameCount = 0;
 		}
 
-		pos.x += cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-		pos.y -= sin(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+		pos.x += cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();// +CameraManager::GetSingleton()->GetPos().x;
+		pos.y -= sin(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();// +CameraManager::GetSingleton()->GetPos().y;
+
+		//cout << "포스, (코싸인+무브스피드+델타타임) - 카메라 : " << pos.x << ", " << cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime() << ", " << CameraManager::GetSingleton()->GetPos().x << "\n";
+		//cout << "콩 아모 포스 : " << pos.x << ", " << pos.y << "\n";
 
 		if (MapColliderManager::GetSingleton()->checkCollision(shape))
 		{
@@ -71,11 +74,11 @@ void KongAmmo::Render(HDC hdc)
 	{
 		if (direction > 0)
 		{
-			ammoRight->Render(hdc, (int)pos.x, (int)pos.y, ammoFrame.x, ammoFrame.y);
+			ammoRight->Render(hdc, (int)pos.x /*- CameraManager::GetSingleton()->GetPos().x*/, (int)pos.y, ammoFrame.x, ammoFrame.y);
 		}
 		else
 		{
-			ammoLeft->Render(hdc, (int)pos.x, (int)pos.y, ammoFrame.x, ammoFrame.y);
+			ammoLeft->Render(hdc, (int)pos.x/* - CameraManager::GetSingleton()->GetPos().x*/, (int)pos.y, ammoFrame.x, ammoFrame.y);
 
 		}
 

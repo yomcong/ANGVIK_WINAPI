@@ -9,6 +9,7 @@ class Imgae;
 class Player : public GameObject
 {
 public:
+	//static enum class Action { Idle, LeftMove, RightMove, Jump, SitDown, Attack, Hit };
 	virtual ~Player() = default;
 
 	virtual HRESULT Init();
@@ -27,6 +28,9 @@ private:
 	POINT backArmFrame = { 13, 0 };
 	POINT bodySize = { 0, 0 };
 
+	// 테스트 좌표
+	POINTFLOAT renderPos = { 0, 0 };
+
 	// 팔 흔들기 위한 변수
 	bool b_frontArmMove = true;
 	bool b_backArmMove = true;
@@ -34,9 +38,6 @@ private:
 	// 프레임 관리
 	float frameCount = 0.0f;
 
-	// 캐릭터 사이즈
-	/*int bodySize_X = 0;
-	int bodySize_Y = 0;*/
 
 	// 캐릭터 상태관리
 	PlayerAction action = PlayerAction::NORMAL;

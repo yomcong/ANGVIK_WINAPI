@@ -41,6 +41,7 @@ using namespace std;
 #include "SceneManager.h"
 #include "GameManager.h"
 #include "MapColliderManager.h"
+#include "CameraManager.h"
 
 extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;

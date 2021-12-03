@@ -27,7 +27,7 @@ protected:
 	Image* img = nullptr;
 
 public:
-	inline void SetPos(POINTFLOAT pos) { this->pos = pos; }
+	inline void SetPos(POINTFLOAT pos) { this->pos = pos;/* POINTFLOAT{pos.x + CameraManager::GetSingleton()->GetPos().x, pos.y + CameraManager::GetSingleton()->GetPos().y};*/ }
 	inline void SetMoveSpeed(float speed) { this->moveSpeed = speed; }
 
 	inline const POINTFLOAT GetPos() { return this->pos; }

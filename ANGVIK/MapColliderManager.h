@@ -11,7 +11,7 @@ public:
 	HRESULT Init();
 	void Update();
 
-	float autoMove(float x, float y, RECT shape, float moveSpeed);
+	bool autoMove(POINTFLOAT pos, RECT shape, float moveSpeed, int bodySize);
 	POINTFLOAT Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir, int bodySize);
 	bool checkCollision(RECT shape);
 

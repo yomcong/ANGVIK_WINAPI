@@ -65,10 +65,8 @@ int APIENTRY WinMain(_In_ HINSTANCE _hInstance, _In_opt_ HINSTANCE _hPrevInstanc
 	// 메인게임 초기화
 	g_mainGame.Init();
 
-
 	// 윈도우 출력
 	ShowWindow(g_hWnd, nCmdShow);
-
 
 	// 메시지 큐에 있는 메시지 처리
 	MSG message;
@@ -124,5 +122,5 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		return 0;
 	}
 
-	return g_mainGame.MainProc(hWnd, iMessage, wParam, lParam);
+	return DefWindowProc(hWnd, iMessage, wParam, lParam);// g_mainGame.MainProc(hWnd, iMessage, wParam, lParam);
 }
