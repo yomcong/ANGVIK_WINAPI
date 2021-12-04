@@ -10,10 +10,11 @@ class Kong : public GameObject
 public:
 	virtual ~Kong() = default;
 
-	virtual HRESULT Init(Player* target);
+	virtual HRESULT Init(Player* target, POINTFLOAT pos);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
+
 
 private:
 	Image* attackMotion = nullptr;
@@ -28,6 +29,12 @@ private:
 	POINTFLOAT renderPos = { 0, 0 };
 	float frameCount = 0.0f;
 
+	RECT DBrect = {};
+	RECT testRect = {};
+	bool DBKongRect = false;
+	bool DBRangeRect = false;
+
+	float testElpsedCount = 0.0f;
 	
 
 };

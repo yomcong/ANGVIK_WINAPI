@@ -47,8 +47,13 @@ void KongAmmo::Update()
 			frameCount = 0;
 		}
 
-		pos.x += cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();// +CameraManager::GetSingleton()->GetPos().x;
-		pos.y -= sin(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();// +CameraManager::GetSingleton()->GetPos().y;
+		pos.x += cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+		pos.y -= sin(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+
+		shape.left = (int)pos.x - bodySize;
+		shape.top = (int)pos.y - bodySize;
+		shape.right = (int)pos.x + bodySize / 2;
+		shape.bottom = (int)pos.y + bodySize / 2;
 
 		if (MapColliderManager::GetSingleton()->checkCollision(shape, direction, bodySize))
 		{
@@ -57,17 +62,11 @@ void KongAmmo::Update()
 		renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
 		renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
 
-		shape.left = (int)pos.x - bodySize;
-		shape.top = (int)pos.y - bodySize;
-		shape.right = (int)pos.x + bodySize / 2;
-		shape.bottom = (int)pos.y + bodySize / 2;
-
 		if (renderPos.x <0 || renderPos.x >WIN_SIZE_X ||
 			renderPos.y <0 || renderPos.y > WIN_SIZE_Y)
 		{
 			b_IsAlive = false;
 		}
-
 	}
 	// µð¹ö±ë
 	if (KeyManager().GetSingleton()->IsStayKeyDown(VK_NUMPAD1))
@@ -103,6 +102,7 @@ void KongAmmo::IsFire(POINTFLOAT pos, float angle, int dir)
 	b_IsAlive = true;
 	this->moveAngle = angle;
 	this->direction = dir;
-	this->pos = pos;
+	this->pos.x = pos.x + CameraManager::GetSingleton()->GetPos().x;
+	this->pos.y = pos.y + CameraManager::GetSingleton()->GetPos().y;
 	renderPos = pos;
 }

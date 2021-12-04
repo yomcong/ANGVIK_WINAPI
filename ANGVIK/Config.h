@@ -47,7 +47,7 @@ extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;
 extern POINT g_ptMouse;
 
-#define RANDOM(min, max) (rand() % ((max) - (min) + 1) + (min))
+#define RANDOM(minNum, maxNum) (rand() % (maxNum - minNum+1)) + minNum
 
 /*
 

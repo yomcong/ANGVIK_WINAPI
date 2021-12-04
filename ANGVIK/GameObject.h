@@ -35,7 +35,7 @@ public:
 	inline const int GetBodySize() { return this->bodySize; }
 
 
-	//inline const RECT* GetShapeAddress() { return &this->shape; }
+	inline const RECT* GetShapeAddress() { return &this->shape; }
 
 	GameObject() = default;
 	virtual ~GameObject() = default;

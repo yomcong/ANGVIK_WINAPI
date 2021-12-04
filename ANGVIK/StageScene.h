@@ -16,6 +16,7 @@
 
 class Player;
 class Kong;
+class MonsterManager;
 class Image;
 class StageScene : public GameEntity	
 {
@@ -36,7 +37,8 @@ private:
 	POINT mapPos = {};
 
 	Player* player = nullptr;
-	Kong* kong = nullptr;
+	MonsterManager* monsterManager = nullptr;
+	//Kong* kong = nullptr;
 
 	// ÇÈ¼¿ Ãæµ¹
 	//COLORREF color = {};

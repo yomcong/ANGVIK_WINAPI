@@ -4,6 +4,7 @@
 #include "CommonFunction.h"
 #include "Player.h"
 #include "Kong.h"
+#include "MonsterManager.h"
 
 #define stage1Width 6709
 #define stage1Height 1290
@@ -38,9 +39,10 @@ HRESULT StageScene::Init()
 	player = new Player;
 	player->Init();
 
-	// ¸ó½ºÅÍ Äá
-	kong = new Kong;
-	kong->Init(player);
+	// ¸ó½ºÅÍ ¸Å´ÏÀú
+	monsterManager = new MonsterManager;
+	monsterManager->Init(player);
+
 
 	return S_OK;
 }
@@ -48,7 +50,7 @@ HRESULT StageScene::Init()
 void StageScene::Update()
 {
 	player->Update();
-	kong->Update();
+	monsterManager->Update();
 
 	// µð¹ö±×¿ë ¸ÊÀÌµ¿
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD6))
@@ -97,7 +99,9 @@ void StageScene::Render(HDC hdc)
 	stageBackgruond->Render(hdc, mapPos.x - CameraManager::GetSingleton()->GetPos().x, mapPos.y - CameraManager::GetSingleton()->GetPos().y);	// ¸Ê 
 
 	player->Render(hdc);
-	kong->Render(hdc);
+	monsterManager->Render(hdc);
+
+	//kong->Render(hdc);
 
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë
 	if (debugPixelMap)
@@ -109,6 +113,7 @@ void StageScene::Render(HDC hdc)
 void StageScene::Release()
 {
 	SAFE_RELEASE(player);
-	SAFE_RELEASE(kong);
+	SAFE_RELEASE(monsterManager);
+
 
 }

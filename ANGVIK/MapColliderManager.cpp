@@ -109,9 +109,6 @@ POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed,
 
 bool MapColliderManager::checkCollision(RECT shape, int dir, int bodySize)
 {
-	// 포문으로 검사하는방법 생각하기
-	// 렉트 사각형 범위
-	// 또는 움직이는 방향 레프트 또는 라이트 ,바텀 에서부터 탑
 	if (dir > 0)
 	{
 		for (int i = 0; i < bodySize; i++)

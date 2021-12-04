@@ -8,7 +8,23 @@
 // 렉트 세분화 후 발 부분으로 픽셀충돌다시
 
 // 캐릭터가 왼쪽을볼떄는 랜더 순서 바꿔주기 ( 왼팔이 먼저보이게) 및 이미지 가로회전
+
+// 카메라가 한쪽의 끝에 있을때 예외조건해주기
+// -> 델타타임으로 캐릭터를 이동시키면 소수점이 달라져서 동기화 방법찾기
+
+// 델타타임 고정시키기....
+
+// 보정으로 y축이 감소되면 카메라가 화면끝에있어도 올라감
+
 #define JumpPower 90.0f
+
+#define StartPosX 120.0f
+#define StartPosY 425.0f
+#define StartPointX 300.0f
+#define StartPointY 450.0f
+
+
+
 
 HRESULT Player::Init()
 {
@@ -80,12 +96,12 @@ HRESULT Player::Init()
 		return E_FAIL;
 	}
 
-	pos.x = 120.0f;
-	pos.y = 425.0f;
+	pos.x = StartPosX;
+	pos.y = StartPosY;
 
 	renderPos = pos;
 
-	moveSpeed = 200.0f;
+	moveSpeed = 175.0f;
 
 	bodySize.x = 20;
 	bodySize.y = 50;
@@ -106,7 +122,14 @@ void Player::Update()
 	{
 		if (MapColliderManager::GetSingleton()->autoMove(renderPos, shape, moveSpeed, bodySize.x))
 		{
-			CameraManager::GetSingleton()->SetPosY(3);
+			if (renderPos.y < StartPointY)
+			{
+				renderPos.y += 3.0f;
+			}
+			else
+			{
+				CameraManager::GetSingleton()->SetPosY(3);
+			}
 		}
 		else
 		{
@@ -120,8 +143,17 @@ void Player::Update()
 	// 점프 상태
 	else
 	{
-		jumpPower -= 3;
-		CameraManager::GetSingleton()->SetPosY(-3);
+		if (CameraManager::GetSingleton()->GetPos().y <= 0)
+		{
+			renderPos.y -= 3.0f;
+		}
+		else
+		{
+			CameraManager::GetSingleton()->SetPosY(-3);
+		}
+
+		jumpPower -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+
 		if (jumpPower <= 0)
 		{
 			state = State::Fall;
@@ -132,8 +164,15 @@ void Player::Update()
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT))
 	{
 		// 이동(픽셀충돌검사)
-		
-		CameraManager::GetSingleton()->SetPos((MapColliderManager::GetSingleton()->Move(renderPos, shape, moveSpeed, -1, bodySize.y)));
+		if (CameraManager::GetSingleton()->GetPos().x <= 0)
+		{
+			renderPos.x -= 1.5f; //* TimerManager::GetSingleton()->GetDeltaTime();
+		}
+		else
+		{
+			CameraManager::GetSingleton()->SetPos((MapColliderManager::GetSingleton()->
+				Move(renderPos, shape, moveSpeed, -1, bodySize.y)));
+		}
 
 		// 상태 변경
 		action = Action::LEFTMOVE;
@@ -144,7 +183,15 @@ void Player::Update()
 		// 이동(픽셀충돌검사)
 		//pos = MapColliderManager::GetSingleton()->Move(pos, shape, moveSpeed, 1, bodySize.y);
 
-		CameraManager::GetSingleton()->SetPos(MapColliderManager::GetSingleton()->Move(renderPos, shape, moveSpeed, 1, bodySize.y));
+		if (renderPos.x < StartPointX)
+		{
+			renderPos.x += 1.5f; //* TimerManager::GetSingleton()->GetDeltaTime();
+		}
+		else
+		{
+			CameraManager::GetSingleton()->SetPos(MapColliderManager::GetSingleton()->Move(renderPos, shape, moveSpeed, 1, bodySize.y));
+		}
+
 
 		// 상태 변경
 		action = Action::RIGHTMOVE;
@@ -223,13 +270,12 @@ void Player::Update()
 	}
 	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_UP))
 	{
-		if (false == (state == State::JUMP) && 
+		if (false == (state == State::JUMP) &&
 			false == (state == State::Fall))
 		{
 			state = State::JUMP;
 			jumpPower = JumpPower;
 		}
-		//renderPos.y -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
@@ -310,7 +356,7 @@ void Player::Update()
 			--DBbodyPos.y;
 #endif
 	// 디버그용 캐릭터 랙트표시
-	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_NUMPAD9))
+	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD9))
 	{
 		DBplayerRect == false ? DBplayerRect = true : DBplayerRect = false;
 	}
