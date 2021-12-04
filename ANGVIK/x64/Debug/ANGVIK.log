@@ -1,19 +1,3 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 중간 디렉터리(x64\Debug\)에 다른 프로젝트(210830_WinMain.vcxproj)에서 공유하는 파일이 포함되어 있습니다.  이로 인해 잘못된 정리 및 다시 빌드 동작이 수행될 수 있습니다.
-  Kong.cpp
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(28,21): warning C4244: '=': 'FLOAT'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(29,20): warning C4244: '=': 'FLOAT'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(30,22): warning C4244: '=': 'FLOAT'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(31,23): warning C4244: '=': 'FLOAT'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(109,21): warning C4244: '=': 'FLOAT'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(110,20): warning C4244: '=': 'FLOAT'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(111,22): warning C4244: '=': 'FLOAT'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(112,23): warning C4244: '=': 'FLOAT'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(114,22): warning C4244: '=': 'FLOAT'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(115,21): warning C4244: '=': 'FLOAT'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(116,23): warning C4244: '=': 'FLOAT'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(117,24): warning C4244: '=': 'FLOAT'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(127,18): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(126,17): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(125,15): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Kong.cpp(124,29): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Monkey.cpp
   ANGVIK.vcxproj -> C:\Users\LEE\Desktop\ANGVIK\ANGVIK\x64\Debug\ANGVIK.exe

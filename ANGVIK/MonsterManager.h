@@ -4,6 +4,7 @@
 
 class Player;
 class Kong;
+class Monkey;
 class MonsterManager : public GameEntity
 {
 public:
@@ -15,13 +16,16 @@ public:
 	virtual void Release();
 
 	void KongSpawn();
+	void MonkeySpawn();
 
 private:
 	int kongMaxCount = 3;
+	int MonkeyMaxCount = 3;
 
-
-	vector<Kong*> vecKong = {};
+	vector<Kong*> vecKongs = {};
+	vector<Monkey*> vecMonkeys = {};
 	Player* target = nullptr;
+
 
 };
 

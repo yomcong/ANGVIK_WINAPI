@@ -24,11 +24,14 @@ HRESULT Kong::Init(Player* target, POINTFLOAT pos)
 	this->target = target;
 	this->pos = pos;
 	
-	bodySize = 35;
-	shape.left = pos.x - bodySize / 2;
-	shape.top = pos.y - bodySize / 2;
-	shape.right = pos.x + bodySize / 2;
-	shape.bottom = pos.y + bodySize / 2;
+	bodySize.x = 35;
+	bodySize.y = 35;
+
+	shape.left = (int)pos.x - bodySize.x / 2;
+	shape.top = (int)pos.y - bodySize.y / 2;
+	shape.right = (int)pos.x + bodySize.x / 2;
+	shape.bottom = (int)pos.y + bodySize.y / 2;
+
 	renderPos = pos;
 
 	return S_OK;
@@ -76,7 +79,7 @@ void Kong::Update()
 	}
 
 
-	if (IntersectRect(&testRect, target->GetShapeAddress(), &DBrect))
+	if (IntersectRect(&testRect, target->GetShapeAddress(), &DBRenderShape))
 	{
 		testElpsedCount += TimerManager::GetSingleton()->GetDeltaTime();
 
@@ -99,32 +102,32 @@ void Kong::Update()
 	//cout << pos.x << "\n";
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD9))
 	{
-		DBKongRect == false ? DBKongRect = true : DBKongRect = false;
+		DBrect == false ? DBrect = true : DBrect = false;
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD1))
 	{
 		DBRangeRect == false ? DBRangeRect = true : DBRangeRect = false;
 	}
 	
-	shape.left = pos.x - bodySize / 2;
-	shape.top = pos.y - bodySize / 2;
-	shape.right = pos.x + bodySize / 2;
-	shape.bottom = pos.y + bodySize / 2;
+	shape.left = (int)pos.x - bodySize.x / 2;
+	shape.top = (int)pos.y - bodySize.y / 2;
+	shape.right = (int)pos.x + bodySize.x / 2;
+	shape.bottom = (int)pos.y + bodySize.y / 2;
 
-	DBrect.left = pos.x - bodySize*3;
-	DBrect.top = pos.y - bodySize*3;
-	DBrect.right = pos.x + bodySize*3;
-	DBrect.bottom = pos.y + bodySize*3;
+	DBRenderShape.left = (int)pos.x - bodySize.x*3;
+	DBRenderShape.top = (int)pos.y - bodySize.y*3;
+	DBRenderShape.right = (int)pos.x + bodySize.x*3;
+	DBRenderShape.bottom = (int)pos.y + bodySize.y*3;
 	
 }
 
 void Kong::Render(HDC hdc)
 {
 	if(DBRangeRect)
-		Rectangle(hdc, DBrect.left- CameraManager::GetSingleton()->GetPos().x,
-			DBrect.top - CameraManager::GetSingleton()->GetPos().y,
-			DBrect.right - CameraManager::GetSingleton()->GetPos().x,
-			DBrect.bottom - CameraManager::GetSingleton()->GetPos().y);
+		Rectangle(hdc, DBRenderShape.left- (int)CameraManager::GetSingleton()->GetPos().x,
+			DBRenderShape.top - (int)CameraManager::GetSingleton()->GetPos().y,
+			DBRenderShape.right - (int)CameraManager::GetSingleton()->GetPos().x,
+			DBRenderShape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
 
 	basicMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
 
@@ -132,8 +135,11 @@ void Kong::Render(HDC hdc)
 
 	ammoManager->Render(hdc);
 
-	if (DBKongRect)
-		Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+	if (DBrect)
+		Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x,
+			shape.top - (int)CameraManager::GetSingleton()->GetPos().y,
+			shape.right - (int)CameraManager::GetSingleton()->GetPos().x,
+			shape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
 
 	
 }

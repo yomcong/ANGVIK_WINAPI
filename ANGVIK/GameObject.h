@@ -19,12 +19,26 @@ class Image;
 class GameObject : public GameEntity
 {
 protected:
+	// 좌표
 	POINTFLOAT pos = {};
+	// 렌더용 좌표
+	POINTFLOAT renderPos = {};
+	// 충돌체크 렉트
 	RECT shape = {};
+	// 렉트 사이즈
+	POINT bodySize = {};
+	// 이동속도
 	float moveSpeed = 0.0f;
-	int bodySize = 0;
 
-	Image* img = nullptr;
+	// 애니메이션 프레임
+	POINT framePos = {};
+	// 애니메이션 프레임관리 카운트
+	float frameCount = 0.0f;
+
+	// 디버그용 렉트
+	bool DBrect = false;
+	RECT DBRenderShape = {};
+
 
 public:
 	inline void SetPos(POINTFLOAT pos) { this->pos = pos;/* POINTFLOAT{pos.x + CameraManager::GetSingleton()->GetPos().x, pos.y + CameraManager::GetSingleton()->GetPos().y};*/ }
@@ -32,8 +46,10 @@ public:
 
 	inline const POINTFLOAT GetPos() { return this->pos; }
 	inline const RECT GetShape() { return this->shape; }
-	inline const int GetBodySize() { return this->bodySize; }
+	inline const int GetBodySizeX() { return this->bodySize.x; }
+	inline const int GetBodySizeY() { return this->bodySize.y; }
 
+	inline void SetDBrect(bool DBrect) { this->DBrect = DBrect; }
 
 	inline const RECT* GetShapeAddress() { return &this->shape; }
 

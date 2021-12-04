@@ -53,36 +53,36 @@ void StageScene::Update()
 	monsterManager->Update();
 
 	// µð¹ö±×¿ë ¸ÊÀÌµ¿
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD6))
-	{
-		mapPos.x = 6709 / 2 - CameraManager::GetSingleton()->GetPos().x;	//(int)moveSpeed;
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD4))
-	{
-		if (mapPos.x > 6709 / 2)
-		{
-			mapPos.x = 6709 / 2;
-		}
-		else
-		{
-			mapPos.x = 6709 / 2 - CameraManager::GetSingleton()->GetPos().x;	//(int)moveSpeed;
-		}
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD2))
-	{
-		mapPos.y = 1290 / 2 - CameraManager::GetSingleton()->GetPos().y; //(int)moveSpeed;
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD8))
-	{
-		if (mapPos.y > 1290 / 2)
-		{
-			mapPos.y = 1290 / 2;
-		}
-		else
-		{
-			mapPos.y = 1290 / 2 - CameraManager::GetSingleton()->GetPos().y; //(int)moveSpeed
-		}
-	}
+	//if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD6))
+	//{
+	//	mapPos.x = 6709 / 2 - CameraManager::GetSingleton()->GetPos().x;	//(int)moveSpeed;
+	//}
+	//if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD4))
+	//{
+	//	if (mapPos.x > 6709 / 2)
+	//	{
+	//		mapPos.x = 6709 / 2;
+	//	}
+	//	else
+	//	{
+	//		mapPos.x = 6709 / 2 - CameraManager::GetSingleton()->GetPos().x;	//(int)moveSpeed;
+	//	}
+	//}
+	//if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD2))
+	//{
+	//	mapPos.y = 1290 / 2 - CameraManager::GetSingleton()->GetPos().y; //(int)moveSpeed;
+	//}
+	//if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD8))
+	//{
+	//	if (mapPos.y > 1290 / 2)
+	//	{
+	//		mapPos.y = 1290 / 2;
+	//	}
+	//	else
+	//	{
+	//		mapPos.y = 1290 / 2 - CameraManager::GetSingleton()->GetPos().y; //(int)moveSpeed
+	//	}
+	//}
 
 
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë ¿ë
@@ -95,8 +95,10 @@ void StageScene::Update()
 
 void StageScene::Render(HDC hdc)
 {
-	stageBackgruond2->Render(hdc, mapPos.x - CameraManager::GetSingleton()->GetPos().x, mapPos.y - CameraManager::GetSingleton()->GetPos().y);	// ¹è°æ
-	stageBackgruond->Render(hdc, mapPos.x - CameraManager::GetSingleton()->GetPos().x, mapPos.y - CameraManager::GetSingleton()->GetPos().y);	// ¸Ê 
+	stageBackgruond2->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
+		mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);	// ¹è°æ
+	stageBackgruond->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
+		mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);	// ¸Ê 
 
 	player->Render(hdc);
 	monsterManager->Render(hdc);
@@ -106,7 +108,8 @@ void StageScene::Render(HDC hdc)
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë
 	if (debugPixelMap)
 	{
-		stagePixelMap->Render(hdc, mapPos.x - CameraManager::GetSingleton()->GetPos().x, mapPos.y - CameraManager::GetSingleton()->GetPos().y);
+		stagePixelMap->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x, 
+			mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);
 	}
 }
 

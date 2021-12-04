@@ -46,6 +46,9 @@
     <Filter Include="MainGame\Monster\Kong">
       <UniqueIdentifier>{422222e5-13a3-4b39-bb88-48b23d0a13f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Monster\Monkey">
+      <UniqueIdentifier>{c28d8163-04d6-4bf6-bb38-9c6609ead7f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -122,6 +125,9 @@
     </ClCompile>
     <ClCompile Include="KongAmmoManager.cpp">
       <Filter>MainGame\Monster\Kong</Filter>
+    </ClCompile>
+    <ClCompile Include="Monkey.cpp">
+      <Filter>MainGame\Monster\Monkey</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="KongAmmoManager.h">
       <Filter>MainGame\Monster\Kong</Filter>
+    </ClInclude>
+    <ClInclude Include="Monkey.h">
+      <Filter>MainGame\Monster\Monkey</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

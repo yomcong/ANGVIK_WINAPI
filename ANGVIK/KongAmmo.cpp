@@ -16,12 +16,14 @@ HRESULT KongAmmo::Init()
 
 	moveSpeed = 100.0f;
 
-	bodySize = 10;
+	bodySize.x = 8;
+	bodySize.y = 8;
 
-	shape.left = (int)pos.x - bodySize;
-	shape.top = (int)pos.y - bodySize;
-	shape.right = (int)pos.x + bodySize / 2;
-	shape.bottom = (int)pos.y + bodySize / 2;
+
+	shape.left = (int)pos.x - bodySize.x;
+	shape.top = (int)pos.y - bodySize.y;
+	shape.right = (int)pos.x + bodySize.x;
+	shape.bottom = (int)pos.y + bodySize.y;
 
 
 	return S_OK;
@@ -50,10 +52,10 @@ void KongAmmo::Update()
 		pos.x += cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 		pos.y -= sin(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 
-		shape.left = (int)pos.x - bodySize;
-		shape.top = (int)pos.y - bodySize;
-		shape.right = (int)pos.x + bodySize / 2;
-		shape.bottom = (int)pos.y + bodySize / 2;
+		shape.left = (int)pos.x - bodySize.x;
+		shape.top = (int)pos.y - bodySize.y;
+		shape.right = (int)pos.x + bodySize.x ;
+		shape.bottom = (int)pos.y + bodySize.y;
 
 		if (MapColliderManager::GetSingleton()->checkCollision(shape, direction, bodySize))
 		{
@@ -89,7 +91,10 @@ void KongAmmo::Render(HDC hdc)
 
 		// µð¹ö±ë
 		if (DBrect)
-			Rectangle(hdc, shape.left, shape.top, shape.right, shape.bottom);
+			Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x
+				, shape.top - (int)CameraManager::GetSingleton()->GetPos().y
+				, shape.right - (int)CameraManager::GetSingleton()->GetPos().x
+				, shape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
 	}
 }
 

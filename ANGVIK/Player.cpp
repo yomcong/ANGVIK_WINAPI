@@ -358,14 +358,14 @@ void Player::Update()
 	// µð¹ö±×¿ë Ä³¸¯ÅÍ ·¢Æ®Ç¥½Ã
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD9))
 	{
-		DBplayerRect == false ? DBplayerRect = true : DBplayerRect = false;
+		DBrect == false ? DBrect = true : DBrect = false;
 	}
 
 }
 
 void Player::Render(HDC hdc)
 {
-	//µð¹ö±×
+	//--µð¹ö±×--
 	DBbackArm->Render(hdc, 100, 100, DBarmPos.x, DBarmPos.y);
 	DBfrontArm->Render(hdc, 200, 100, DBarmPos.x, DBarmPos.y);
 	DBbody->Render(hdc, 300, 100, DBbodyPos.x, DBbodyPos.y);
@@ -376,24 +376,23 @@ void Player::Render(HDC hdc)
 
 	DBgoldBody->Render(hdc, 350, 100, DBbodyPos.x, DBbodyPos.y);
 	DBgoldFoot->Render(hdc, 350, 100, DBbodyPos.x, DBbodyPos.y);
-	//µð¹ö±×
+	// -----
 
 
 	Rectangle(hdc, 320, 90, 340, 115);	// ¸öÅë ·ºÆ®
 	Rectangle(hdc, 325, 115, 335, 125);	// ½Å¹ß ·ºÆ®
 
 
-	//backArm->Render(hdc, (int)pos.x + 5 - CameraManager::GetSingleton()->GetPos().x, (int)pos.y - CameraManager::GetSingleton()->GetPos().y, backArmFrame.x, backArmFrame.y);	// ¿ÞÆÈ
-	//body->Render(hdc, (int)pos.x - CameraManager::GetSingleton()->GetPos().x, (int)pos.y - CameraManager::GetSingleton()->GetPos().y, bodyFrame.x, bodyFrame.y);				// ¸ö
-	//frontArm->Render(hdc, (int)pos.x - CameraManager::GetSingleton()->GetPos().x, (int)pos.y - CameraManager::GetSingleton()->GetPos().y, frontArmFrame.x, frontArmFrame.y);	// ¿À¸¥ÆÈ
-
 	backArm->Render(hdc, (int)renderPos.x, (int)renderPos.y, backArmFrame.x, backArmFrame.y);	// ¿ÞÆÈ
 	body->Render(hdc, (int)renderPos.x, (int)renderPos.y, bodyFrame.x, bodyFrame.y);			// ¸ö
 	head->Render(hdc, (int)renderPos.x + 2, (int)renderPos.y - 20);
 	frontArm->Render(hdc, (int)renderPos.x, (int)renderPos.y, frontArmFrame.x, frontArmFrame.y);// ¿À¸¥ÆÈ
 
-	if (DBplayerRect)
-		Rectangle(hdc, shape.left - CameraManager::GetSingleton()->GetPos().x, shape.top - CameraManager::GetSingleton()->GetPos().y, shape.right - CameraManager::GetSingleton()->GetPos().x, shape.bottom - CameraManager::GetSingleton()->GetPos().y);
+	if (DBrect)
+		Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x,
+			shape.top - (int)CameraManager::GetSingleton()->GetPos().y,
+			shape.right - (int)CameraManager::GetSingleton()->GetPos().x,
+			shape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
 
 }
 

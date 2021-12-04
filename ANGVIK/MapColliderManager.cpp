@@ -107,11 +107,11 @@ POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed,
 	return pos;
 }
 
-bool MapColliderManager::checkCollision(RECT shape, int dir, int bodySize)
+bool MapColliderManager::checkCollision(RECT shape, int dir, POINT bodySize)
 {
 	if (dir > 0)
 	{
-		for (int i = 0; i < bodySize; i++)
+		for (int i = 0; i < bodySize.y; i++)
 		{
 			color = GetPixel(pixelMap->GetMemDC(),
 				shape.right, shape.bottom - i);
@@ -129,7 +129,7 @@ bool MapColliderManager::checkCollision(RECT shape, int dir, int bodySize)
 	}
 	else
 	{
-		for (int i = 0; i < bodySize; i++)
+		for (int i = 0; i < bodySize.y; i++)
 		{
 			color = GetPixel(pixelMap->GetMemDC(),
 				shape.left, shape.bottom - i);
@@ -146,7 +146,7 @@ bool MapColliderManager::checkCollision(RECT shape, int dir, int bodySize)
 		}
 
 	}
-	for (int i = 0; i < bodySize; i++)
+	for (int i = 0; i < bodySize.x; i++)
 	{
 		color = GetPixel(pixelMap->GetMemDC(),
 			shape.left + i, shape.bottom);

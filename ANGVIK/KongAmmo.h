@@ -21,19 +21,15 @@ private:
 	Image* ammoLeft = nullptr;
 
 	bool b_IsAlive = false;
-	
-	POINTFLOAT renderPos = { 0,0 };
 
 	// 방향
 	int direction = 1;
 
-	float frameCount = 0.0f;
 	POINT ammoFrame = { 0,0 };
+
+	const POINT ammoMaxFrame = { 6, 0 };
 
 	// 각도
 	float moveAngle = 0.0f;
-
-	// 디버깅
-	bool DBrect = false;
 };
 

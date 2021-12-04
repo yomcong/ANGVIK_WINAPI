@@ -20,18 +20,22 @@ private:
 	Image* attackMotion = nullptr;
 	Image* basicMotion = nullptr;
 
+	// 애니메이션 프레임
 	POINT basicFrame = { 0,0 };
 	POINT atackFrame = { 0,0 };
 
+	// 총알
 	KongAmmoManager* ammoManager = nullptr;
+	// 타겟좌표
 	Player* target = nullptr;
 
-	POINTFLOAT renderPos = { 0, 0 };
-	float frameCount = 0.0f;
+	const POINT attackMotionMaxFrame = { 8, 0 };
+	const POINT basicMaxFrame = { 6, 0 };
 
-	RECT DBrect = {};
+	// 충돌체크 함수로 제외할때 지역변수화 하기.
 	RECT testRect = {};
-	bool DBKongRect = false;
+
+	// 사정거리 디버깅
 	bool DBRangeRect = false;
 
 	float testElpsedCount = 0.0f;
