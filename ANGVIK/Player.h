@@ -2,6 +2,8 @@
 #include "Config.h"
 #include "GameObject.h"
 
+enum class State { Idel, JUMP, Fall, SITDOWN };
+enum class Action { Idle, LEFTMOVE, RIGHTMOVE, ATTACK, HIT };
 
 //class PixelCollider;
 class Imgae;
@@ -16,10 +18,10 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
-private:
-	enum class State { Idel, JUMP,Fall, SITDOWN };
-	enum class Action { Idle, LEFTMOVE, RIGHTMOVE, ATTACK, HIT };
+	void ChangeAction(Action action);
+	void DoAnimation();
 
+private:
 	Image* backArm = nullptr;	// 왼팔
 	Image* frontArm = nullptr;	// 오른팔
 	Image* body = nullptr;		// 몸통
@@ -34,12 +36,16 @@ private:
 	bool b_frontArmMove = true;
 	bool b_backArmMove = true;
 
+	// 애니메이션 시작프레임
+	const POINT backArmStartFrame = { 9, 0 };
+	const POINT frontArmStartFrame = { 9, 0 };
+	const POINT bodyStartFrame = { 0, 0 };
 	// 애니메이션 맥스프레임
-	const POINT backArmMaxFrame = {15, 2};
-	const POINT frontArmMaxFrame = {15, 2};
-	const POINT bodyMaxFrame = {12, 1};
+	const POINT backArmMaxFrame = { 15, 2 };
+	const POINT frontArmMaxFrame = { 15, 2 };
+	const POINT bodyMaxFrame = { 12, 1 };
 
-	
+
 	// 점프력
 	float jumpPower = 0.0f;
 
@@ -62,7 +68,7 @@ private:
 	POINT DBarmPos = { 0, 0 };
 	POINT DBbodyPos = { 0, 0 };
 
-	
+
 
 };
 

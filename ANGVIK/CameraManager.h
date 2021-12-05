@@ -18,7 +18,7 @@ public:
 	inline void SetPosY(float pos) { this->pos.y += pos; }
 
 private:
-	POINTFLOAT pos = {0, 0};
+	POINTFLOAT pos = {0, 100};
 
 };
 

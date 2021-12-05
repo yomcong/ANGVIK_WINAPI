@@ -97,6 +97,9 @@ void StageScene::Render(HDC hdc)
 {
 	stageBackgruond2->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
 		mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);	// 배경
+	stageBackgruond2->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
+		mapPos.y/2 - (int)CameraManager::GetSingleton()->GetPos().y);	// 배경 좀더 위까지.
+
 	stageBackgruond->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
 		mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);	// 맵 
 

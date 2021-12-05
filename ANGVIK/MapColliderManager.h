@@ -11,8 +11,9 @@ public:
 	HRESULT Init();
 	void Update();
 
-	bool autoMove(POINTFLOAT pos, RECT shape, float moveSpeed, int bodySize);
-	POINTFLOAT Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir, int bodySize);
+	bool autoMove(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize);
+	POINTFLOAT Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir, POINT bodySize);
+	bool Jump(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize);
 	bool checkCollision(RECT shape, int dir, POINT bodySize);
 
 private:
@@ -22,7 +23,5 @@ private:
 	COLORREF color = {};
 	WORD r, g, b = {};
 
-	//디버그용
-	POINTFLOAT pixelPos = {};
 
 };

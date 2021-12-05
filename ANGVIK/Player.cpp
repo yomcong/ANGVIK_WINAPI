@@ -19,9 +19,9 @@
 #define JumpPower 90.0f
 
 #define StartPosX 120.0f
-#define StartPosY 425.0f
+#define StartPosY 325.0f
 #define StartPointX 300.0f
-#define StartPointY 450.0f
+#define StartPointY 350.0f
 
 
 
@@ -117,11 +117,13 @@ HRESULT Player::Init()
 
 void Player::Update()
 {
-	// 점프중이 아닐때 낙하
+	// 점프상태가 아닐경우
 	if (false == (state == State::JUMP))
 	{
-		if (MapColliderManager::GetSingleton()->autoMove(renderPos, shape, moveSpeed, bodySize.x))
+		// 낙하상태 확인
+		if (MapColliderManager::GetSingleton()->autoMove(pos, shape, moveSpeed, bodySize))
 		{
+			state = State::Fall;
 			if (renderPos.y < StartPointY)
 			{
 				renderPos.y += 3.0f;
@@ -133,7 +135,8 @@ void Player::Update()
 		}
 		else
 		{
-			if (state == State::Fall)
+			// 앉은 자세가 아닐경우에만 기본자세
+			if (false == (state == State::SITDOWN))
 			{
 				state = State::Idel;
 			}
@@ -143,133 +146,82 @@ void Player::Update()
 	// 점프 상태
 	else
 	{
-		if (CameraManager::GetSingleton()->GetPos().y <= 0)
+		// 점프중 충돌검사
+		if (MapColliderManager::GetSingleton()->Jump(pos, shape, moveSpeed, bodySize))
 		{
-			renderPos.y -= 3.0f;
+			if (CameraManager::GetSingleton()->GetPos().y <= 100)
+			{
+				renderPos.y -= 3.0f;
+			}
+			else
+			{
+				CameraManager::GetSingleton()->SetPosY(-3);
+			}
+
+			jumpPower -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+
+			if (jumpPower <= 0)
+			{
+				state = State::Fall;
+			}
 		}
 		else
 		{
-			CameraManager::GetSingleton()->SetPosY(-3);
-		}
-
-		jumpPower -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-
-		if (jumpPower <= 0)
-		{
-			state = State::Fall;
+			jumpPower = 0;
+			state = State::Idel;
 		}
 	}
+
+	// 애니메이션프레임 
+	DoAnimation();
 
 	//플레이어 이동
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT))
 	{
-		// 이동(픽셀충돌검사)
+		// 카메라매니저가 한쪽 끝일경우
 		if (CameraManager::GetSingleton()->GetPos().x <= 0)
 		{
-			renderPos.x -= 1.5f; //* TimerManager::GetSingleton()->GetDeltaTime();
+			renderPos.x += MapColliderManager::GetSingleton()->
+				Move(pos, shape, moveSpeed, -1, bodySize).x;
+			renderPos.y += MapColliderManager::GetSingleton()->
+				Move(pos, shape, moveSpeed, -1, bodySize).y;
 		}
 		else
 		{
-			CameraManager::GetSingleton()->SetPos((MapColliderManager::GetSingleton()->
-				Move(renderPos, shape, moveSpeed, -1, bodySize.y)));
+			POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
+				Move(pos, shape, moveSpeed, -1, bodySize);
+			CameraManager::GetSingleton()->SetPosX(tempPos.x);
+			renderPos.y += tempPos.y;
 		}
-
 		// 상태 변경
 		action = Action::LEFTMOVE;
 
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT))
 	{
-		// 이동(픽셀충돌검사)
-		//pos = MapColliderManager::GetSingleton()->Move(pos, shape, moveSpeed, 1, bodySize.y);
-
+		// 카메라매니저 중심이 아닐경우 캐릭터를 이동
+		// 오른쪽 끝 예외처리 해야함
 		if (renderPos.x < StartPointX)
 		{
-			renderPos.x += 1.5f; //* TimerManager::GetSingleton()->GetDeltaTime();
+			renderPos.x += 3.0f; 
 		}
 		else
 		{
-			CameraManager::GetSingleton()->SetPos(MapColliderManager::GetSingleton()->Move(renderPos, shape, moveSpeed, 1, bodySize.y));
+			POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
+				Move(pos, shape, moveSpeed, 1, bodySize);
+			CameraManager::GetSingleton()->SetPosX(tempPos.x);
+			renderPos.y += tempPos.y;
+			/*CameraManager::GetSingleton()->SetPos(MapColliderManager::GetSingleton()->
+				Move(pos, shape, moveSpeed, 1, bodySize));*/
 		}
-
 
 		// 상태 변경
 		action = Action::RIGHTMOVE;
 
-		// 애니메이션 프레임
-		frameCount += TimerManager::GetSingleton()->GetDeltaTime();
-		if (frameCount > 0.125)
-		{
-			// 손 구부리기, 몸통 뛰는모션
-			frontArmFrame.y = 1;
-			backArmFrame.y = 1;
-			bodyFrame.y = 1;
-
-			// 오른손 프레임관리
-			if (b_frontArmMove)
-			{
-				if (frontArmFrame.x == 15)
-				{
-					--frontArmFrame.x;
-					b_frontArmMove = false;
-				}
-				else
-				{
-					++frontArmFrame.x;
-				}
-			}
-			else
-			{
-				if (frontArmFrame.x == 9)
-				{
-					++frontArmFrame.x;
-					b_frontArmMove = true;
-				}
-				else
-				{
-					--frontArmFrame.x;
-				}
-			}
-			// 왼손 프레임 관리
-			if (b_backArmMove)
-			{
-				if (backArmFrame.x == 15)
-				{
-					--backArmFrame.x;
-					b_backArmMove = false;
-				}
-				else
-				{
-					++backArmFrame.x;
-				}
-			}
-			else
-			{
-				if (backArmFrame.x == 9)
-				{
-					++backArmFrame.x;
-					b_backArmMove = true;
-				}
-				else
-				{
-					--backArmFrame.x;
-				}
-			}
-			// 몸,발 프레임 관리
-			if (bodyFrame.x == 11)
-			{
-				bodyFrame.x = 0;
-			}
-			else
-			{
-				++bodyFrame.x;
-			}
-
-			frameCount = 0.0f;
-		}
 	}
 	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_UP))
 	{
+		// 점프중이거나 낙하상태가 아닐 경우
 		if (false == (state == State::JUMP) &&
 			false == (state == State::Fall))
 		{
@@ -279,8 +231,12 @@ void Player::Update()
 	}
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
 	{
-		state = State::SITDOWN;
-		pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+		// 점프중이거나 낙하상태가 아닐경우
+		if (false == (state == State::JUMP) &&
+			false == (state == State::Fall))
+		{
+			state = State::SITDOWN;
+		}
 	}
 
 	// 액션중이 아닐때 기본자세 이후에 좀더 디테일 수정
@@ -301,6 +257,7 @@ void Player::Update()
 		bodyFrame.x = 0;
 	}
 
+
 	pos.x = renderPos.x + CameraManager::GetSingleton()->GetPos().x;
 	pos.y = renderPos.y + CameraManager::GetSingleton()->GetPos().y;
 
@@ -309,7 +266,6 @@ void Player::Update()
 	shape.right = (int)pos.x + (bodySize.x / 2);
 	shape.bottom = (int)pos.y + (bodySize.y / 2);
 
-	//cout << "플레이어 포스 : " << pos.x << "\n";
 
 	//디버그용 인체실험
 #ifdef _DEBUG
@@ -398,5 +354,124 @@ void Player::Render(HDC hdc)
 
 void Player::Release()
 {
+
+}
+
+void Player::ChangeAction(Action action)
+{
+	if (this->action == action)
+	{
+		return;
+	}
+	else
+	{
+		// 새로운 액션일경우 애니메이션들 기본상태로 변경
+		frameCount = 0.0f;
+
+		b_frontArmMove = true;
+		b_backArmMove = true;
+
+
+		bodyFrame = { 0, 0 };
+		frontArmFrame = { 11, 0 };
+		backArmFrame = { 13, 0 };
+	}
+}
+
+void Player::DoAnimation()
+{
+	frameCount += TimerManager::GetSingleton()->GetDeltaTime();
+
+	if (state == State::Idel)
+	{
+		if (action == Action::RIGHTMOVE)
+		{
+			frontArmFrame.y = 1;
+			backArmFrame.y = 1;
+			bodyFrame.y = 1;
+
+			if (frameCount > 0.125)
+			{
+				// 오른손 프레임관리
+				if (b_frontArmMove)
+				{
+					if (frontArmFrame.x == 15)
+					{
+						--frontArmFrame.x;
+						b_frontArmMove = false;
+					}
+					else
+					{
+						++frontArmFrame.x;
+					}
+				}
+				else
+				{
+					if (frontArmFrame.x == 9)
+					{
+						++frontArmFrame.x;
+						b_frontArmMove = true;
+					}
+					else
+					{
+						--frontArmFrame.x;
+					}
+				}
+				// 왼손 프레임 관리
+				if (b_backArmMove)
+				{
+					if (backArmFrame.x == 15)
+					{
+						--backArmFrame.x;
+						b_backArmMove = false;
+					}
+					else
+					{
+						++backArmFrame.x;
+					}
+				}
+				else
+				{
+					if (backArmFrame.x == 9)
+					{
+						++backArmFrame.x;
+						b_backArmMove = true;
+					}
+					else
+					{
+						--backArmFrame.x;
+					}
+				}
+				// 몸,발 프레임 관리
+				if (bodyFrame.x == 11)
+				{
+					bodyFrame.x = 0;
+				}
+				else
+				{
+					++bodyFrame.x;
+				}
+
+				frameCount = 0.0f;
+			}
+		}
+		else
+		{
+
+		}
+	}
+	else if (state == State::JUMP)
+	{
+
+	}
+	else if (state == State::Fall)
+	{
+
+	}
+	else if (state == State::SITDOWN)
+	{
+
+	}
+
 
 }

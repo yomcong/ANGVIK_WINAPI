@@ -2,8 +2,6 @@
 
 HRESULT CameraManager::Init()
 {
-	pos.x = 0;
-	pos.y = 0;
 	return S_OK;
 }
 

@@ -9,40 +9,25 @@ HRESULT MapColliderManager::Init()
 		return E_FAIL;
 	}
 
+	
+
 	return S_OK;
 }
 
 void MapColliderManager::Update()
 {
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD6))
-	{
-		pixelPos.x += 5;
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD4))
-	{
-		if (pixelPos.x > 0)
-			pixelPos.x -= 5;
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD2))
-	{
-		pixelPos.y += 5;
-	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD8))
-	{
-		if (pixelPos.y > 0)
-			pixelPos.y -= 5;
-	}
+
 }
 
-bool MapColliderManager::autoMove(POINTFLOAT pos, RECT shape, float moveSpeed, int bodySize)
+bool MapColliderManager::autoMove(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize)
 {
 	//float tempPosY = y + moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 
 
-	for (int i = 0; i < bodySize / 2; i++)
+	for (int i = 0; i < (bodySize.x / 2) ; i++)
 	{
 		color = GetPixel(pixelMap->GetMemDC(),
-			shape.left + i + bodySize / 4, shape.bottom + 1)/*+ (int)pixelPos.y)*/;
+			shape.left + i + bodySize.x / 4, shape.bottom + 1)/*+ (int)pixelPos.y)*/;
 
 		r = GetRValue(color);
 		g = GetGValue(color);
@@ -60,22 +45,22 @@ bool MapColliderManager::autoMove(POINTFLOAT pos, RECT shape, float moveSpeed, i
 
 }
 
-POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir, int bodySize)
+POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir, POINT bodySize)
 {
 	int height = 0;
 
-	for (int i = 1; i < bodySize; ++i)
+	for (int i = 1; i < bodySize.y; ++i)
 	{
 		// laft = -1, right = +1
 		if (dir > 0)
 		{
 			color = GetPixel(pixelMap->GetMemDC(),
-				shape.right + 1 /*+ (int)pixelPos.x*/, shape.bottom - i /*+ (int)pixelPos.y)*/);
+				shape.right + 1, shape.bottom - i);
 		}
 		else
 		{
 			color = GetPixel(pixelMap->GetMemDC(),
-				shape.left - 1 /*+ (int)pixelPos.x*/, shape.bottom - i /*+ (int)pixelPos.y)*/);
+				shape.left - 1, shape.bottom - i);
 		}
 
 		r = GetRValue(color);
@@ -105,6 +90,29 @@ POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed,
 	pos.x = (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()) * dir;
 	pos.y = -height;
 	return pos;
+}
+
+bool MapColliderManager::Jump(POINTFLOAT pos, RECT shape, float moveSpeed,  POINT bodySize)
+{
+	for (int i = 0; i < bodySize.x/2; i++)
+	{
+		color = GetPixel(pixelMap->GetMemDC(),
+			shape.left + i + bodySize.x/4 , shape.top - 3);
+
+		r = GetRValue(color);
+		g = GetGValue(color);
+		b = GetBValue(color);
+
+
+		if (false == (r == 255 && g == 0 && b == 255))
+		{
+			return false;
+		}
+		//cout << (y + (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime())) << "\n";
+		//cout << pos.y << "\n";
+	}
+
+	return true;
 }
 
 bool MapColliderManager::checkCollision(RECT shape, int dir, POINT bodySize)
