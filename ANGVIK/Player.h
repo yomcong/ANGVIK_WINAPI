@@ -2,8 +2,8 @@
 #include "Config.h"
 #include "GameObject.h"
 
-enum class State { Idel, JUMP, Fall, SITDOWN };
-enum class Action { Idle, LEFTMOVE, RIGHTMOVE, ATTACK, HIT };
+enum class State { Idel, JUMP, Fall, SITDOWN, HIT };
+enum class Action { Idle, LEFTMOVE, RIGHTMOVE, ATTACK };
 
 //class PixelCollider;
 class Imgae;
@@ -19,6 +19,7 @@ public:
 	virtual void Release();
 
 	void ChangeAction(Action action);
+	void ChangeState(State state);
 	void DoAnimation();
 
 private:
@@ -26,6 +27,11 @@ private:
 	Image* frontArm = nullptr;	// 오른팔
 	Image* body = nullptr;		// 몸통
 	Image* head = nullptr;		// 머리
+
+	Image* R_body = nullptr;	// 뛰기(laft)
+	Image* R_backArm = nullptr;	// 왼팔
+	Image* R_frontArm = nullptr;// 오른팔
+	Image* R_head = nullptr;	// 몸통
 
 	// 캐릭터 애니메이션 프레임 관리
 	POINT bodyFrame = { 0, 0 };
@@ -36,14 +42,14 @@ private:
 	bool b_frontArmMove = true;
 	bool b_backArmMove = true;
 
-	// 애니메이션 시작프레임
-	const POINT backArmStartFrame = { 9, 0 };
+	// 이동 애니메이션 시작프레임
 	const POINT frontArmStartFrame = { 9, 0 };
+	const POINT backArmStartFrame = { 11, 0 };
 	const POINT bodyStartFrame = { 0, 0 };
-	// 애니메이션 맥스프레임
-	const POINT backArmMaxFrame = { 15, 2 };
+	// 이동 애니메이션 맥스프레임
 	const POINT frontArmMaxFrame = { 15, 2 };
-	const POINT bodyMaxFrame = { 12, 1 };
+	const POINT backArmMaxFrame = { 15, 2 };
+	const POINT bodyMaxFrame = { 11, 1 };
 
 
 	// 점프력

@@ -31,9 +31,16 @@ void ImageManager::Init()
 	AddImage("image/Stage/Stage1-test.bmp", 6709, 1290, true, RGB(255, 0, 255)); // ½ºÅ×ÀÌÁö1 ¹é±×¶ó¿îµå(ÇÈ¼¿ver)
 
 	// ÇÃ·¹ÀÌ¾î
-	AddImage("image/player/unarmed/arm_back.bmp", 640, 120, 16, 3, true, RGB(255, 255, 255));	// ¿ŞÆÈ
-	AddImage("image/player/unarmed/arm_front.bmp", 640, 120, 16, 3, true, RGB(255, 255, 255));	// ¿À¸¥ÆÈ
-	AddImage("image/player/unarmed/body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));		// ¸öÅë
+	AddImage("image/player/unarmed/arm_back.bmp", 640, 120, 16, 3, true, RGB(255, 255, 255));		// ¿ŞÆÈ
+	AddImage("image/player/unarmed/arm_front.bmp", 640, 120, 16, 3, true, RGB(255, 255, 255));		// ¿À¸¥ÆÈ
+	AddImage("image/player/unarmed/body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));			// ¸öÅë
+
+	AddImage("image/player/unarmed/R_arm_back.bmp", 640, 120, 16, 3, true, RGB(255, 255, 255));		// ¿ŞÆÈ(Reverse)
+	AddImage("image/player/unarmed/R_arm_front.bmp", 640, 120, 16, 3, true, RGB(255, 255, 255));	// ¿À¸¥ÆÈ(Reverse)
+	AddImage("image/player/unarmed/R_body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));			// ¸öÅë(Reverse)
+	AddImage("image/player/unarmed/R_body_walk.bmp", 480, 50, 12, 1, true, RGB(255, 255, 255));		// ¶Ù±â(Reverse)
+	AddImage("image/player/unarmed/R_head_1.bmp", 40, 40, true, RGB(255, 255, 255));	// ¸Ó¸® 2(Reverse)
+
 	AddImage("image/player/unarmed/head_0.bmp", 40, 40, true, RGB(255, 255, 255));	// ¸Ó¸® 1
 	AddImage("image/player/unarmed/head_1.bmp", 40, 40, true, RGB(255, 255, 255));	// ¸Ó¸® 2
 	AddImage("image/player/unarmed/head_2.bmp", 40, 40, true, RGB(255, 255, 255));	// ¸Ó¸® 3 

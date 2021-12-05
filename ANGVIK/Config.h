@@ -12,8 +12,8 @@ using namespace std;
 #pragma comment(lib, "winmm.lib")
 
 // 창 시작위치
-#define WIN_START_POS_X	400
-#define WIN_START_POS_Y	200
+#define WIN_START_POS_X	200
+#define WIN_START_POS_Y	100
 
 // 창 크기
 #define WIN_SIZE_X	960

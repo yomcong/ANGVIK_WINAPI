@@ -47,7 +47,7 @@ bool MapColliderManager::autoMove(POINTFLOAT pos, RECT shape, float moveSpeed, P
 
 POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir, POINT bodySize)
 {
-	int height = 0;
+	float height = 0.0f;
 
 	for (int i = 1; i < bodySize.y; ++i)
 	{

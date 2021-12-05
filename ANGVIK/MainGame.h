@@ -14,8 +14,8 @@ private:
 	Image* backBuffer = nullptr;
 
 	// 마우스 좌표
-	char mxText[16];
-	char myText[16];
+	char mxText[16] = {};
+	char myText[16] = {};
 
 public:
 	virtual ~MainGame() {}
