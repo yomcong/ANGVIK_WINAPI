@@ -53,13 +53,17 @@ void ImageManager::Init()
 	// --Äá--
 	AddImage("image/monster/kong_atk_8f.bmp", 272, 40, 8, 1, true, RGB(255, 255, 255));	// °ø°İ¸ğ¼Ç 
 	AddImage("image/monster/kong_idle_6f.bmp", 192, 54, 6, 1, true, RGB(255, 255, 255));// ±âº»ÀÚ¼¼
+	AddImage("image/monster/R_kong_atk_8f.bmp", 272, 40, 8, 1, true, RGB(255, 255, 255));	// °ø°İ¸ğ¼Ç(Reverse)
+	AddImage("image/monster/R_kong_idle_6f.bmp", 192, 54, 6, 1, true, RGB(255, 255, 255));// ±âº»ÀÚ¼¼(Reverse)
+
 	// --Äá ÃÑ¾Ë--
 	AddImage("image/monster/kongtan.bmp", 168, 18, 6, 1, true, RGB(255, 255, 255));		// ÃÑ¾Ë ¿À¸¥¹æÇâ
 	AddImage("image/monster/kongtan22.bmp", 168, 18, 6, 1, true, RGB(255, 255, 255));	// ÃÑ¾Ë ¿ŞÂÊ¹æÇâ
 	// ¸ùÅ°
 	AddImage("image/monster/¿ø¼şÀÌ.bmp", 416, 46, 8, 1, true, RGB(255, 255, 255));	// ¸ùÅ°
+	AddImage("image/monster/R_¿ø¼şÀÌ.bmp", 416, 46, 8, 1, true, RGB(255, 255, 255));	// ¸ùÅ°(Reverse)
 
-
+	
 	//·Îµù ¾À	
 }
 

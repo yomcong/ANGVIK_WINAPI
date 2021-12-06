@@ -10,14 +10,21 @@ HRESULT Monkey::Init(Player* target, POINTFLOAT pos)
 	{
 		return E_FAIL;
 	}
+	R_monkey = ImageManager::GetSingleton()->FindImage("image/monster/R_¿ø¼þÀÌ.bmp");
+	if (R_monkey == nullptr)
+	{
+		return E_FAIL;
+	}
 	
 	this->target = target;
 
 	this->pos = pos;
 	renderPos = pos;
 	
-	bodySize.x = 10;
-	bodySize.y = 10;
+	bodySize.x = 20;
+	bodySize.y = 20;
+
+	moveSpeed = 100.0f;
 
 	shape.left = (int)pos.x - bodySize.x;
 	shape.top = (int)pos.y - bodySize.y;
@@ -32,6 +39,38 @@ HRESULT Monkey::Init(Player* target, POINTFLOAT pos)
 
 void Monkey::Update()
 {
+	if (MapColliderManager::GetSingleton()->AutoFall(pos, shape, moveSpeed, bodySize))
+	{
+		pos.y += 3.0f;
+	}
+
+	POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
+		Move(pos, shape, moveSpeed, (int)dir, bodySize);
+	if (tempPos.x == 0.0f)
+	{
+		dir == direction::RIGHT ? dir = direction::LEFT : dir = direction::RIGHT;
+	}
+	pos.x += tempPos.x;
+	pos.y += tempPos.y;
+
+	frameCount += TimerManager().GetSingleton()->GetDeltaTime();
+
+	if (frameCount > 0.125)
+	{
+		if (framePos.x == 7)
+		{
+			framePos.x = 0;
+		}
+		else
+		{
+			++framePos.x;
+		}
+
+		frameCount = 0.0f;
+	}
+
+
+
 	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
 	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
 
@@ -40,7 +79,7 @@ void Monkey::Update()
 	shape.right = (int)pos.x + bodySize.x;
 	shape.bottom = (int)pos.y + bodySize.y;
 
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD9))
+	if (Input::GetButtonDown(VK_NUMPAD9))
 	{
 		DBrect == false ? DBrect = true : DBrect = false;
 	}
@@ -48,7 +87,14 @@ void Monkey::Update()
 
 void Monkey::Render(HDC hdc)
 {
-	monkey->Render(hdc, (int)renderPos.x, (int)renderPos.y, framePos.x, framePos.y);
+	if (dir == direction::RIGHT)
+	{
+		monkey->Render(hdc, (int)renderPos.x, (int)renderPos.y, framePos.x, framePos.y);
+	}
+	else
+	{
+		R_monkey->Render(hdc, (int)renderPos.x, (int)renderPos.y, framePos.x, framePos.y);
+	}
 
 	if (DBrect)
 		Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x,

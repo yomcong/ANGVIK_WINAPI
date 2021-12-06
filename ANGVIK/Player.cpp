@@ -142,7 +142,7 @@ void Player::Update()
 	if (false == (state == State::JUMP))
 	{
 		// 낙하상태 확인
-		if (MapColliderManager::GetSingleton()->autoMove(pos, shape, moveSpeed, bodySize))
+		if (MapColliderManager::GetSingleton()->AutoFall(pos, shape, moveSpeed, bodySize))
 		{
 			state = State::Fall;
 			if (renderPos.y < StartPointY)
@@ -159,7 +159,8 @@ void Player::Update()
 			// 앉은 자세가 아닐경우에만 기본자세
 			if (false == (state == State::SITDOWN))
 			{
-				state = State::Idel;
+				ChangeState(State::IDLE);
+
 			}
 		}
 
@@ -183,13 +184,13 @@ void Player::Update()
 
 			if (jumpPower <= 0)
 			{
-				state = State::Fall;
+				ChangeState(State::Fall);
 			}
 		}
 		else
 		{
 			jumpPower = 0;
-			state = State::Idel;
+			ChangeState(State::IDLE);
 		}
 	}
 
@@ -197,7 +198,7 @@ void Player::Update()
 	DoAnimation();
 
 	//플레이어 이동
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT))
+	if (/*KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT)*/Input::GetButton(VK_LEFT))
 	{
 		// 카메라매니저가 한쪽 끝일경우
 		if (CameraManager::GetSingleton()->GetPos().x <= 0)
@@ -219,7 +220,7 @@ void Player::Update()
 		//action = Action::LEFTMOVE;
 
 	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT))
+	if (/*KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT)*/Input::GetButton(VK_RIGHT))
 	{
 		// 카메라매니저 중심이 아닐경우 캐릭터를 이동
 		// 오른쪽 끝 예외처리 해야함
@@ -241,17 +242,18 @@ void Player::Update()
 		ChangeAction(Action::RIGHTMOVE);
 		//action = Action::RIGHTMOVE;
 	}
-	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_UP))
+	if (/*KeyManager::GetSingleton()->IsOnceKeyDown(VK_UP)*/Input::GetButton(VK_UP))
 	{
 		// 점프중이거나 낙하상태가 아닐 경우
 		if (false == (state == State::JUMP) &&
 			false == (state == State::Fall))
 		{
-			state = State::JUMP;
+			ChangeState(State::JUMP);
+			//state = State::JUMP;
 			jumpPower = JumpPower;
 		}
 	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN))
+	if (/*KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN)*/Input::GetButton(VK_DOWN))
 	{
 		// 점프중이거나 낙하상태가 아닐경우
 		if (false == (state == State::JUMP) &&
@@ -262,13 +264,14 @@ void Player::Update()
 	}
 
 	// 액션중이 아닐때 기본자세 이후에 좀더 디테일 수정
-	if (!KeyManager::GetSingleton()->IsStayKeyDown(VK_LEFT) &&
-		!KeyManager::GetSingleton()->IsStayKeyDown(VK_RIGHT) &&
-		!KeyManager::GetSingleton()->IsStayKeyDown(VK_UP) &&
-		!KeyManager::GetSingleton()->IsStayKeyDown(VK_DOWN) && 
-		false == (state == State::JUMP))
+	if (!Input::GetButton(VK_LEFT) &&
+		!Input::GetButton(VK_RIGHT) &&
+		!Input::GetButton(VK_UP) &&
+		!Input::GetButton(VK_DOWN) && 
+		false == (state == State::JUMP) &&
+		false == (state == State::Fall))
 	{
-		action = Action::Idle;
+		state = State::IDLE;
 
 		frontArmFrame.x = 11;
 		frontArmFrame.y = 0;
@@ -280,6 +283,7 @@ void Player::Update()
 		bodyFrame.x = 0;
 	}
 
+	
 
 	pos.x = renderPos.x + CameraManager::GetSingleton()->GetPos().x;
 	pos.y = renderPos.y + CameraManager::GetSingleton()->GetPos().y;
@@ -335,7 +339,7 @@ void Player::Update()
 			--DBbodyPos.y;
 #endif
 	// 디버그용 캐릭터 랙트표시
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD9))
+	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_NUMPAD9))
 	{
 		DBrect == false ? DBrect = true : DBrect = false;
 	}
@@ -427,24 +431,35 @@ void Player::ChangeState(State state)
 	{
 		this->state = state;
 
-		if (state == State::Idel)
+		if (state == State::IDLE)
 		{
-
+			b_frontArmMove = true;
+			b_backArmMove = true;
+			frontArmFrame.x = frontArmStartFrame.x;
+			backArmFrame.x = backArmStartFrame.x;
+			bodyFrame.y = 1;
+			frontArmFrame.y = 0;
+			backArmFrame.y = 0;
 		}
 		else if (state == State::JUMP)
 		{
 			b_frontArmMove = true;
 			b_backArmMove = true;
 			frontArmFrame.x = 11;
-			backArmFrame.x = 9;
+			backArmFrame.x = 13;
 			bodyFrame.x = 0;
 			bodyFrame.y = 0;
-			frontArmFrame.y = 1;
-			backArmFrame.y = 1;
+			frontArmFrame.y = 0;
+			backArmFrame.y = 0;
 		}
 		else if (state == State::Fall)
 		{
-
+			frontArmFrame.x = 9;
+			backArmFrame.x = 13;
+			bodyFrame.x = 2;
+			bodyFrame.y = 0;
+			frontArmFrame.y = 0;
+			backArmFrame.y = 0;
 		}
 		else if (state == State::HIT)
 		{
@@ -463,7 +478,7 @@ void Player::DoAnimation()
 {
 	frameCount += TimerManager::GetSingleton()->GetDeltaTime();
 
-	if (state == State::Idel)
+	if (state == State::IDLE)
 	{
 		if (frameCount > 0.0625)
 		{
@@ -567,7 +582,13 @@ void Player::DoAnimation()
 	}
 	else if (state == State::Fall)
 	{
+	if (frameCount > 0.25)
+	{
+		// 오른손 프레임관리
+		++frontArmFrame.x;
 
+		frameCount = 0.0f;
+	}
 	}
 	else if (state == State::SITDOWN)
 	{

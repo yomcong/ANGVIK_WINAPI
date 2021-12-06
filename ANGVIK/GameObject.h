@@ -35,6 +35,9 @@ protected:
 	// 애니메이션 프레임관리 카운트
 	float frameCount = 0.0f;
 
+	// 윈도우 화면에 존재하는지 ->옵저버로 관리해주기
+	bool b_windowArea = false;
+
 	// 디버그용 렉트
 	bool DBrect = false;
 	RECT DBRenderShape = {};

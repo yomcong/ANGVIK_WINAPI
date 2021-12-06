@@ -140,12 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Extern.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemFactory.cpp" />
     <ClCompile Include="ItemManager.cpp" />
@@ -158,7 +160,6 @@
     <ClCompile Include="MapColliderManager.cpp" />
     <ClCompile Include="Monkey.cpp" />
     <ClCompile Include="MonsterManager.cpp" />
-    <ClCompile Include="PixelCollider.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="StageScene.cpp" />
@@ -168,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="Config.h" />
@@ -177,6 +179,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemFactory.h" />
     <ClInclude Include="ItemManager.h" />
@@ -189,7 +192,6 @@
     <ClInclude Include="MapColliderManager.h" />
     <ClInclude Include="Monkey.h" />
     <ClInclude Include="MonsterManager.h" />
-    <ClInclude Include="PixelCollider.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />

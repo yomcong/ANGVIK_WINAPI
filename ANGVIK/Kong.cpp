@@ -17,7 +17,16 @@ HRESULT Kong::Init(Player* target, POINTFLOAT pos)
 	{
 		return E_FAIL;
 	}
-	
+	R_attackMotion = ImageManager::GetSingleton()->FindImage("image/monster/R_kong_atk_8f.bmp");
+	if (attackMotion == nullptr)
+	{
+		return E_FAIL;
+	}
+	R_basicMotion = ImageManager::GetSingleton()->FindImage("image/monster/R_kong_idle_6f.bmp");
+	if (basicMotion == nullptr)
+	{
+		return E_FAIL;
+	}
 	ammoManager = new KongAmmoManager;
 	ammoManager->Init(target);
 
@@ -90,6 +99,15 @@ void Kong::Update()
 				target->GetPos().x - pos.x);
 
 			int dir = (int)target->GetPos().x > (int)pos.x - CameraManager::GetSingleton()->GetPos().x;
+			if (dir > 0)
+			{
+				this->dir = direction::RIGHT;
+			}
+			else
+			{
+				this->dir = direction::LEFT;
+
+			}
 			ammoManager->Fire(renderPos, targetAngle, dir);
 
 			testElpsedCount = 0.0f;
@@ -100,11 +118,11 @@ void Kong::Update()
 	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
 	
 	//cout << pos.x << "\n";
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD9))
+	if (Input::GetButtonDown(VK_NUMPAD9))
 	{
 		DBrect == false ? DBrect = true : DBrect = false;
 	}
-	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD1))
+	if (Input::GetButtonDown(VK_NUMPAD1))
 	{
 		DBRangeRect == false ? DBRangeRect = true : DBRangeRect = false;
 	}
@@ -129,7 +147,16 @@ void Kong::Render(HDC hdc)
 			DBRenderShape.right - (int)CameraManager::GetSingleton()->GetPos().x,
 			DBRenderShape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
 
-	basicMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
+	if (dir == direction::RIGHT)
+	{
+		//attackMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
+		basicMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
+	}
+	else
+	{
+		//R_attackMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
+		R_basicMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
+	}
 
 	//attackMotion->Render(hdc, 375, 350, atackFrame.x, atackFrame.y);
 

@@ -2,7 +2,7 @@
 #include "GameEntity.h"
 #include "Config.h"
 
-//enum class Action{ Idle, JUMP, ATTACK, HIT };
+//enum class Action{ IDLE, JUMP, ATTACK, HIT };
 
 //struct Player
 //{
@@ -10,7 +10,7 @@
 //	RECT collider = {};
 //	int bodySize_X = 0;
 //	int bodySize_Y = 0;
-//	Action action = Action::Idle;
+//	Action action = Action::IDLE;
 //};
 //
 

@@ -86,7 +86,7 @@ void StageScene::Update()
 
 
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë ¿ë
-	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_NUMPAD7))
+	if (Input::GetButtonDown(VK_NUMPAD7))
 	{
 		debugPixelMap == false ? debugPixelMap = true : debugPixelMap = false;
 	}

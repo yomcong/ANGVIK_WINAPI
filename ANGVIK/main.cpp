@@ -101,6 +101,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		g_ptMouse.x = LOWORD(lParam);
 		g_ptMouse.y = HIWORD(lParam);
 	case WM_TIMER:
+		//Input::Update();
 		g_mainGame.Update();
 
 		break;

@@ -27,6 +27,9 @@ private:
 
 	POINT ammoFrame = { 0,0 };
 
+	IFF kongAmmoIff = IFF::ENEMY;
+	Object kongAmmoObject = Object::IDLE;
+
 	const POINT ammoMaxFrame = { 6, 0 };
 
 	// °¢µµ

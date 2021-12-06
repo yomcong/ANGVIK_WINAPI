@@ -2,15 +2,15 @@
 #include "Config.h"
 #include "GameObject.h"
 
-enum class State { Idel, JUMP, Fall, SITDOWN, HIT };
-enum class Action { Idle, LEFTMOVE, RIGHTMOVE, ATTACK };
+enum class State { IDLE, JUMP, Fall, SITDOWN, HIT };
+enum class Action { IDLE, LEFTMOVE, RIGHTMOVE, ATTACK };
 
 //class PixelCollider;
 class Imgae;
 class Player : public GameObject
 {
 public:
-	//static enum class Action { Idle, LeftMove, RightMove, Jump, SitDown, Attack, Hit };
+	//static enum class Action { IDLE, LeftMove, RightMove, Jump, SitDown, Attack, Hit };
 	virtual ~Player() = default;
 
 	virtual HRESULT Init();
@@ -51,13 +51,15 @@ private:
 	const POINT backArmMaxFrame = { 15, 2 };
 	const POINT bodyMaxFrame = { 11, 1 };
 
+	IFF playerIFF = IFF::PLAYER;
+	Object playerObject = Object::IDLE;
 
 	// 점프력
 	float jumpPower = 0.0f;
 
 	// 캐릭터 상태관리
-	Action action = Action::Idle;
-	State state = State::Idel;
+	Action action = Action::IDLE;
+	State state = State::IDLE;
 
 	// 디버그용
 	Image* DBbackArm = nullptr;

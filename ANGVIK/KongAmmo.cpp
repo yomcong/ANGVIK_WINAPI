@@ -71,7 +71,7 @@ void KongAmmo::Update()
 		}
 	}
 	// µð¹ö±ë
-	if (KeyManager().GetSingleton()->IsStayKeyDown(VK_NUMPAD1))
+	if (Input::GetButtonDown(VK_NUMPAD1))
 		DBrect == false ? DBrect = true : DBrect = false;
 }
 

@@ -16,10 +16,13 @@ public:
 
 private:
 	Image* monkey = nullptr;
+	Image* R_monkey = nullptr;
 
 	Player* target = nullptr;
 
 	const POINT monkeyMaxFrame = { 8, 0 };
+
+	direction dir = direction::LEFT;
 
 
 };

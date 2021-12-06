@@ -19,7 +19,7 @@ void MapColliderManager::Update()
 
 }
 
-bool MapColliderManager::autoMove(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize)
+bool MapColliderManager::AutoFall(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize)
 {
 	//float tempPosY = y + moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 
@@ -51,7 +51,7 @@ POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed,
 
 	for (int i = 1; i < bodySize.y; ++i)
 	{
-		// laft = -1, right = +1
+		// laft = -1,0  right = +1
 		if (dir > 0)
 		{
 			color = GetPixel(pixelMap->GetMemDC(),
@@ -171,50 +171,28 @@ bool MapColliderManager::checkCollision(RECT shape, int dir, POINT bodySize)
 	}
 
 	return false;
-	/*color = GetPixel(pixelMap->GetMemDC(),
-		shape.left - CameraManager::GetSingleton()->GetPos().x, shape.top - CameraManager::GetSingleton()->GetPos().y);
-
-	r = GetRValue(color);
-	g = GetGValue(color);
-	b = GetBValue(color);
-
-	if (false == (r == 255 && g == 0 && b == 255))
-	{
-		return true;
-	}
-
-	color = GetPixel(pixelMap->GetMemDC(),
-		shape.left - CameraManager::GetSingleton()->GetPos().x, shape.bottom - CameraManager::GetSingleton()->GetPos().y);
-	r = GetRValue(color);
-	g = GetGValue(color);
-	b = GetBValue(color);
-
-	if (false == (r == 255 && g == 0 && b == 255))
-	{
-		return true;
-	}
-
-	color = GetPixel(pixelMap->GetMemDC(),
-		shape.right - CameraManager::GetSingleton()->GetPos().x, shape.bottom - CameraManager::GetSingleton()->GetPos().y);
-	r = GetRValue(color);
-	g = GetGValue(color);
-	b = GetBValue(color);
-
-	if (false == (r == 255 && g == 0 && b == 255))
-	{
-		return true;
-	}
-
-	color = GetPixel(pixelMap->GetMemDC(),
-		shape.right - CameraManager::GetSingleton()->GetPos().x, shape.bottom - CameraManager::GetSingleton()->GetPos().y);
-	r = GetRValue(color);
-	g = GetGValue(color);
-	b = GetBValue(color);
-
-	if (false == (r == 255 && g == 0 && b == 255))
-	{
-		return true;
-	}
-
-	return false;*/
 }
+
+//bool MapColliderManager::AutoMove(POINTFLOAT pos, RECT shape, float moveSpeed,int dir, POINT bodySize)
+//{
+//	for (int i = 0; i < (bodySize.x / 2); i++)
+//	{
+//		color = GetPixel(pixelMap->GetMemDC(),
+//			shape.left + i + bodySize.x / 4, shape.bottom + 1)/*+ (int)pixelPos.y)*/;
+//
+//		r = GetRValue(color);
+//		g = GetGValue(color);
+//		b = GetBValue(color);
+//
+//
+//		if (false == (r == 255 && g == 0 && b == 255))
+//		{
+//			return false;
+//		}
+//		//cout << (y + (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime())) << "\n";
+//		//cout << pos.y << "\n";
+//	}
+//
+//	return true;
+//
+//}

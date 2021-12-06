@@ -12,12 +12,14 @@ HRESULT MainGame::Init()
 	MapColliderManager::GetSingleton()->Init();
 	CameraManager::GetSingleton()->Init();
 
+	Input::Init(g_hWnd);
+
 	SceneManager::GetSingleton()->ChangeScene("TitleScene");
 
 	srand((unsigned int)time(nullptr));
 
 	hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
-
+	
 	backBuffer = new Image;
 
 	backBuffer->Init("Image/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
@@ -27,6 +29,7 @@ HRESULT MainGame::Init()
 void MainGame::Update()
 {
 	TimerManager::GetSingleton()->Update();
+	Input::Update();
 
 	SceneManager::GetSingleton()->Update();
 

@@ -19,6 +19,8 @@ public:
 private:
 	Image* attackMotion = nullptr;
 	Image* basicMotion = nullptr;
+	Image* R_attackMotion = nullptr;
+	Image* R_basicMotion = nullptr;
 
 	// 애니메이션 프레임
 	POINT basicFrame = { 0,0 };
@@ -35,6 +37,10 @@ private:
 	// 충돌체크 함수로 제외할때 지역변수화 하기.
 	RECT testRect = {};
 
+	IFF KongIff = IFF::ENEMY;
+	Object kongObject = Object::IDLE;
+
+	direction dir = direction::LEFT;
 	// 사정거리 디버깅
 	bool DBRangeRect = false;
 

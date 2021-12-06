@@ -40,14 +40,14 @@
     <Filter Include="MainGame\Tilte">
       <UniqueIdentifier>{706cb441-4046-4339-a016-95a5dfe9d76c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\PixelCollider">
-      <UniqueIdentifier>{4cf0208a-eca5-4b92-8d0b-0d5501ed07e0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MainGame\Monster\Kong">
       <UniqueIdentifier>{422222e5-13a3-4b39-bb88-48b23d0a13f4}</UniqueIdentifier>
     </Filter>
     <Filter Include="MainGame\Monster\Monkey">
       <UniqueIdentifier>{c28d8163-04d6-4bf6-bb38-9c6609ead7f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\CollisionManager">
+      <UniqueIdentifier>{4cf0208a-eca5-4b92-8d0b-0d5501ed07e0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -105,9 +105,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>MainGame\Player</Filter>
     </ClCompile>
-    <ClCompile Include="PixelCollider.cpp">
-      <Filter>MainGame\PixelCollider</Filter>
-    </ClCompile>
     <ClCompile Include="MapColliderManager.cpp">
       <Filter>2D Framework\Manager</Filter>
     </ClCompile>
@@ -128,6 +125,12 @@
     </ClCompile>
     <ClCompile Include="Monkey.cpp">
       <Filter>MainGame\Monster\Monkey</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>MainGame\CollisionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>2D Framework\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,9 +194,6 @@
     <ClInclude Include="Player.h">
       <Filter>MainGame\Player</Filter>
     </ClInclude>
-    <ClInclude Include="PixelCollider.h">
-      <Filter>MainGame\PixelCollider</Filter>
-    </ClInclude>
     <ClInclude Include="MapColliderManager.h">
       <Filter>2D Framework\Manager</Filter>
     </ClInclude>
@@ -220,6 +220,12 @@
     </ClInclude>
     <ClInclude Include="Monkey.h">
       <Filter>MainGame\Monster\Monkey</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>MainGame\CollisionManager</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>2D Framework\Manager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

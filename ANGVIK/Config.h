@@ -11,6 +11,10 @@ using namespace std;
 
 #pragma comment(lib, "winmm.lib")
 
+enum class IFF { IDLE, PLAYER, ENEMY };
+enum class Object { IDLE, WEAPON, TRAP };
+enum class direction { LEFT = -1, RIGHT = 1};
+
 // 창 시작위치
 #define WIN_START_POS_X	200
 #define WIN_START_POS_Y	100
@@ -42,6 +46,7 @@ using namespace std;
 #include "GameManager.h"
 #include "MapColliderManager.h"
 #include "CameraManager.h"
+#include "InputManager.h"
 
 extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;
