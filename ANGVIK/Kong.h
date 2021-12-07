@@ -37,8 +37,6 @@ private:
 	// 충돌체크 함수로 제외할때 지역변수화 하기.
 	RECT testRect = {};
 
-	IFF KongIff = IFF::ENEMY;
-	Object kongObject = Object::IDLE;
 
 	direction dir = direction::LEFT;
 	// 사정거리 디버깅

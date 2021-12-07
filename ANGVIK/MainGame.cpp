@@ -29,6 +29,7 @@ HRESULT MainGame::Init()
 void MainGame::Update()
 {
 	TimerManager::GetSingleton()->Update();
+
 	Input::Update();
 
 	SceneManager::GetSingleton()->Update();

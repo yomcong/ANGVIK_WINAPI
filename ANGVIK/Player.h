@@ -22,6 +22,9 @@ public:
 	void ChangeState(State state);
 	void DoAnimation();
 
+	HRESULT FindImage();
+	void PosUpdate();
+
 private:
 	Image* backArm = nullptr;	// 왼팔
 	Image* frontArm = nullptr;	// 오른팔
@@ -33,10 +36,21 @@ private:
 	Image* R_frontArm = nullptr;// 오른팔
 	Image* R_head = nullptr;	// 몸통
 
+	// 랜더링 포스
+	POINT armPos = {};
+	POINT headPos = {};
+	POINT bodyPos = {};
+
 	// 캐릭터 애니메이션 프레임 관리
 	POINT bodyFrame = { 0, 0 };
 	POINT frontArmFrame = { 11, 0 };
 	POINT backArmFrame = { 13, 0 };
+
+	// 캐릭터 방향
+	direction playerDir = direction::RIGHT;
+
+	// 앉아있을때 카메라 내리기
+	bool sitDownCamera = false;
 
 	// 팔 흔들기 변수
 	bool b_frontArmMove = true;
@@ -50,9 +64,6 @@ private:
 	const POINT frontArmMaxFrame = { 15, 2 };
 	const POINT backArmMaxFrame = { 15, 2 };
 	const POINT bodyMaxFrame = { 11, 1 };
-
-	IFF playerIFF = IFF::PLAYER;
-	Object playerObject = Object::IDLE;
 
 	// 점프력
 	float jumpPower = 0.0f;

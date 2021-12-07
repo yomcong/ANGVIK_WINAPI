@@ -117,7 +117,6 @@ void Kong::Update()
 	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
 	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
 	
-	//cout << pos.x << "\n";
 	if (Input::GetButtonDown(VK_NUMPAD9))
 	{
 		DBrect == false ? DBrect = true : DBrect = false;
@@ -126,7 +125,7 @@ void Kong::Update()
 	{
 		DBRangeRect == false ? DBRangeRect = true : DBRangeRect = false;
 	}
-	
+
 	shape.left = (int)pos.x - bodySize.x / 2;
 	shape.top = (int)pos.y - bodySize.y / 2;
 	shape.right = (int)pos.x + bodySize.x / 2;

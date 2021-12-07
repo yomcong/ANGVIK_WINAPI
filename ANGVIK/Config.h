@@ -11,8 +11,8 @@ using namespace std;
 
 #pragma comment(lib, "winmm.lib")
 
-enum class IFF { IDLE, PLAYER, ENEMY };
-enum class Object { IDLE, WEAPON, TRAP };
+enum class SubjectTag { IDLE, PLAYER, ENEMY, ITEM, TRAP };
+enum class EventTag { IDLE, ADD, COLLISION, RELEASE, };
 enum class direction { LEFT = -1, RIGHT = 1};
 
 // 창 시작위치

@@ -36,7 +36,6 @@ int APIENTRY WinMain(_In_ HINSTANCE _hInstance, _In_opt_ HINSTANCE _hPrevInstanc
 	//_CrtSetBreakAlloc(481);
 	//_CrtSetBreakAlloc(417);
 
-
 	// 윈도우를 생성하기 위한 기본 셋팅
 	g_hInstance = _hInstance;
 	WNDCLASS wndClass;
@@ -100,6 +99,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE:
 		g_ptMouse.x = LOWORD(lParam);
 		g_ptMouse.y = HIWORD(lParam);
+		break;
 	case WM_TIMER:
 		//Input::Update();
 		g_mainGame.Update();

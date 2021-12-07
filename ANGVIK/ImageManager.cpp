@@ -15,13 +15,13 @@ void ImageManager::Init()
 	// 타이틀 씬
 	AddImage("image/etc/배경.bmp", 960, 540);								//타이틀 씬
 	AddImage("image/etc/메뉴바.bmp", 960, 36);								//타이틀 메뉴 바
-	AddImage("image/etc/start.bmp", 64, 14, true, RGB(255, 255, 255));		//타이틀 메뉴 start text
-	AddImage("image/etc/options.bmp", 79, 18, true, RGB(255, 255, 255));	//타이틀 메뉴 option text
+	AddImage("image/etc/start.bmp", 64, 14, true, RGB(0, 0, 0));		//타이틀 메뉴 start text
+	AddImage("image/etc/options.bmp", 79, 18, true, RGB(0, 0, 0));	//타이틀 메뉴 option text
 	AddImage("image/etc/exit.bmp", 47, 14, true, RGB(255, 255, 255));		//타이틀 메뉴 exit text
 	//AddImage("image/etc/선택.bmp", 1363, 34, 8, 1, true, RGB(255, 255, 255));//	선택창 에니매이션
 	AddImage("image/etc/선택2.bmp", 1384, 34, 8, 1, true, RGB(255, 255, 255));// 선택창 에니매이션
 	AddImage("image/etc/로고.bmp", 330, 78, true, RGB(255, 255, 255));//타이틀 메뉴 ANGVIK 로고
-
+	
 
 	// 스테이지 
 	AddImage("image/Stage/Stage1-Background.bmp", 6709, 1290, true, RGB(255, 255, 255)); // 스테이지1 백그라운드
@@ -55,15 +55,22 @@ void ImageManager::Init()
 	AddImage("image/monster/kong_idle_6f.bmp", 192, 54, 6, 1, true, RGB(255, 255, 255));// 기본자세
 	AddImage("image/monster/R_kong_atk_8f.bmp", 272, 40, 8, 1, true, RGB(255, 255, 255));	// 공격모션(Reverse)
 	AddImage("image/monster/R_kong_idle_6f.bmp", 192, 54, 6, 1, true, RGB(255, 255, 255));// 기본자세(Reverse)
-
 	// --콩 총알--
 	AddImage("image/monster/kongtan.bmp", 168, 18, 6, 1, true, RGB(255, 255, 255));		// 총알 오른방향
 	AddImage("image/monster/kongtan22.bmp", 168, 18, 6, 1, true, RGB(255, 255, 255));	// 총알 왼쪽방향
+
 	// 몽키
 	AddImage("image/monster/원숭이.bmp", 416, 46, 8, 1, true, RGB(255, 255, 255));	// 몽키
 	AddImage("image/monster/R_원숭이.bmp", 416, 46, 8, 1, true, RGB(255, 255, 255));	// 몽키(Reverse)
 
-	
+	// 엔트
+	AddImage("image/monster/Ent_move_6f.bmp", 468, 86, 6, 1, true, RGB(255, 255, 255));	// 엔트
+	AddImage("image/monster/R_Ent_move_6f.bmp", 468, 86, 6, 1, true, RGB(255, 255, 255));// 엔트(Reverse)
+	AddImage("image/monster/Ent_atk_6f.bmp", 444, 82, 6, 1, true, RGB(255, 255, 255));	// 엔트 공격
+	AddImage("image/monster/R_Ent_atk_6f.bmp", 444, 82, 6, 1, true, RGB(255, 255, 255));// 엔트 공격(Reverse)
+	// 엔트 나뭇잎
+	AddImage("image/monster/leaf4.bmp", 15, 15, true, RGB(255, 255, 255));	// 나뭇잎 
+
 	//로딩 씬	
 }
 

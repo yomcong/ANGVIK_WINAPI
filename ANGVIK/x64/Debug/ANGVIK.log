@@ -1,7 +1,8 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 중간 디렉터리(x64\Debug\)에 다른 프로젝트(210830_WinMain.vcxproj)에서 공유하는 파일이 포함되어 있습니다.  이로 인해 잘못된 정리 및 다시 빌드 동작이 수행될 수 있습니다.
-  MainGame.cpp
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\MainGame.cpp(57,69): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\ANGVIK\ANGVIK\MainGame.cpp(59,69): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  Player.cpp
+  Ent.cpp
+  EntAmmo.cpp
+  EntAmmoManager.cpp
+  Kong.cpp
+  KongAmmo.cpp
   코드를 생성하고 있습니다...
   ANGVIK.vcxproj -> C:\Users\LEE\Desktop\ANGVIK\ANGVIK\x64\Debug\ANGVIK.exe

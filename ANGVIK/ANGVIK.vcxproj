@@ -50,7 +50,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="Ent.cpp" />
+    <ClCompile Include="EntAmmo.cpp" />
+    <ClCompile Include="EntAmmoManager.cpp" />
     <ClCompile Include="Extern.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -160,9 +163,11 @@
     <ClCompile Include="MapColliderManager.cpp" />
     <ClCompile Include="Monkey.cpp" />
     <ClCompile Include="MonsterManager.cpp" />
+    <ClCompile Include="Observer.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="StageScene.cpp" />
+    <ClCompile Include="Subject.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TimerManager.cpp" />
     <ClCompile Include="TitleScene.cpp" />
@@ -173,6 +178,9 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="CommonFunction.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="Ent.h" />
+    <ClInclude Include="EntAmmo.h" />
+    <ClInclude Include="EntAmmoManager.h" />
     <ClInclude Include="Extern.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="GameManager.h" />
@@ -192,10 +200,12 @@
     <ClInclude Include="MapColliderManager.h" />
     <ClInclude Include="Monkey.h" />
     <ClInclude Include="MonsterManager.h" />
+    <ClInclude Include="Observer.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="StageScene.h" />
+    <ClInclude Include="Subject.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TimerManager.h" />
     <ClInclude Include="TitleScene.h" />

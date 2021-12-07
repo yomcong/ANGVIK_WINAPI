@@ -49,6 +49,12 @@
     <Filter Include="MainGame\CollisionManager">
       <UniqueIdentifier>{4cf0208a-eca5-4b92-8d0b-0d5501ed07e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Observer">
+      <UniqueIdentifier>{3b2ff5b8-6fa2-4dde-9fd2-69b392a8f63a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Monster\Ent">
+      <UniqueIdentifier>{0e158ece-5918-4a20-a9d7-f50002846171}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -131,6 +137,21 @@
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>2D Framework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>MainGame\Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="Subject.cpp">
+      <Filter>MainGame\Observer</Filter>
+    </ClCompile>
+    <ClCompile Include="Ent.cpp">
+      <Filter>MainGame\Monster\Ent</Filter>
+    </ClCompile>
+    <ClCompile Include="EntAmmoManager.cpp">
+      <Filter>MainGame\Monster\Ent</Filter>
+    </ClCompile>
+    <ClCompile Include="EntAmmo.cpp">
+      <Filter>MainGame\Monster\Ent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +247,21 @@
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>2D Framework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Subject.h">
+      <Filter>MainGame\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>MainGame\Observer</Filter>
+    </ClInclude>
+    <ClInclude Include="Ent.h">
+      <Filter>MainGame\Monster\Ent</Filter>
+    </ClInclude>
+    <ClInclude Include="EntAmmoManager.h">
+      <Filter>MainGame\Monster\Ent</Filter>
+    </ClInclude>
+    <ClInclude Include="EntAmmo.h">
+      <Filter>MainGame\Monster\Ent</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
