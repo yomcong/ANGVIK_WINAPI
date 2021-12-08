@@ -4,13 +4,13 @@
 void ImageManager::Init()
 {
 	// 아이템 
-	AddImage("Image/Item/Item1.bmp", 32, 32, true, RGB(255, 0, 255));
+	/*AddImage("Image/Item/Item1.bmp", 32, 32, true, RGB(255, 0, 255));
 	AddImage("Image/Item/Item2.bmp", 32, 32, true, RGB(255, 0, 255));
 	AddImage("Image/Item/Item3.bmp", 32, 32, true, RGB(255, 0, 255));
 	AddImage("Image/Item/Item4.bmp", 32, 32, true, RGB(255, 0, 255));
 	AddImage("Image/Item/Item5.bmp", 32, 32, true, RGB(255, 0, 255));
 	AddImage("Image/Item/Item6.bmp", 32, 32, true, RGB(255, 0, 255));
-	AddImage("Image/Item/Item7.bmp", 32, 32, true, RGB(255, 0, 255));
+	AddImage("Image/Item/Item7.bmp", 32, 32, true, RGB(255, 0, 255));*/
 
 	// 타이틀 씬
 	AddImage("image/etc/배경.bmp", 960, 540);								//타이틀 씬
@@ -21,7 +21,6 @@ void ImageManager::Init()
 	//AddImage("image/etc/선택.bmp", 1363, 34, 8, 1, true, RGB(255, 255, 255));//	선택창 에니매이션
 	AddImage("image/etc/선택2.bmp", 1384, 34, 8, 1, true, RGB(255, 255, 255));// 선택창 에니매이션
 	AddImage("image/etc/로고.bmp", 330, 78, true, RGB(255, 255, 255));//타이틀 메뉴 ANGVIK 로고
-	
 
 	// 스테이지 
 	AddImage("image/Stage/Stage1-Background.bmp", 6709, 1290, true, RGB(255, 255, 255)); // 스테이지1 백그라운드
@@ -61,7 +60,6 @@ void ImageManager::Init()
 	AddImage("image/monster/모다피_총알.bmp", 196, 43, 7, 1, true, RGB(255, 255, 255));	// 총알 이펙트
 	AddImage("image/monster/R_모다피_총알.bmp", 196, 43, 7, 1, true, RGB(255, 255, 255));// 총알 이펙트(Reverse)
 
-
 	// 몽키
 	AddImage("image/monster/원숭이.bmp", 416, 46, 8, 1, true, RGB(255, 255, 255));	// 몽키
 	AddImage("image/monster/R_원숭이.bmp", 416, 46, 8, 1, true, RGB(255, 255, 255));	// 몽키(Reverse)
@@ -81,7 +79,10 @@ void ImageManager::Init()
 	AddImage("image/monster/R_leaf3.bmp", 15, 15, true, RGB(255, 255, 255));// 나뭇잎 3(Reverse)
 	AddImage("image/monster/R_leaf4.bmp", 15, 15, true, RGB(255, 255, 255));// 나뭇잎 4(Reverse)
 
-	//로딩 씬	
+	// 함정
+	AddImage("image/Stage/treetrap.bmp", 53, 90, 1, 6, true, RGB(255, 255, 255));	// 트랩
+	AddImage("image/Stage/R_treetrap.bmp", 53, 90, 1, 6, true, RGB(255, 255, 255));	// 트랩(Reverse)
+
 }
 
 void ImageManager::Release()

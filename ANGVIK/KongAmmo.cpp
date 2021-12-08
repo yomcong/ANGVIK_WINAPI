@@ -24,7 +24,7 @@ HRESULT KongAmmo::Init()
 		return E_FAIL;
 	}
 
-	moveSpeed = 100.0f;
+	moveSpeed = 150.0f;
 
 	bodySize.x = 8;
 	bodySize.y = 8;
@@ -46,7 +46,7 @@ void KongAmmo::Update()
 		// 애니메이션
 		frameCount += TimerManager().GetSingleton()->GetDeltaTime();
 
-		if (frameCount > 0.125)
+		if (frameCount > 0.0625)
 		{
 			if (b_ISHit)
 			{

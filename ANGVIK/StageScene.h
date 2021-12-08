@@ -18,6 +18,7 @@ class Player;
 class Kong;
 class MonsterManager;
 class Image;
+class TrapManager;
 class StageScene : public GameEntity	
 {
 public:
@@ -38,6 +39,7 @@ private:
 
 	Player* player = nullptr;
 	MonsterManager* monsterManager = nullptr;
+	TrapManager* trapManager = nullptr;
 	//Kong* kong = nullptr;
 
 	// ÇÈ¼¿ Ãæµ¹

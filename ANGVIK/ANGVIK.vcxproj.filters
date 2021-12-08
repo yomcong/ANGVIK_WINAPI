@@ -55,6 +55,9 @@
     <Filter Include="MainGame\Monster\Ent">
       <UniqueIdentifier>{0e158ece-5918-4a20-a9d7-f50002846171}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\TrapManager">
+      <UniqueIdentifier>{18eed0a5-12c6-4890-848f-faa29b454979}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -126,9 +129,6 @@
     <ClCompile Include="KongAmmo.cpp">
       <Filter>MainGame\Monster\Kong</Filter>
     </ClCompile>
-    <ClCompile Include="KongAmmoManager.cpp">
-      <Filter>MainGame\Monster\Kong</Filter>
-    </ClCompile>
     <ClCompile Include="Monkey.cpp">
       <Filter>MainGame\Monster\Monkey</Filter>
     </ClCompile>
@@ -147,11 +147,17 @@
     <ClCompile Include="Ent.cpp">
       <Filter>MainGame\Monster\Ent</Filter>
     </ClCompile>
-    <ClCompile Include="EntAmmoManager.cpp">
-      <Filter>MainGame\Monster\Ent</Filter>
-    </ClCompile>
     <ClCompile Include="EntAmmo.cpp">
       <Filter>MainGame\Monster\Ent</Filter>
+    </ClCompile>
+    <ClCompile Include="AmmoManager.cpp">
+      <Filter>MainGame\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="TrapManager.cpp">
+      <Filter>MainGame\TrapManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Trap.cpp">
+      <Filter>MainGame\TrapManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,9 +242,6 @@
     <ClInclude Include="KongAmmo.h">
       <Filter>MainGame\Monster\Kong</Filter>
     </ClInclude>
-    <ClInclude Include="KongAmmoManager.h">
-      <Filter>MainGame\Monster\Kong</Filter>
-    </ClInclude>
     <ClInclude Include="Monkey.h">
       <Filter>MainGame\Monster\Monkey</Filter>
     </ClInclude>
@@ -257,11 +260,17 @@
     <ClInclude Include="Ent.h">
       <Filter>MainGame\Monster\Ent</Filter>
     </ClInclude>
-    <ClInclude Include="EntAmmoManager.h">
-      <Filter>MainGame\Monster\Ent</Filter>
-    </ClInclude>
     <ClInclude Include="EntAmmo.h">
       <Filter>MainGame\Monster\Ent</Filter>
+    </ClInclude>
+    <ClInclude Include="AmmoManager.h">
+      <Filter>MainGame\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="TrapManager.h">
+      <Filter>MainGame\TrapManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Trap.h">
+      <Filter>MainGame\TrapManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

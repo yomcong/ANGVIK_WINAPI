@@ -1,7 +1,7 @@
 #include "Ent.h"
 #include "Player.h"
 #include "Image.h"
-#include "EntAmmoManager.h"
+#include "AmmoManager.h"
 
 HRESULT Ent::Init(Player* target, POINTFLOAT pos)
 {
@@ -36,7 +36,7 @@ HRESULT Ent::Init(Player* target, POINTFLOAT pos)
 		return E_FAIL;
 	}
 	
-	ammoManager = new EntAmmoManager;
+	ammoManager = new AmmoManager;
 	ammoManager->Init(target);
 
 	this->target = target;
@@ -51,7 +51,9 @@ HRESULT Ent::Init(Player* target, POINTFLOAT pos)
 	shape.top = (int)pos.y - bodySize.y / 2;
 	shape.right = (int)pos.x + bodySize.x / 2;
 	shape.bottom = (int)pos.y + bodySize.y / 2;
-
+	
+	dir = direction::RIGHT;
+	
 
 	renderPos = pos;
 
@@ -64,7 +66,7 @@ void Ent::Update()
 	// 공격, 공격 준비 상태가 아닐경우 이동
 	if (false == (b_attackReady || b_attack))
 	{
-		if (MapColliderManager::GetSingleton()->AutoFall(pos, shape, moveSpeed, bodySize))
+		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize))
 		{
 			pos.y += 3.0f;
 		}
@@ -112,7 +114,7 @@ void Ent::Update()
 				b_attack = true;
 				b_attackReady = false;
 				attackEffectFrame.x = attackEffectMaxFrame.x;
-				ammoManager->Fire(pos, (int)dir);
+				ammoManager->EntFire(pos, (int)dir);
 
 			}
 			else

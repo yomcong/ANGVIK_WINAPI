@@ -38,8 +38,8 @@ HRESULT EntAmmo::Init()
 
 	moveSpeed = 100.0f;
 
-	bodySize.x = 8;
-	bodySize.y = 8;
+	bodySize.x = 6;
+	bodySize.y = 6;
 
 
 	return S_OK;

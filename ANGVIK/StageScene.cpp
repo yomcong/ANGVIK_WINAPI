@@ -5,12 +5,12 @@
 #include "Player.h"
 #include "Kong.h"
 #include "MonsterManager.h"
+#include "TrapManager.h"
 
 #define stage1Width 6709
 #define stage1Height 1290
 
 // 맵 이동 디버깅용
-#define moveSpeed 5.0f
 
 
 HRESULT StageScene::Init()
@@ -35,15 +35,14 @@ HRESULT StageScene::Init()
 	mapPos.x = 6709 / 2;
 	mapPos.y = 1290 / 2;
 
-	// 플레이어
 	player = new Player;
-	player->Init();
-
-	// 몬스터 매니저
 	monsterManager = new MonsterManager;
+	trapManager = new TrapManager;
+
+	player->Init(trapManager);
 	monsterManager->Init(player);
-
-
+	trapManager->Init();
+	
 	return S_OK;
 }
 
@@ -51,40 +50,7 @@ void StageScene::Update()
 {
 	player->Update();
 	monsterManager->Update();
-
-	// 디버그용 맵이동
-	//if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD6))
-	//{
-	//	mapPos.x = 6709 / 2 - CameraManager::GetSingleton()->GetPos().x;	//(int)moveSpeed;
-	//}
-	//if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD4))
-	//{
-	//	if (mapPos.x > 6709 / 2)
-	//	{
-	//		mapPos.x = 6709 / 2;
-	//	}
-	//	else
-	//	{
-	//		mapPos.x = 6709 / 2 - CameraManager::GetSingleton()->GetPos().x;	//(int)moveSpeed;
-	//	}
-	//}
-	//if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD2))
-	//{
-	//	mapPos.y = 1290 / 2 - CameraManager::GetSingleton()->GetPos().y; //(int)moveSpeed;
-	//}
-	//if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD8))
-	//{
-	//	if (mapPos.y > 1290 / 2)
-	//	{
-	//		mapPos.y = 1290 / 2;
-	//	}
-	//	else
-	//	{
-	//		mapPos.y = 1290 / 2 - CameraManager::GetSingleton()->GetPos().y; //(int)moveSpeed
-	//	}
-	//}
-
-
+	trapManager->Update();
 	// 픽셀 맵 디버깅 용
 	if (Input::GetButtonDown(VK_NUMPAD7))
 	{
@@ -97,16 +63,17 @@ void StageScene::Render(HDC hdc)
 {
 	stageBackgruond2->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
 		mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);	// 배경
-	stageBackgruond2->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
-		mapPos.y/2 - (int)CameraManager::GetSingleton()->GetPos().y);	// 배경 좀더 위까지.
+
+	// 배경 임시로 랜더
+	stageBackgruond2->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x - 5,
+		mapPos.y/2 - (int)CameraManager::GetSingleton()->GetPos().y);
 
 	stageBackgruond->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
 		mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);	// 맵 
 
 	player->Render(hdc);
 	monsterManager->Render(hdc);
-
-	//kong->Render(hdc);
+	trapManager->Render(hdc);
 
 	// 픽셀 맵 디버깅
 	if (debugPixelMap)
@@ -120,6 +87,6 @@ void StageScene::Release()
 {
 	SAFE_RELEASE(player);
 	SAFE_RELEASE(monsterManager);
-
+	SAFE_RELEASE(trapManager);
 
 }

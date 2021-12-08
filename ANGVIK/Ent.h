@@ -4,7 +4,7 @@
 
 class Player;
 class Image;
-class EntAmmoManager;
+class AmmoManager;
 class Ent : public GameObject
 {
 public:
@@ -30,7 +30,7 @@ private:
 	POINT attackEffectFrame = { 6, 0 };
 
 	// ÃÑ¾Ë
-	EntAmmoManager* ammoManager = nullptr;
+	AmmoManager* ammoManager = nullptr;
 	// Å¸°ÙÁÂÇ¥
 	Player* target = nullptr;
 

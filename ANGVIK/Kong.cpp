@@ -1,6 +1,6 @@
 #include "Kong.h"
 #include "Image.h"
-#include "KongAmmoManager.h"
+#include "AmmoManager.h"
 #include "Player.h"
 
 // 플레이어 조준하는 삼각함수 계산 다시해야함
@@ -27,7 +27,7 @@ HRESULT Kong::Init(Player* target, POINTFLOAT pos)
 	{
 		return E_FAIL;
 	}
-	ammoManager = new KongAmmoManager;
+	ammoManager = new AmmoManager;
 	ammoManager->Init(target);
 
 	this->target = target;
@@ -94,7 +94,7 @@ void Kong::Update()
 				this->dir = direction::LEFT;
 			}
 
-			ammoManager->Fire(pos, targetAngle, dir);
+			ammoManager->KongFire(pos, targetAngle, dir);
 
 			testElpsedCount = 0.0f;
 		}
@@ -158,6 +158,6 @@ void Kong::Render(HDC hdc)
 
 void Kong::Release()
 {
-	SAFE_DELETE(ammoManager);
+	SAFE_RELEASE(ammoManager);
 	//SAFE_RELEASE(target);	
 }

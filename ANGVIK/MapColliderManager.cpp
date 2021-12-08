@@ -19,7 +19,7 @@ void MapColliderManager::Update()
 
 }
 
-bool MapColliderManager::AutoFall(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize)
+bool MapColliderManager::IsFalling(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize)
 {
 	//float tempPosY = y + moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 

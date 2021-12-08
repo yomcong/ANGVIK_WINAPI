@@ -7,13 +7,14 @@ enum class Action { IDLE, LEFTMOVE, RIGHTMOVE, ATTACK };
 
 //class PixelCollider;
 class Imgae;
+class TrapManager;
 class Player : public GameObject
 {
 public:
 	//static enum class Action { IDLE, LeftMove, RightMove, Jump, SitDown, Attack, Hit };
 	virtual ~Player() = default;
 
-	virtual HRESULT Init();
+	virtual HRESULT Init(TrapManager* trapCollider);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
@@ -22,7 +23,7 @@ public:
 	void ChangeState(State state);
 	void DoAnimation();
 
-	HRESULT FindImage();
+	bool FindImage();
 	void PosUpdate();
 
 private:
@@ -54,10 +55,6 @@ private:
 	bool b_frontArmMove = true;
 	bool b_backArmMove = true;
 
-	// 이동 애니메이션 시작프레임
-	const POINT frontArmStartFrame = { 9, 0 };
-	const POINT backArmStartFrame = { 11, 0 };
-	const POINT bodyStartFrame = { 0, 0 };
 	// 이동 애니메이션 맥스프레임
 	const POINT frontArmMaxFrame = { 15, 2 };
 	const POINT backArmMaxFrame = { 15, 2 };
@@ -69,6 +66,8 @@ private:
 	// 캐릭터 상태관리
 	Action action = Action::IDLE;
 	State state = State::IDLE;
+
+	TrapManager* DBtrapManager = nullptr;
 
 	// 디버그용
 	Image* DBbackArm = nullptr;

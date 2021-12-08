@@ -4,7 +4,7 @@
 
 class Image;
 class Player;
-class KongAmmoManager;
+class AmmoManager;
 class Kong : public GameObject
 {
 public:
@@ -27,7 +27,7 @@ private:
 	POINT attackFrame = { 0,0 };
 
 	// ÃÑ¾Ë
-	KongAmmoManager* ammoManager = nullptr;
+	AmmoManager* ammoManager = nullptr;
 	// Å¸°ÙÁÂÇ¥
 	Player* target = nullptr;
 

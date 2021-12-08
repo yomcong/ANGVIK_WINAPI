@@ -9,8 +9,6 @@
 
 HRESULT MonsterManager::Init(Player* target)
 {
-	kongMaxCount = 3;
-
 	this->target = target;
 
 	KongSpawn();

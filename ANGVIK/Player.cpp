@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Image.h"
+#include "TrapManager.h"
 
 // 캐릭터 이동
 // 팔 자연스럽게 해주기
@@ -23,10 +24,13 @@
 #define StartPointX 300.0f
 #define StartPointY 350.0f
 
-
-HRESULT Player::Init()
+// 테스트용 매개변수
+HRESULT Player::Init(TrapManager* trapCollider)
 {
-	FindImage();
+	if (false == FindImage())
+	{
+		return E_FAIL;
+	}
 
 	pos.x = StartPosX;
 	pos.y = StartPosY;
@@ -43,6 +47,7 @@ HRESULT Player::Init()
 	shape.right = (int)pos.x + (bodySize.x / 2);
 	shape.bottom = (int)pos.y + (bodySize.y / 2);
 
+	DBtrapManager = trapCollider;
 	return S_OK;
 }
 
@@ -51,11 +56,14 @@ void Player::Update()
 	// 점프상태가 아닐경우
 	if (false == (state == State::JUMP))
 	{
-		// 낙하상태 확인
-		if (MapColliderManager::GetSingleton()->AutoFall(pos, shape, moveSpeed, bodySize))
+		// 내리막길(이동+낙하) 일경우 스테이트를 계속 바꿔주면서 랜더링이 굉장히 부자연스러워짐. 고쳐야함
+		// 테스트용 트랩 충돌체크 최적화 하기
+		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize) &&
+			(false == DBtrapManager->CheckCollision(shape)) )
 		{
-			state = State::Fall;
+			ChangeState( State::Fall);
 
+			// 카메라 예외조건
 			if (renderPos.y < StartPointY)
 			{
 				renderPos.y += 3.0f;
@@ -71,10 +79,8 @@ void Player::Update()
 			if (false == (state == State::SITDOWN))
 			{
 				ChangeState(State::IDLE);
-
 			}
 		}
-
 	}
 	// 점프 상태
 	else
@@ -82,6 +88,7 @@ void Player::Update()
 		// 점프중 충돌검사
 		if (MapColliderManager::GetSingleton()->Jump(pos, shape, moveSpeed, bodySize))
 		{
+			// 카메라 예외조건
 			if (CameraManager::GetSingleton()->GetPos().y <= 100)
 			{
 				renderPos.y -= 3.0f;
@@ -110,12 +117,12 @@ void Player::Update()
 	// 포스값 업데이트
 	PosUpdate();
 
-	//플레이어 이동
+	//플레이어 이동 
 	if (false == (state == State::SITDOWN))
 	{
 		if (Input::GetButton(VK_LEFT))
 		{
-			// 카메라매니저가 한쪽 끝일경우
+			// 카메라 예외조건
 			if (CameraManager::GetSingleton()->GetPos().x <= 0)
 			{
 				renderPos.x += MapColliderManager::GetSingleton()->
@@ -136,7 +143,6 @@ void Player::Update()
 		}
 		if (Input::GetButton(VK_RIGHT))
 		{
-			// 카메라매니저 중심이 아닐경우 캐릭터를 이동
 			// 오른쪽 끝 예외처리 해야함
 			if (renderPos.x < StartPointX)
 			{
@@ -145,7 +151,8 @@ void Player::Update()
 			else
 			{
 				POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
-					Move(pos, shape, moveSpeed, 1, bodySize);
+				Move(pos, shape, moveSpeed, 1, bodySize);
+
 				CameraManager::GetSingleton()->SetPosX(tempPos.x);
 				renderPos.y += tempPos.y;
 			}
@@ -174,6 +181,7 @@ void Player::Update()
 		}
 	}
 
+	// 시점 부드럽게 + 캐릭터 랜더 좀더 수정
 	if (Input::GetButton(VK_DOWN))
 	{
 		// 점프중이거나 낙하상태가 아닐경우
@@ -317,12 +325,12 @@ void Player::ChangeAction(Action action)
 
 		frameCount = 0.0f;
 		// 점프중일때는 무브동작 X
-		if ((action == Action::RIGHTMOVE || action == Action::LEFTMOVE) && false == (state == State::JUMP))
+		if ((action == Action::RIGHTMOVE || action == Action::LEFTMOVE) )
 		{
 			b_frontArmMove = true;
 			b_backArmMove = true;
-			frontArmFrame.x = frontArmStartFrame.x;
-			backArmFrame.x = backArmStartFrame.x;
+			frontArmFrame.x = 9;
+			backArmFrame.x = 11;
 			bodyFrame.y = 1;
 			frontArmFrame.y = 1;
 			backArmFrame.y = 1;
@@ -344,8 +352,8 @@ void Player::ChangeState(State state)
 		{
 			b_frontArmMove = true;
 			b_backArmMove = true;
-			frontArmFrame.x = frontArmStartFrame.x;
-			backArmFrame.x = backArmStartFrame.x;
+			frontArmFrame.x = 9;
+			backArmFrame.x = 11;
 			bodyFrame.y = 1;
 			frontArmFrame.y = 0;
 			backArmFrame.y = 0;
@@ -428,7 +436,7 @@ void Player::DoAnimation()
 				}
 				else
 				{
-					if (frontArmFrame.x == frontArmStartFrame.x)
+					if (frontArmFrame.x == 9)
 					{
 						++frontArmFrame.x;
 						b_frontArmMove = true;
@@ -453,7 +461,7 @@ void Player::DoAnimation()
 				}
 				else
 				{
-					if (backArmFrame.x == backArmStartFrame.x)
+					if (backArmFrame.x == 11)
 					{
 						++backArmFrame.x;
 						b_backArmMove = true;
@@ -549,47 +557,47 @@ void Player::DoAnimation()
 
 }
 
-HRESULT Player::FindImage()
+bool Player::FindImage()
 {
 	backArm = ImageManager::GetSingleton()->FindImage("image/player/unarmed/arm_back.bmp");
 	if (backArm == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	frontArm = ImageManager::GetSingleton()->FindImage("image/player/unarmed/arm_front.bmp");
 	if (frontArm == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	body = ImageManager::GetSingleton()->FindImage("image/player/unarmed/body.bmp");
 	if (body == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	head = ImageManager::GetSingleton()->FindImage("image/player/unarmed/head_1.bmp");
 	if (head == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	R_body = ImageManager::GetSingleton()->FindImage("image/player/unarmed/R_body.bmp");
 	if (R_body == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	R_backArm = ImageManager::GetSingleton()->FindImage("image/player/unarmed/R_arm_back.bmp");
 	if (R_backArm == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	R_frontArm = ImageManager::GetSingleton()->FindImage("image/player/unarmed/R_arm_front.bmp");
 	if (R_frontArm == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	R_head = ImageManager::GetSingleton()->FindImage("image/player/unarmed/R_head_1.bmp");
 	if (R_head == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 
 
@@ -597,50 +605,50 @@ HRESULT Player::FindImage()
 	DBbackArm = ImageManager::GetSingleton()->FindImage("image/player/unarmed/arm_back.bmp");
 	if (DBbackArm == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	DBfrontArm = ImageManager::GetSingleton()->FindImage("image/player/unarmed/arm_front.bmp");
 	if (DBfrontArm == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	DBbody = ImageManager::GetSingleton()->FindImage("image/player/unarmed/body.bmp");
 	if (DBbody == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	DBhead0 = ImageManager::GetSingleton()->FindImage("image/player/unarmed/head_0.bmp");
 	if (DBhead0 == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	DBhead1 = ImageManager::GetSingleton()->FindImage("image/player/unarmed/head_1.bmp");
 	if (DBhead1 == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	DBhead2 = ImageManager::GetSingleton()->FindImage("image/player/unarmed/head_2.bmp");
 	if (DBhead2 == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	DBhead3 = ImageManager::GetSingleton()->FindImage("image/player/unarmed/head_3.bmp");
 	if (DBhead3 == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	DBgoldBody = ImageManager::GetSingleton()->FindImage("image/player/gold/body.bmp");
 	if (DBgoldBody == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 	DBgoldFoot = ImageManager::GetSingleton()->FindImage("image/player/gold/foot.bmp");
 	if (DBgoldFoot == nullptr)
 	{
-		return E_FAIL;
+		return false;
 	}
 
-	return S_OK;
+	return true;
 }
 
 void Player::PosUpdate()

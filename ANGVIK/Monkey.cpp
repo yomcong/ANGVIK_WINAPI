@@ -39,7 +39,7 @@ HRESULT Monkey::Init(Player* target, POINTFLOAT pos)
 
 void Monkey::Update()
 {
-	if (MapColliderManager::GetSingleton()->AutoFall(pos, shape, moveSpeed, bodySize))
+	if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize))
 	{
 		pos.y += 3.0f;
 	}
