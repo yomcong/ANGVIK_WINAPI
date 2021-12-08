@@ -6,7 +6,11 @@ class Image;
 class ImageManager : public Singleton<ImageManager>
 {
 private:
-	map<string, Image*>	mapImages;
+
+	//map<string, Image*>	mapImages;
+	
+	std::map<string, Image*>	mapImages;
+
 	//map<string, map<int, int>>	mapTest;
 
 	//"enemy_3_bullet"

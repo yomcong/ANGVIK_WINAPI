@@ -1,4 +1,6 @@
 #pragma once
+
+
 #include <Windows.h>
 #include <stdlib.h>
 #include <math.h>
@@ -14,6 +16,8 @@
 #include "GameManager.h"
 #include "MapColliderManager.h"
 #include "CameraManager.h"
+#include "InputManager.h"
 
 using namespace std;
 
+#pragma comment(lib, "winmm.lib")

@@ -20,10 +20,14 @@ private:
 	Image* entAttack = nullptr;
 	Image* R_basicEnt = nullptr;
 	Image* R_entAttack = nullptr;
+	Image* attackEffect = nullptr;
+	Image* R_attackEffect = nullptr;
+
 
 	// 애니메이션 프레임
 	POINT basicFrame = { 0,0 };
-	POINT atackFrame = { 0,0 };
+	POINT attackFrame = { 0,0 };
+	POINT attackEffectFrame = { 6, 0 };
 
 	// 총알
 	EntAmmoManager* ammoManager = nullptr;
@@ -31,10 +35,16 @@ private:
 	Player* target = nullptr;
 
 	// 맥스 프레임
-	const POINT attackMotionMaxFrame = { 6, 0 };
-	const POINT basicMaxFrame = { 6, 0 };
+	const POINT attackMaxFrame = { 5, 0 };
+	const POINT basicMaxFrame = { 5, 0 };
+	const POINT attackEffectMaxFrame = { 6, 0 };
 
-	direction dir = direction::LEFT;
+	// 공격 , 공격 준비 모션
+	bool b_attackReady = false;
+	bool b_attack = false;
+	
+	// 공격 딜레이
+	float attackDeley = 0.0f;
 
 
 };

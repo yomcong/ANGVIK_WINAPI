@@ -62,33 +62,19 @@ void Kong::Update()
 			++basicFrame.x;
 		}
 		
-		if (atackFrame.x == 7)
+		if (attackFrame.x == 7)
 		{
-			atackFrame.x = 0;
+			attackFrame.x = 0;
 		}
 		else
 		{
-			++atackFrame.x;
+			++attackFrame.x;
 		}
 		frameCount = 0;
 	}
 
-	// 디버깅용 아모발싸
-	if (KeyManager::GetSingleton()->IsOnceKeyDown('G'))
-	{
-		// 플레이어 조준하는 삼각함수 계산 다시해야함
-
-		float targetAngle = atan2f(
-			-(target->GetPos().y - pos.y),
-			target->GetPos().x - pos.x);
-
-		int dir = (int)target->GetPos().x > (int)pos.x - CameraManager::GetSingleton()->GetPos().x;
-
-		ammoManager->Fire(renderPos, targetAngle, dir);
-	}
-
-
-	if (IntersectRect(&testRect, target->GetShapeAddress(), &DBRenderShape))
+	// 테스트용 아모발싸 함수화하기
+	if (IntersectRect(&testRect, target->GetShapeAddress(), &rangeRect))
 	{
 		testElpsedCount += TimerManager::GetSingleton()->GetDeltaTime();
 
@@ -98,7 +84,7 @@ void Kong::Update()
 				-(target->GetPos().y - pos.y),
 				target->GetPos().x - pos.x);
 
-			int dir = (int)target->GetPos().x > (int)pos.x - CameraManager::GetSingleton()->GetPos().x;
+			int dir = (int)target->GetPos().x > (int)pos.x;
 			if (dir > 0)
 			{
 				this->dir = direction::RIGHT;
@@ -106,9 +92,9 @@ void Kong::Update()
 			else
 			{
 				this->dir = direction::LEFT;
-
 			}
-			ammoManager->Fire(renderPos, targetAngle, dir);
+
+			ammoManager->Fire(pos, targetAngle, dir);
 
 			testElpsedCount = 0.0f;
 		}
@@ -131,20 +117,20 @@ void Kong::Update()
 	shape.right = (int)pos.x + bodySize.x / 2;
 	shape.bottom = (int)pos.y + bodySize.y / 2;
 
-	DBRenderShape.left = (int)pos.x - bodySize.x*3;
-	DBRenderShape.top = (int)pos.y - bodySize.y*3;
-	DBRenderShape.right = (int)pos.x + bodySize.x*3;
-	DBRenderShape.bottom = (int)pos.y + bodySize.y*3;
+	rangeRect.left = (int)pos.x - bodySize.x*3;
+	rangeRect.top = (int)pos.y - bodySize.y*3;
+	rangeRect.right = (int)pos.x + bodySize.x*3;
+	rangeRect.bottom = (int)pos.y + bodySize.y*3;
 	
 }
 
 void Kong::Render(HDC hdc)
 {
 	if(DBRangeRect)
-		Rectangle(hdc, DBRenderShape.left- (int)CameraManager::GetSingleton()->GetPos().x,
-			DBRenderShape.top - (int)CameraManager::GetSingleton()->GetPos().y,
-			DBRenderShape.right - (int)CameraManager::GetSingleton()->GetPos().x,
-			DBRenderShape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
+		Rectangle(hdc, rangeRect.left- (int)CameraManager::GetSingleton()->GetPos().x,
+			rangeRect.top - (int)CameraManager::GetSingleton()->GetPos().y,
+			rangeRect.right - (int)CameraManager::GetSingleton()->GetPos().x,
+			rangeRect.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
 
 	if (dir == direction::RIGHT)
 	{
@@ -157,7 +143,7 @@ void Kong::Render(HDC hdc)
 		R_basicMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
 	}
 
-	//attackMotion->Render(hdc, 375, 350, atackFrame.x, atackFrame.y);
+	//attackMotion->Render(hdc, 375, 350, attackFrame.x, attackFrame.y);
 
 	ammoManager->Render(hdc);
 

@@ -14,7 +14,7 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
-	void Fire(POINTFLOAT pos, float angle, int dir);
+	void Fire(POINTFLOAT pos, int dir);
 
 private:
 	int DBammoMaxCount = 20;

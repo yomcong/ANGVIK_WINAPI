@@ -46,8 +46,6 @@ private:
 	POINT frontArmFrame = { 11, 0 };
 	POINT backArmFrame = { 13, 0 };
 
-	// 캐릭터 방향
-	direction playerDir = direction::RIGHT;
 
 	// 앉아있을때 카메라 내리기
 	bool sitDownCamera = false;

@@ -58,6 +58,9 @@ void ImageManager::Init()
 	// --Äá ÃÑ¾Ë--
 	AddImage("image/monster/kongtan.bmp", 168, 18, 6, 1, true, RGB(255, 255, 255));		// ÃÑ¾Ë ¿À¸¥¹æÇâ
 	AddImage("image/monster/kongtan22.bmp", 168, 18, 6, 1, true, RGB(255, 255, 255));	// ÃÑ¾Ë ¿ŞÂÊ¹æÇâ
+	AddImage("image/monster/¸ğ´ÙÇÇ_ÃÑ¾Ë.bmp", 196, 43, 7, 1, true, RGB(255, 255, 255));	// ÃÑ¾Ë ÀÌÆåÆ®
+	AddImage("image/monster/R_¸ğ´ÙÇÇ_ÃÑ¾Ë.bmp", 196, 43, 7, 1, true, RGB(255, 255, 255));// ÃÑ¾Ë ÀÌÆåÆ®(Reverse)
+
 
 	// ¸ùÅ°
 	AddImage("image/monster/¿ø¼şÀÌ.bmp", 416, 46, 8, 1, true, RGB(255, 255, 255));	// ¸ùÅ°
@@ -69,7 +72,14 @@ void ImageManager::Init()
 	AddImage("image/monster/Ent_atk_6f.bmp", 444, 82, 6, 1, true, RGB(255, 255, 255));	// ¿£Æ® °ø°İ
 	AddImage("image/monster/R_Ent_atk_6f.bmp", 444, 82, 6, 1, true, RGB(255, 255, 255));// ¿£Æ® °ø°İ(Reverse)
 	// ¿£Æ® ³ª¹µÀÙ
-	AddImage("image/monster/leaf4.bmp", 15, 15, true, RGB(255, 255, 255));	// ³ª¹µÀÙ 
+	AddImage("image/monster/leaf1.bmp", 15, 15, true, RGB(255, 255, 255));	// ³ª¹µÀÙ 1
+	AddImage("image/monster/leaf2.bmp", 15, 15, true, RGB(255, 255, 255));	// ³ª¹µÀÙ 2
+	AddImage("image/monster/leaf3.bmp", 15, 15, true, RGB(255, 255, 255));	// ³ª¹µÀÙ 3
+	AddImage("image/monster/leaf4.bmp", 15, 15, true, RGB(255, 255, 255));	// ³ª¹µÀÙ 4
+	AddImage("image/monster/R_leaf1.bmp", 15, 15, true, RGB(255, 255, 255));// ³ª¹µÀÙ 1(Reverse)
+	AddImage("image/monster/R_leaf2.bmp", 15, 15, true, RGB(255, 255, 255));// ³ª¹µÀÙ 2(Reverse)
+	AddImage("image/monster/R_leaf3.bmp", 15, 15, true, RGB(255, 255, 255));// ³ª¹µÀÙ 3(Reverse)
+	AddImage("image/monster/R_leaf4.bmp", 15, 15, true, RGB(255, 255, 255));// ³ª¹µÀÙ 4(Reverse)
 
 	//·Îµù ¾À	
 }

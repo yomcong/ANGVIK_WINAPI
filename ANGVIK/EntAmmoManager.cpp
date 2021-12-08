@@ -7,6 +7,7 @@ HRESULT EntAmmoManager::Init(Player* target)
 
 	for (int i = 0; i < DBammoMaxCount; ++i)
 	{
+		
 		vecAmmos[i] = new EntAmmo;
 		vecAmmos[i]->Init();
 	}
@@ -42,8 +43,10 @@ void EntAmmoManager::Release()
 
 }
 
-void EntAmmoManager::Fire(POINTFLOAT pos, float angle, int dir)
+void EntAmmoManager::Fire(POINTFLOAT pos, int dir)
 {
+	// 1.5~
+
 	for (int i = 0; i < DBammoMaxCount; ++i)
 	{
 		// 리사이클 
@@ -51,8 +54,26 @@ void EntAmmoManager::Fire(POINTFLOAT pos, float angle, int dir)
 		{
 			continue;
 		}
+		
+		float angle = 0.0f;
 
-		vecAmmos[i]->IsFire(pos, angle, dir);
-		break;
+		if (dir > 0)
+		{
+			angle =( RANDOM(0, 25)) / 100.0f;
+		}
+		else
+		{
+			angle = (RANDOM(295, 315)) / 100.0f;
+		}
+
+		
+		if (2 == RANDOM(1, 2))
+		{
+			angle *= -1;
+		}
+		
+		float moveSpeed = (int)RANDOM(50, 150);
+		
+		vecAmmos[i]->IsFire(pos, angle, dir, moveSpeed);
 	}
 }

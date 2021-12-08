@@ -22,7 +22,7 @@ private:
 
 	// ÇÈ¼¿ Ãæµ¹
 	COLORREF color = {};
-	WORD r, g, b = {};
-
-
+	WORD b = {};
+	WORD r = {};
+	WORD g = {};
 };

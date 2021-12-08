@@ -4,7 +4,7 @@
 
 HRESULT MainGame::Init()
 {
-	KeyManager::GetSingleton()->Init();
+	//KeyManager::GetSingleton()->Init();
 	ImageManager::GetSingleton()->Init();
 	TimerManager::GetSingleton()->Init();
 	SceneManager::GetSingleton()->Init();
@@ -71,7 +71,7 @@ void MainGame::Release()
 
 	ImageManager::GetSingleton()->Release();
 
-	KeyManager::GetSingleton()->Release();
+	//KeyManager::GetSingleton()->Release();
 
 	SceneManager::GetSingleton()->Release();
 

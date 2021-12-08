@@ -132,7 +132,7 @@ void Player::Update()
 			}
 			// 상태 변경
 			ChangeAction(Action::LEFTMOVE);
-			playerDir = direction::LEFT;
+			dir = direction::LEFT;
 		}
 		if (Input::GetButton(VK_RIGHT))
 		{
@@ -152,7 +152,7 @@ void Player::Update()
 
 			// 상태 변경
 			ChangeAction(Action::RIGHTMOVE);
-			playerDir = direction::RIGHT;
+			dir = direction::RIGHT;
 
 		}
 		if (Input::GetButton(VK_UP))
@@ -249,9 +249,8 @@ void Player::Update()
 			--DBbodyPos.y;
 #endif
 	// 디버그용 캐릭터 랙트표시
-	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_NUMPAD9))
+	if (Input::GetButtonDown(VK_NUMPAD9))
 	{
-		cout << CameraManager::GetSingleton()->GetPos().y << "\n";
 		DBrect == false ? DBrect = true : DBrect = false;
 	}
 
@@ -259,7 +258,7 @@ void Player::Update()
 
 void Player::Render(HDC hdc)
 {
-	if (playerDir == direction::LEFT)
+	if (dir == direction::LEFT)
 	{
 		R_backArm->Render(hdc, (int)armPos.x, (int)armPos.y, backArmFrame.x, backArmFrame.y);	// 왼팔
 		R_body->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);			// 몸

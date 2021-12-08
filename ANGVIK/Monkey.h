@@ -22,7 +22,6 @@ private:
 
 	const POINT monkeyMaxFrame = { 8, 0 };
 
-	direction dir = direction::LEFT;
 
 
 };

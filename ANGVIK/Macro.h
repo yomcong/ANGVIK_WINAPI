@@ -1,5 +1,8 @@
 #pragma once
 
+enum class SubjectTag { IDLE, PLAYER, ENEMY, ITEM, TRAP };
+enum class EventTag { IDLE, ADD, COLLISION, RELEASE, };
+enum class direction { LEFT = -1, RIGHT = 1 };
 
 // 창 시작위치
 #define WIN_START_POS_X	400

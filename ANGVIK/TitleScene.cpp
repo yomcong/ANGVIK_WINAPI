@@ -78,7 +78,7 @@ void TitleScene::Update()
 	elepsedCount += TimerManager::GetSingleton()->GetDeltaTime();
 	boxFramecount += TimerManager::GetSingleton()->GetDeltaTime();
 
-	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_SPACE))	// 씬 전환
+	if (Input::GetButtonDown(VK_SPACE))	// 씬 전환
 	{
 		if (seletedTitle == SeletedTitle::START)
 		{
@@ -94,7 +94,7 @@ void TitleScene::Update()
 		}
 	}
 
-	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_LEFT))
+	if (Input::GetButtonDown(VK_LEFT))
 	{
 		//seletedtitle--;
 		ResetAnimation();	// 키입력이 들어왓을때 애니메이션 동작들 초기값으로 초기화.
@@ -112,7 +112,7 @@ void TitleScene::Update()
 			seletedTitle = SeletedTitle::OPTION;
 		}
 	}
-	if (KeyManager::GetSingleton()->IsOnceKeyDown(VK_RIGHT))
+	if (Input::GetButtonDown(VK_RIGHT))
 	{
 		//seletedtitle++;
 		ResetAnimation();

@@ -13,6 +13,16 @@ HRESULT KongAmmo::Init()
 	{
 		return E_FAIL;
 	}
+	ammoEffect = ImageManager::GetSingleton()->FindImage("image/monster/모다피_총알.bmp");
+	if (ammoEffect == nullptr)
+	{
+		return E_FAIL;
+	}
+	R_ammoEffect = ImageManager::GetSingleton()->FindImage("image/monster/R_모다피_총알.bmp");
+	if (R_ammoEffect == nullptr)
+	{
+		return E_FAIL;
+	}
 
 	moveSpeed = 100.0f;
 
@@ -33,43 +43,69 @@ void KongAmmo::Update()
 {
 	if (b_IsAlive)
 	{
+		// 애니메이션
 		frameCount += TimerManager().GetSingleton()->GetDeltaTime();
 
 		if (frameCount > 0.125)
 		{
-			if (ammoFrame.x == 5)
+			if (b_ISHit)
 			{
-				ammoFrame.x = 0;
+				if (effectFrame.x == effectMaxFrame.x)
+				{
+					effectFrame.x = 0;
+					b_ISHit = false;
+					b_IsAlive = false;
+				}
+				else
+				{
+					++effectFrame.x;
+				}
 			}
 			else
 			{
-				++ammoFrame.x;
+				if (ammoFrame.x == ammoMaxFrame.x)
+				{
+					ammoFrame.x = 0;
+				}
+				else
+				{
+					++ammoFrame.x;
+				}
 			}
 
 			frameCount = 0;
 		}
+		// ------
 
-		pos.x += cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-		pos.y -= sin(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+		// 히트하게되면 이동 X
+		if (false == b_ISHit)
+		{
+			pos.x += cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+			pos.y -= sin(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+
+			if (MapColliderManager::GetSingleton()->checkCollision(shape, (int)dir, bodySize))
+			{
+				b_ISHit = true;
+				effectFrame.x = 0;
+			}
+			if (renderPos.x <0 || renderPos.x >WIN_SIZE_X ||
+				renderPos.y <0 || renderPos.y > WIN_SIZE_Y)
+			{
+				b_IsAlive = false;
+			}
+		}
+		// ---------
 
 		shape.left = (int)pos.x - bodySize.x;
 		shape.top = (int)pos.y - bodySize.y;
-		shape.right = (int)pos.x + bodySize.x ;
+		shape.right = (int)pos.x + bodySize.x;
 		shape.bottom = (int)pos.y + bodySize.y;
 
-		if (MapColliderManager::GetSingleton()->checkCollision(shape, direction, bodySize))
-		{
-			b_IsAlive = false;
-		}
 		renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
 		renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
 
-		if (renderPos.x <0 || renderPos.x >WIN_SIZE_X ||
-			renderPos.y <0 || renderPos.y > WIN_SIZE_Y)
-		{
-			b_IsAlive = false;
-		}
 	}
+
 	// 디버깅
 	if (Input::GetButtonDown(VK_NUMPAD1))
 		DBrect == false ? DBrect = true : DBrect = false;
@@ -77,25 +113,40 @@ void KongAmmo::Update()
 
 void KongAmmo::Render(HDC hdc)
 {
+
 	if (b_IsAlive)
 	{
-		if (direction > 0)
+		if (false == b_ISHit)
 		{
-			ammoRight->Render(hdc, (int)renderPos.x, (int)renderPos.y, ammoFrame.x, ammoFrame.y);
+			if (dir == direction::RIGHT)
+			{
+				ammoRight->Render(hdc, (int)renderPos.x, (int)renderPos.y, ammoFrame.x, ammoFrame.y);
+			}
+			else
+			{
+				ammoLeft->Render(hdc, (int)renderPos.x, (int)renderPos.y, ammoFrame.x, ammoFrame.y);
+			}
+			// 디버깅
+			if (DBrect)
+				Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x
+					, shape.top - (int)CameraManager::GetSingleton()->GetPos().y
+					, shape.right - (int)CameraManager::GetSingleton()->GetPos().x
+					, shape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
 		}
 		else
 		{
-			ammoLeft->Render(hdc, (int)renderPos.x, (int)renderPos.y, ammoFrame.x, ammoFrame.y);
-
+			if (dir == direction::RIGHT)
+			{
+				ammoEffect->Render(hdc, (int)renderPos.x, (int)renderPos.y, effectFrame.x, effectFrame.y);
+			}
+			else
+			{
+				R_ammoEffect->Render(hdc, (int)renderPos.x, (int)renderPos.y, effectFrame.x, effectFrame.y);
+			}
 		}
-
-		// 디버깅
-		if (DBrect)
-			Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x
-				, shape.top - (int)CameraManager::GetSingleton()->GetPos().y
-				, shape.right - (int)CameraManager::GetSingleton()->GetPos().x
-				, shape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
 	}
+
+
 }
 
 void KongAmmo::Release()
@@ -105,9 +156,24 @@ void KongAmmo::Release()
 void KongAmmo::IsFire(POINTFLOAT pos, float angle, int dir)
 {
 	b_IsAlive = true;
+	b_ISHit = false;
+
 	this->moveAngle = angle;
-	this->direction = dir;
-	this->pos.x = pos.x + CameraManager::GetSingleton()->GetPos().x;
-	this->pos.y = pos.y + CameraManager::GetSingleton()->GetPos().y;
-	renderPos = pos;
+	if (dir > 0)
+	{
+		this->dir = direction::RIGHT;
+	}
+	else
+	{
+		this->dir = direction::LEFT;
+	}
+	this->pos.x = pos.x;
+	this->pos.y = pos.y;
+	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;;
+	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
+
+	shape.left = (int)pos.x - bodySize.x;
+	shape.top = (int)pos.y - bodySize.y;
+	shape.right = (int)pos.x + bodySize.x;
+	shape.bottom = (int)pos.y + bodySize.y;
 }

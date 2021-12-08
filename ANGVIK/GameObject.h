@@ -42,6 +42,7 @@ protected:
 	bool DBrect = false;
 	RECT DBRenderShape = {};
 
+	direction dir = direction::LEFT;
 
 public:
 	inline void SetPos(POINTFLOAT pos) { this->pos = pos;/* POINTFLOAT{pos.x + CameraManager::GetSingleton()->GetPos().x, pos.y + CameraManager::GetSingleton()->GetPos().y};*/ }

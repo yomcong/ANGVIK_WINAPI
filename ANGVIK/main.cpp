@@ -92,7 +92,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		switch (wParam)
 		{
 		case VK_RETURN:
-			//isUpdate = !isUpdate;
 			break;
 		}
 		break;
@@ -101,7 +100,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		g_ptMouse.y = HIWORD(lParam);
 		break;
 	case WM_TIMER:
-		//Input::Update();
 		g_mainGame.Update();
 
 		break;

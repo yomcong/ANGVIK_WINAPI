@@ -19,16 +19,17 @@ public:
 private:
 	Image* ammoRight = nullptr;
 	Image* ammoLeft = nullptr;
+	Image* ammoEffect = nullptr;
+	Image* R_ammoEffect = nullptr;
 
 	bool b_IsAlive = false;
-
-	// 방향
-	int direction = 1;
+	bool b_ISHit = false;
 
 	POINT ammoFrame = { 0,0 };
+	POINT effectFrame = { 0, 0 };
 
-
-	const POINT ammoMaxFrame = { 6, 0 };
+	const POINT ammoMaxFrame = { 5, 0 };
+	const POINT effectMaxFrame = { 6, 0 };
 
 	// 각도
 	float moveAngle = 0.0f;

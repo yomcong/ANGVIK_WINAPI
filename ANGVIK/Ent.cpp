@@ -25,7 +25,17 @@ HRESULT Ent::Init(Player* target, POINTFLOAT pos)
 	{
 		return E_FAIL;
 	}
-
+	attackEffect = ImageManager::GetSingleton()->FindImage("image/monster/모다피_총알.bmp");
+	if (attackEffect == nullptr)
+	{
+		return E_FAIL;
+	}
+	R_attackEffect = ImageManager::GetSingleton()->FindImage("image/monster/R_모다피_총알.bmp");
+	if (R_attackEffect == nullptr)
+	{
+		return E_FAIL;
+	}
+	
 	ammoManager = new EntAmmoManager;
 	ammoManager->Init(target);
 
@@ -42,8 +52,6 @@ HRESULT Ent::Init(Player* target, POINTFLOAT pos)
 	shape.right = (int)pos.x + bodySize.x / 2;
 	shape.bottom = (int)pos.y + bodySize.y / 2;
 
-	basicFrame.x = 0;
-	basicFrame.y = 0;
 
 	renderPos = pos;
 
@@ -52,44 +60,97 @@ HRESULT Ent::Init(Player* target, POINTFLOAT pos)
 
 void Ent::Update()
 {
-
-	if (MapColliderManager::GetSingleton()->AutoFall(pos, shape, moveSpeed, bodySize))
+	ammoManager->Update();
+	// 공격, 공격 준비 상태가 아닐경우 이동
+	if (false == (b_attackReady || b_attack))
 	{
-		pos.y += 3.0f;
+		if (MapColliderManager::GetSingleton()->AutoFall(pos, shape, moveSpeed, bodySize))
+		{
+			pos.y += 3.0f;
+		}
+		else
+		{
+			attackDeley += TimerManager().GetSingleton()->GetDeltaTime();
+			if (attackDeley > 1.0)
+			{
+				b_attackReady = true;
+				attackFrame.x = 0;
+				attackDeley = 0.0f;
+				attackEffectFrame.x = attackEffectMaxFrame.x;
+			}
+		}
+
+		// 함수화 하기 
+		POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
+			Move(pos, shape, moveSpeed, (int)dir, bodySize);
+
+		if (tempPos.x == 0.0f)
+		{
+			dir == direction::RIGHT ? dir = direction::LEFT : dir = direction::RIGHT;
+		}
+
+		pos.x += tempPos.x;
+		pos.y += tempPos.y;
+		// ------- 
+
 	}
 
-	bodySize.x = 50;
-	bodySize.y = 85;
-
-	POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
-		Move(pos, shape, moveSpeed, (int)dir, bodySize);
-
-	if (tempPos.x == 0.0f)
-	{
-		dir == direction::RIGHT ? dir = direction::LEFT : dir = direction::RIGHT;
-	}
-
-	pos.x += tempPos.x;
-	pos.y += tempPos.y;
-
+	// 애니메이션 
 	frameCount += TimerManager().GetSingleton()->GetDeltaTime();
 
 	if (frameCount > 0.125)
 	{
-		if (basicFrame.x == 5)
+		if (b_attackReady)
 		{
-			basicFrame.x = 0;
+			if (false == (attackFrame.x == attackMaxFrame.x))
+			{
+				++attackFrame.x;
+			}
+
+			if (attackEffectFrame.x <= 0)
+			{
+				b_attack = true;
+				b_attackReady = false;
+				attackEffectFrame.x = attackEffectMaxFrame.x;
+				ammoManager->Fire(pos, (int)dir);
+
+			}
+			else
+			{
+				--attackEffectFrame.x;
+			}
+
+		}
+		else if (b_attack)
+		{
+			if (attackEffectFrame.x == 0)
+			{
+				b_attack = false;
+				basicFrame.x = 0;
+			}
+			else
+			{
+				--attackEffectFrame.x;
+			}
 		}
 		else
 		{
-			++basicFrame.x;
+			if (basicFrame.x == basicMaxFrame.x)
+			{
+				basicFrame.x = 0;
+			}
+			else
+			{
+				++basicFrame.x;
+			}
+
 		}
 
 		frameCount = 0.0f;
 	}
+	// ----
 
-
-
+	// pos 업데이트
 	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
 	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
 
@@ -97,7 +158,7 @@ void Ent::Update()
 	shape.top = (int)pos.y - bodySize.y / 2;
 	shape.right = (int)pos.x + bodySize.x / 2;
 	shape.bottom = (int)pos.y + bodySize.y / 2;
-
+	//  --------
 	if (Input::GetButtonDown(VK_NUMPAD9))
 	{
 		DBrect == false ? DBrect = true : DBrect = false;
@@ -107,15 +168,52 @@ void Ent::Update()
 
 void Ent::Render(HDC hdc)
 {
-	if (dir == direction::RIGHT)
+	// 공격 또는 공격준비 상태일경우
+	if (b_attackReady || b_attack)
 	{
-		basicEnt->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
+		if (dir == direction::RIGHT)
+		{
+			entAttack->Render(hdc, (int)renderPos.x, (int)renderPos.y, attackFrame.x, attackFrame.y);
+		}
+		else
+		{
+			R_entAttack->Render(hdc, (int)renderPos.x, (int)renderPos.y, attackFrame.x, attackFrame.y);
+		}
+
+		if (dir == direction::RIGHT)
+		{
+			entAttack->Render(hdc, (int)renderPos.x, (int)renderPos.y, attackFrame.x, attackFrame.y);
+		}
+		else
+		{
+			R_entAttack->Render(hdc, (int)renderPos.x, (int)renderPos.y, attackFrame.x, attackFrame.y);
+		}
+
+		if (b_attackReady)
+		{
+			if (dir == direction::RIGHT)
+			{
+				attackEffect->Render(hdc, (int)renderPos.x + 15, (int)renderPos.y + 10, attackEffectFrame.x, attackEffectFrame.y);
+			}
+			else
+			{
+				R_attackEffect->Render(hdc, (int)renderPos.x - 15, (int)renderPos.y + 10, attackEffectFrame.x, attackEffectFrame.y);
+			}
+		}
 	}
 	else
 	{
-		R_basicEnt->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
+		if (dir == direction::RIGHT)
+		{
+			basicEnt->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
+		}
+		else
+		{
+			R_basicEnt->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
+		}
 	}
 
+	ammoManager->Render(hdc);
 	if (DBrect)
 		Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x,
 			shape.top - (int)CameraManager::GetSingleton()->GetPos().y,
@@ -125,4 +223,5 @@ void Ent::Render(HDC hdc)
 
 void Ent::Release()
 {
+	SAFE_RELEASE(ammoManager);
 }
