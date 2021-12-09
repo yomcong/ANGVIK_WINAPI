@@ -1,11 +1,13 @@
 #pragma once
 #include "Config.h"
 #include "GameObject.h"
+#include "Observer.h"
 
 class Image;
 class Player;
 class AmmoManager;
-class Kong : public GameObject
+class Subject;
+class Kong : public GameObject, public Observer
 {
 public:
 	virtual ~Kong() = default;
@@ -15,6 +17,8 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
+	virtual void OnNotify(Subject* subject, SubjectTag subjectTag, EventTag eventTag) override;
+	Subject* GetSubject() { return subject; }
 
 private:
 	Image* attackMotion = nullptr;
@@ -25,6 +29,8 @@ private:
 	// 애니메이션 프레임
 	POINT basicFrame = { 0,0 };
 	POINT attackFrame = { 0,0 };
+	
+	Subject* subject = nullptr;
 
 	// 총알
 	AmmoManager* ammoManager = nullptr;
@@ -44,6 +50,6 @@ private:
 
 	float testElpsedCount = 0.0f;
 	
-
+	bool windowIn = false;
 };
 

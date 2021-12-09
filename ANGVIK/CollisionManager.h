@@ -13,8 +13,8 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
-	void AddObject(SubjectTag iff, EventTag object, RECT* shape);
-	void CheckCollision(SubjectTag iff, EventTag object, RECT shape);
+	void AddObject(SubjectTag subject, EventTag object, RECT* shape);
+	void CheckCollision(SubjectTag subject, EventTag object, RECT shape);
 						
 private:
 	vector<RECT*> vecRects = {};

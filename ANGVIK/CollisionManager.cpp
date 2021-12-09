@@ -19,7 +19,7 @@ void CollisionManager::Release()
 {
 }
 
-void CollisionManager::AddObject(SubjectTag iff, EventTag object, RECT* shape)
+void CollisionManager::AddObject(SubjectTag subject, EventTag object, RECT* shape)
 {
 	vector<RECT*>::iterator iter = find(vecRects.begin(), vecRects.end(), shape);
 
@@ -27,10 +27,12 @@ void CollisionManager::AddObject(SubjectTag iff, EventTag object, RECT* shape)
 	{
 		vecRects.push_back(shape);
 	}
+
+	
 	
 }
 
-void CollisionManager::CheckCollision(SubjectTag iff, EventTag object, RECT shape)
+void CollisionManager::CheckCollision(SubjectTag subject, EventTag object, RECT shape)
 {
 
 }

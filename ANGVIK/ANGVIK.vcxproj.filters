@@ -159,6 +159,9 @@
     <ClCompile Include="Trap.cpp">
       <Filter>MainGame\TrapManager</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
@@ -271,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="Trap.h">
       <Filter>MainGame\TrapManager</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>소스 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

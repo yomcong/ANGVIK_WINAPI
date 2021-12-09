@@ -13,6 +13,8 @@ public:
 
 	//int GetObserverCount() { return mVecObserver.size(); }
 
-	void Notify(GameEntity* obj, SubjectTag subjectTag, EventTag eventTag);
+	//void Notify(GameEntity* obj, SubjectTag subjectTag, EventTag eventTag);
+	void Notify(Subject* subject, SubjectTag subjectTag, EventTag eventTag);
+
 };
 

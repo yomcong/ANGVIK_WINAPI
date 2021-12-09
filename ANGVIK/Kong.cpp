@@ -2,6 +2,7 @@
 #include "Image.h"
 #include "AmmoManager.h"
 #include "Player.h"
+#include "Subject.h"
 
 // 플레이어 조준하는 삼각함수 계산 다시해야함
 
@@ -35,6 +36,9 @@ HRESULT Kong::Init(Player* target, POINTFLOAT pos)
 	
 	bodySize.x = 35;
 	bodySize.y = 35;
+
+	subject = new Subject;
+	
 
 	shape.left = (int)pos.x - bodySize.x / 2;
 	shape.top = (int)pos.y - bodySize.y / 2;
@@ -71,6 +75,25 @@ void Kong::Update()
 			++attackFrame.x;
 		}
 		frameCount = 0;
+	}
+
+	if (renderPos.x > 0 && renderPos.x < WIN_SIZE_X &&
+		renderPos.y > 0 && renderPos.y < WIN_SIZE_Y)
+	{
+		if (false == windowIn)
+		{
+			subject->Notify(subject, SubjectTag::ENEMY, EventTag::IDLE);
+			windowIn = true;
+			cout << subject << "\n";
+		}
+	}
+	else
+	{
+		if (windowIn)
+		{
+			subject->Notify(subject, SubjectTag::ENEMY, EventTag::RELEASE);
+			windowIn = false;
+		}
 	}
 
 	// 테스트용 아모발싸 함수화하기
@@ -159,5 +182,11 @@ void Kong::Render(HDC hdc)
 void Kong::Release()
 {
 	SAFE_RELEASE(ammoManager);
+	SAFE_DELETE(subject);
 	//SAFE_RELEASE(target);	
+}
+
+void Kong::OnNotify(Subject* subject, SubjectTag subjectTag, EventTag eventTag)
+{
+	
 }

@@ -14,7 +14,7 @@ public:
 	virtual void Release();
 
 	inline void SetIsCollision(bool b_isCollision) { this->b_isCollision = b_isCollision; }
-	inline bool GetIsAlive() { return this->b_isAlive; }
+	inline bool GetIsAlive() { return b_isAlive; }
 
 private:
 	Image* trap = nullptr;
