@@ -38,6 +38,8 @@ protected:
 	// 윈도우 화면에 존재하는지 ->옵저버로 관리해주기
 	bool b_windowArea = false;
 
+	bool b_isAlive = false;
+
 	// 디버그용 렉트
 	bool DBrect = false;
 	RECT DBRenderShape = {};
@@ -47,6 +49,7 @@ protected:
 public:
 	inline void SetPos(POINTFLOAT pos) { this->pos = pos;/* POINTFLOAT{pos.x + CameraManager::GetSingleton()->GetPos().x, pos.y + CameraManager::GetSingleton()->GetPos().y};*/ }
 	inline void SetMoveSpeed(float speed) { this->moveSpeed = speed; }
+	inline void SetIsAlive(bool isAlive) { this->b_isAlive = isAlive; }
 
 	inline const POINTFLOAT GetPos() { return this->pos; }
 	inline const RECT GetShape() { return this->shape; }

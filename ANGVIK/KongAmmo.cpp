@@ -88,6 +88,7 @@ void KongAmmo::Update()
 				b_ISHit = true;
 				effectFrame.x = 0;
 			}
+			
 			if (renderPos.x <0 || renderPos.x >WIN_SIZE_X ||
 				renderPos.y <0 || renderPos.y > WIN_SIZE_Y)
 			{

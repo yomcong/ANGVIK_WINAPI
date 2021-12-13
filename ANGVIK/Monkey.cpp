@@ -1,9 +1,10 @@
 #include "Monkey.h"
 #include "Image.h"
 #include "Player.h"
+#include "Subject.h"
+#include "CollisionManager.h"
 
-
-HRESULT Monkey::Init(Player* target, POINTFLOAT pos)
+HRESULT Monkey::Init(Player* target, POINTFLOAT pos, CollisionManager* collisionManager)
 {
 	monkey = ImageManager::GetSingleton()->FindImage("image/monster/¿ø¼þÀÌ.bmp");
 	if (monkey == nullptr)
@@ -16,6 +17,9 @@ HRESULT Monkey::Init(Player* target, POINTFLOAT pos)
 		return E_FAIL;
 	}
 	
+	subject = new Subject;
+	this->collisionManager = collisionManager;
+
 	this->target = target;
 
 	this->pos = pos;
@@ -69,7 +73,23 @@ void Monkey::Update()
 		frameCount = 0.0f;
 	}
 
-
+	if (renderPos.x > 0 && renderPos.x < WIN_SIZE_X &&
+		renderPos.y > 0 && renderPos.y < WIN_SIZE_Y)
+	{
+		if (false == windowIn)
+		{
+			subject->Notify(subject, myType, subTag, EventTag::INWINDOW);
+			windowIn = true;
+		}
+	}
+	else
+	{
+		if (windowIn)
+		{
+			subject->Notify(subject, myType, subTag, EventTag::OUTWINDOW);
+			windowIn = false;
+		}
+	}
 
 	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
 	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
@@ -105,4 +125,5 @@ void Monkey::Render(HDC hdc)
 
 void Monkey::Release()
 {
+	SAFE_DELETE(subject);
 }

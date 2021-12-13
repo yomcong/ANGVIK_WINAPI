@@ -49,17 +49,6 @@ public:
 		};
 	} IMAGE_INFO, *LPIMAGE_INFO;
 
-	//struct testImageInfo : public tagImageInfo
-	//{
-
-	//};
-
-	//tagImageInfo imageInfo;
-	//IMAGE_INFO imageInfo2;
-
-	//tagImageInfo* imageInfo;
-	//LPIMAGE_INFO imageInfo3;
-
 private:
 	LPIMAGE_INFO imageInfo = nullptr;
 	bool isTransparent = false;
@@ -78,13 +67,8 @@ public:
 
 	void Render(HDC hdc);
 	void Render(HDC hdc, int destX, int destY);	// 이미지 데이터를 화면에 복사
-	void Renders(HDC hdc, int destX, int destY);	// 이미지 데이터를 화면에 복사
 
 	void Render(HDC hdc, int destX, int destY, int frameX, int frameY, float scale = 1.0f);	// 이미지 데이터를 화면에 복사
-
-	void Render(HDC hdc, int destX, int destY, int frameX, int frameY, int leftHit, int rightHit, int topHit, int bottomHit);
-
-	void Render(HDC hdc, int destX, int destY, int frameX, int frameY, float scale, int leftHit, int rightHit, int topHit, int bottomHit);
 
 	HDC GetMemDC() { if (imageInfo) return imageInfo->hMemDc; return NULL; }
 

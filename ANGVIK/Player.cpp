@@ -1,6 +1,8 @@
 #include "Player.h"
 #include "Image.h"
 #include "TrapManager.h"
+#include "MonsterManager.h"
+#include "CollisionManager.h"
 
 // 캐릭터 이동
 // 팔 자연스럽게 해주기
@@ -25,7 +27,7 @@
 #define StartPointY 350.0f
 
 // 테스트용 매개변수
-HRESULT Player::Init(TrapManager* trapCollider)
+HRESULT Player::Init(CollisionManager* collisionManager)
 {
 	if (false == FindImage())
 	{
@@ -47,19 +49,37 @@ HRESULT Player::Init(TrapManager* trapCollider)
 	shape.right = (int)pos.x + (bodySize.x / 2);
 	shape.bottom = (int)pos.y + (bodySize.y / 2);
 
-	DBtrapManager = trapCollider;
+	this->collisionManager = collisionManager;
+
 	return S_OK;
 }
 
 void Player::Update()
 {
+	if (Input::GetButtonDown(VK_NUMPAD3))
+	{
+		SubjectTag tempSubjectTag;
+		tempSubjectTag = collisionManager->testCheck(SubjectTag::PLAYER, shape);
+		switch (tempSubjectTag)
+		{
+		case SubjectTag::IDLE:
+			cout << "부딪히지 않음 " << "\n";
+			break;
+		case SubjectTag::MONSTER:
+			cout << "몬스터 부딪힘 " << "\n";
+			break;
+		case SubjectTag::TRAP:
+			cout << "트랩 부딪힘 " << "\n";
+			break;
+		}
+	}
+
 	// 점프상태가 아닐경우
 	if (false == (state == State::JUMP))
 	{
-		// 내리막길(이동+낙하) 일경우 스테이트를 계속 바꿔주면서 랜더링이 굉장히 부자연스러워짐. 고쳐야함
+		// 내리막길(이동+낙하) 일경우 스테이트를 계속 바꿔주면서 애니메이션이 굉장히 부자연스러워짐. 고쳐야함
 		// 테스트용 트랩 충돌체크 최적화 하기
-		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize) &&
-			(false == DBtrapManager->CheckCollision(shape)) )
+		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize))
 		{
 			ChangeState( State::Fall);
 
@@ -72,6 +92,7 @@ void Player::Update()
 			{
 				CameraManager::GetSingleton()->SetPosY(3);
 			}
+
 		}
 		else
 		{

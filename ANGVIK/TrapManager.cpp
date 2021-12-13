@@ -1,7 +1,8 @@
 #include "TrapManager.h"
 #include "Trap.h"
+#include "CollisionManager.h"
 
-HRESULT TrapManager::Init()
+HRESULT TrapManager::Init(CollisionManager* collisionManager)
 {
 	TrapSpawn();
 
@@ -58,10 +59,11 @@ bool TrapManager::CheckCollision(RECT rect)
 		{
 			continue;
 		}
-		if (vecTraps[i]->GetShapeAddress()->left < rect.right &&
+
+		/*if (vecTraps[i]->GetShapeAddress()->left < rect.right &&
 			vecTraps[i]->GetShapeAddress()->right > rect.left &&
 			vecTraps[i]->GetShapeAddress()->top > rect.bottom &&
-			rect.bottom > vecTraps[i]->GetShapeAddress()->top - 2 )
+			rect.bottom > vecTraps[i]->GetShapeAddress()->top - 1 )
 		{
 			vecTraps[i]->SetIsCollision(true);
 			cout << vecTraps[i]->GetShapeAddress()->top << "\n";
@@ -76,10 +78,10 @@ bool TrapManager::CheckCollision(RECT rect)
 
 			isCollision = true;
 			continue;
-		}
+		}*/
 
 		/*cout << vecTraps[i]->GetShapeAddress()->top << "\n";
-		cout << "player : " << rect.bottom << "\n";
+		cout << "player : " << rect.bottom << "\n";*/
 		RECT testRect = {};
 		if (IntersectRect(&testRect, vecTraps[i]->GetShapeAddress(), &rect))
 		{
@@ -87,7 +89,7 @@ bool TrapManager::CheckCollision(RECT rect)
 			isCollision = true;
 			continue;
 			
-		}*/
+		}
 		vecTraps[i]->SetIsCollision(false);
 	}
 

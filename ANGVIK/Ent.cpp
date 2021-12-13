@@ -2,8 +2,10 @@
 #include "Player.h"
 #include "Image.h"
 #include "AmmoManager.h"
+#include "Subject.h"
+#include "CollisionManager.h"
 
-HRESULT Ent::Init(Player* target, POINTFLOAT pos)
+HRESULT Ent::Init(Player* target, POINTFLOAT pos, CollisionManager* collisionManager)
 {
  	basicEnt = ImageManager::GetSingleton()->FindImage("image/monster/Ent_move_6f.bmp");
 	if (basicEnt == nullptr)
@@ -39,6 +41,7 @@ HRESULT Ent::Init(Player* target, POINTFLOAT pos)
 	ammoManager = new AmmoManager;
 	ammoManager->Init(target);
 
+	this->collisionManager = collisionManager;
 	this->target = target;
 	this->pos = pos;
 
@@ -54,6 +57,7 @@ HRESULT Ent::Init(Player* target, POINTFLOAT pos)
 	
 	dir = direction::RIGHT;
 	
+	subject = new Subject;
 
 	renderPos = pos;
 
@@ -95,6 +99,24 @@ void Ent::Update()
 		pos.y += tempPos.y;
 		// ------- 
 
+	}
+
+	if (renderPos.x > 0 && renderPos.x < WIN_SIZE_X &&
+		renderPos.y > 0 && renderPos.y < WIN_SIZE_Y)
+	{
+		if (false == windowIn)
+		{
+			subject->Notify(subject, myType, subTag, EventTag::INWINDOW);
+			windowIn = true;
+		}
+	}
+	else
+	{
+		if (windowIn)
+		{
+			subject->Notify(subject, myType, subTag, EventTag::OUTWINDOW);
+			windowIn = false;
+		}
 	}
 
 	// 애니메이션 
@@ -226,4 +248,5 @@ void Ent::Render(HDC hdc)
 void Ent::Release()
 {
 	SAFE_RELEASE(ammoManager);
+	SAFE_DELETE(subject);
 }

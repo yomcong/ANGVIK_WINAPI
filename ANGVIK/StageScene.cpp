@@ -6,6 +6,7 @@
 #include "Kong.h"
 #include "MonsterManager.h"
 #include "TrapManager.h"
+#include "CollisionManager.h"
 
 #define stage1Width 6709
 #define stage1Height 1290
@@ -38,10 +39,12 @@ HRESULT StageScene::Init()
 	player = new Player;
 	monsterManager = new MonsterManager;
 	trapManager = new TrapManager;
+	collisionManager = new CollisionManager;
 
-	player->Init(trapManager);
-	monsterManager->Init(player);
-	trapManager->Init();
+	player->Init(collisionManager);
+	monsterManager->Init(player, collisionManager);
+	trapManager->Init(collisionManager);
+	collisionManager->Init(player, monsterManager, trapManager);
 	
 	return S_OK;
 }

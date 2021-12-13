@@ -7,14 +7,14 @@ enum class Action { IDLE, LEFTMOVE, RIGHTMOVE, ATTACK };
 
 //class PixelCollider;
 class Imgae;
-class TrapManager;
+class CollisionManager;
 class Player : public GameObject
 {
 public:
 	//static enum class Action { IDLE, LeftMove, RightMove, Jump, SitDown, Attack, Hit };
 	virtual ~Player() = default;
 
-	virtual HRESULT Init(TrapManager* trapCollider);
+	virtual HRESULT Init(CollisionManager* collisionManager);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
@@ -47,7 +47,6 @@ private:
 	POINT frontArmFrame = { 11, 0 };
 	POINT backArmFrame = { 13, 0 };
 
-
 	// 앉아있을때 카메라 내리기
 	bool sitDownCamera = false;
 
@@ -67,8 +66,7 @@ private:
 	Action action = Action::IDLE;
 	State state = State::IDLE;
 
-	TrapManager* DBtrapManager = nullptr;
-
+	CollisionManager* collisionManager = nullptr;
 	// 디버그용
 	Image* DBbackArm = nullptr;
 	Image* DBfrontArm = nullptr;

@@ -1,6 +1,6 @@
 #pragma once
 
-enum class SubjectTag { IDLE, PLAYER, ENEMY, ITEM, TRAP };
+enum class SubjectTag { IDLE, PLAYER, MONSTER, ITEM, TRAP };
 enum class EventTag { IDLE, ADD, COLLISION, RELEASE, };
 enum class direction { LEFT = -1, RIGHT = 1 };
 

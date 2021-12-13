@@ -24,11 +24,11 @@ void Subject::RemoveObserver(Observer* obs)
 
 }
 
-void Subject::Notify(Subject* subject, SubjectTag subjectTag, EventTag eventTag)
+void Subject::Notify(Subject* subject, MonsterType monsterType, SubjectTag subjectTag, EventTag eventTag)
 {
 	for (int i = 0; i < vecObservers.size(); ++i)
 	{
-		vecObservers[i]->OnNotify(subject, subjectTag, eventTag);
+		vecObservers[i]->OnNotify(subject, monsterType, subjectTag, eventTag);
 	}
 }
 

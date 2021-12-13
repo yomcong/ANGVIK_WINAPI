@@ -7,17 +7,18 @@ class Image;
 class Player;
 class AmmoManager;
 class Subject;
+class CollisionManager;
 class Kong : public GameObject, public Observer
 {
 public:
 	virtual ~Kong() = default;
 
-	virtual HRESULT Init(Player* target, POINTFLOAT pos);
+	virtual HRESULT Init(Player* target, POINTFLOAT pos, CollisionManager* collisionManager);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
-	virtual void OnNotify(Subject* subject, SubjectTag subjectTag, EventTag eventTag) override;
+	virtual void OnNotify(Subject* subject, MonsterType monsterType, SubjectTag subjectTag, EventTag eventTag) override;
 	Subject* GetSubject() { return subject; }
 
 private:
@@ -32,6 +33,8 @@ private:
 	
 	Subject* subject = nullptr;
 
+	CollisionManager* collisionManager = nullptr;
+
 	// 총알
 	AmmoManager* ammoManager = nullptr;
 	// 타겟좌표
@@ -41,6 +44,11 @@ private:
 	const POINT basicMaxFrame = { 6, 0 };
 
 	RECT rangeRect = {};
+
+	SubjectTag subTag = SubjectTag::MONSTER;
+	MonsterType myType = MonsterType::KONG;
+	
+
 
 	// 충돌체크 함수로 제외할때 지역변수화 하기.
 	RECT testRect = {};

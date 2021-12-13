@@ -4,16 +4,20 @@
 
 class Player;
 class Image;
+class Subject;
 class AmmoManager;
+class CollisionManager;
 class Ent : public GameObject
 {
 public:
 	virtual ~Ent() = default;
 
-	virtual HRESULT Init(Player* target, POINTFLOAT pos);
+	virtual HRESULT Init(Player* target, POINTFLOAT pos, CollisionManager* collisionManager);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
+
+	Subject* GetSubject() { return subject; }
 
 private:
 	Image* basicEnt = nullptr;
@@ -34,6 +38,8 @@ private:
 	// Å¸°ÙÁÂÇ¥
 	Player* target = nullptr;
 
+	CollisionManager* collisionManager = nullptr;
+
 	// ¸Æ½º ÇÁ·¹ÀÓ
 	const POINT attackMaxFrame = { 5, 0 };
 	const POINT basicMaxFrame = { 5, 0 };
@@ -46,6 +52,12 @@ private:
 	// °ø°Ý µô·¹ÀÌ
 	float attackDeley = 0.0f;
 
+	Subject* subject = nullptr;
+
+	SubjectTag subTag = SubjectTag::MONSTER;
+	MonsterType myType = MonsterType::ENT;
+
+	bool windowIn = false;
 
 };
 
