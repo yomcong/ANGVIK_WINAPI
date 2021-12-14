@@ -55,9 +55,17 @@ bool CollisionManager::CheckCollision(SubjectTag subject,RECT shape, EventTag ev
 			}
 
 		}
-		if (trapManager->CheckCollision(shape))
+		if (trapManager->CheckCollision(shape, b_temp))
 		{
-			player->ToStepOn();
+			if (b_temp)
+			{
+				// 나무위에 서잇기
+				//player->();
+			}
+			else
+			{
+				player->ToBeHit();
+			}
 		}
 		break;
 	}

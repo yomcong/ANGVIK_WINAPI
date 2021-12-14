@@ -14,7 +14,7 @@ public:
 	virtual void Release();
 
 	void TrapSpawn();
-	bool CheckCollision(RECT rect);
+	bool CheckCollision(RECT rect, bool &b_temp);
 
 
 private:
