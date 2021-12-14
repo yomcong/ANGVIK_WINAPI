@@ -5,13 +5,12 @@
 class Image;
 class Player;
 class Subject;
-class CollisionManager;
 class Monkey : public GameObject
 {
 public:
 	virtual ~Monkey() = default;
 
-	virtual HRESULT Init(Player * target, POINTFLOAT pos, CollisionManager* collisionManager);
+	virtual HRESULT Init(Player * target, POINTFLOAT pos);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
@@ -23,7 +22,6 @@ private:
 	Image* R_monkey = nullptr;
 
 	Player* target = nullptr;
-	CollisionManager* collisionManager = nullptr;
 
 	Subject* subject = nullptr;
 

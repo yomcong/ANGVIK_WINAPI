@@ -2,7 +2,6 @@
 #include "Image.h"
 #include "TrapManager.h"
 #include "MonsterManager.h"
-#include "CollisionManager.h"
 
 // 캐릭터 이동
 // 팔 자연스럽게 해주기
@@ -27,7 +26,7 @@
 #define StartPointY 350.0f
 
 // 테스트용 매개변수
-HRESULT Player::Init(CollisionManager* collisionManager)
+HRESULT Player::Init()
 {
 	if (false == FindImage())
 	{
@@ -49,8 +48,6 @@ HRESULT Player::Init(CollisionManager* collisionManager)
 	shape.right = (int)pos.x + (bodySize.x / 2);
 	shape.bottom = (int)pos.y + (bodySize.y / 2);
 
-	this->collisionManager = collisionManager;
-
 	return S_OK;
 }
 
@@ -59,7 +56,7 @@ void Player::Update()
 	if (Input::GetButtonDown(VK_NUMPAD3))
 	{
 		SubjectTag tempSubjectTag;
-		tempSubjectTag = collisionManager->testCheck(SubjectTag::PLAYER, shape);
+		tempSubjectTag = CollisionManager::GetSingleton()->testCheck(SubjectTag::PLAYER, shape);
 		switch (tempSubjectTag)
 		{
 		case SubjectTag::IDLE:
@@ -72,7 +69,9 @@ void Player::Update()
 			cout << "트랩 부딪힘 " << "\n";
 			break;
 		}
+
 	}
+
 
 	// 점프상태가 아닐경우
 	if (false == (state == State::JUMP))
@@ -81,7 +80,7 @@ void Player::Update()
 		// 테스트용 트랩 충돌체크 최적화 하기
 		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize))
 		{
-			ChangeState( State::Fall);
+			ChangeState(State::Fall);
 
 			// 카메라 예외조건
 			if (renderPos.y < StartPointY)
@@ -161,6 +160,7 @@ void Player::Update()
 			// 상태 변경
 			ChangeAction(Action::LEFTMOVE);
 			dir = direction::LEFT;
+			CollisionManager::GetSingleton()->CheckCollision(subTag, shape);
 		}
 		if (Input::GetButton(VK_RIGHT))
 		{
@@ -172,7 +172,7 @@ void Player::Update()
 			else
 			{
 				POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
-				Move(pos, shape, moveSpeed, 1, bodySize);
+					Move(pos, shape, moveSpeed, 1, bodySize);
 
 				CameraManager::GetSingleton()->SetPosX(tempPos.x);
 				renderPos.y += tempPos.y;
@@ -181,7 +181,7 @@ void Player::Update()
 			// 상태 변경
 			ChangeAction(Action::RIGHTMOVE);
 			dir = direction::RIGHT;
-
+			CollisionManager::GetSingleton()->CheckCollision(subTag, shape);
 		}
 		if (Input::GetButton(VK_UP))
 		{
@@ -287,19 +287,26 @@ void Player::Update()
 
 void Player::Render(HDC hdc)
 {
-	if (dir == direction::LEFT)
+	if (invisibleTime > 0 && b_invisible)
 	{
-		R_backArm->Render(hdc, (int)armPos.x, (int)armPos.y, backArmFrame.x, backArmFrame.y);	// 왼팔
-		R_body->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);			// 몸
-		R_head->Render(hdc, (int)headPos.x, (int)headPos.y);								// 머리
-		R_frontArm->Render(hdc, (int)armPos.x, (int)armPos.y, frontArmFrame.x, frontArmFrame.y);// 오른팔
+		// 그려주지않는다.
 	}
 	else
 	{
-		backArm->Render(hdc, (int)armPos.x, (int)armPos.y, backArmFrame.x, backArmFrame.y);
-		body->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
-		head->Render(hdc, (int)headPos.x, (int)headPos.y);
-		frontArm->Render(hdc, (int)armPos.x, (int)armPos.y, frontArmFrame.x, frontArmFrame.y);
+		if (dir == direction::LEFT)
+		{
+			R_backArm->Render(hdc, (int)armPos.x, (int)armPos.y, backArmFrame.x, backArmFrame.y);	// 왼팔
+			R_body->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);			// 몸
+			R_head->Render(hdc, (int)headPos.x, (int)headPos.y);								// 머리
+			R_frontArm->Render(hdc, (int)armPos.x, (int)armPos.y, frontArmFrame.x, frontArmFrame.y);// 오른팔
+		}
+		else
+		{
+			backArm->Render(hdc, (int)armPos.x, (int)armPos.y, backArmFrame.x, backArmFrame.y);
+			body->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
+			head->Render(hdc, (int)headPos.x, (int)headPos.y);
+			frontArm->Render(hdc, (int)armPos.x, (int)armPos.y, frontArmFrame.x, frontArmFrame.y);
+		}
 	}
 
 	//--디버그--
@@ -346,7 +353,7 @@ void Player::ChangeAction(Action action)
 
 		frameCount = 0.0f;
 		// 점프중일때는 무브동작 X
-		if ((action == Action::RIGHTMOVE || action == Action::LEFTMOVE) )
+		if ((action == Action::RIGHTMOVE || action == Action::LEFTMOVE))
 		{
 			b_frontArmMove = true;
 			b_backArmMove = true;
@@ -574,8 +581,81 @@ void Player::DoAnimation()
 		}
 	}
 
+	if (invisibleTime > 0)
+	{
+		invisibleTime -= TimerManager::GetSingleton()->GetDeltaTime();
+		invisibleCount += TimerManager::GetSingleton()->GetDeltaTime();
+		if (invisibleTime > 1)
+		{
+			if (invisibleCount > 0.15625)
+			{
+				b_invisible == true ? b_invisible = false : b_invisible = true;
+				invisibleCount = 0.0f;
+			}
+		}
+		else
+		{
+			if (invisibleCount > 0.078125)
+			{
+				b_invisible == true ? b_invisible = false : b_invisible = true;
+				invisibleCount = 0.0f;
+			}
+		}
+		cout << invisibleTime << "\n";
+	}
+	else
+	{
+		b_invisible = false;
+		invisibleCount = 0.0f;
+	}
+}
 
+bool Player::CheckCollision(SubjectTag subject, RECT shape)
+{
+	RECT tempRect;
 
+	if (IntersectRect(&tempRect, &shape, &this->shape))
+	{
+		switch (subject)
+		{
+		case SubjectTag::IDLE:
+			break;
+		case SubjectTag::PLAYER:
+			break;
+		case SubjectTag::MONSTER:
+			break;
+		case SubjectTag::ITEM:
+			break;
+		case SubjectTag::TRAP:
+			break;
+		case SubjectTag::PLATFORM:
+			break;
+		case SubjectTag::Ammo:
+			ToBeHit();
+			break;
+		}
+		return true;
+	}
+
+	return false;
+
+}
+
+void Player::ToStepOn()
+{
+	ChangeState(State::JUMP);
+	jumpPower = 50;
+}
+
+void Player::ToBeHit()
+{
+	if (invisibleTime <= 0)
+	{
+		// 갑옷, hp 처리해주기
+		ChangeState(State::HIT);
+		invisibleTime = 2.0f;
+		b_invisible = true;
+	}
 }
 
 bool Player::FindImage()

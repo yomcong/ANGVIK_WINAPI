@@ -132,9 +132,6 @@
     <ClCompile Include="Monkey.cpp">
       <Filter>MainGame\Monster\Monkey</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionManager.cpp">
-      <Filter>MainGame\CollisionManager</Filter>
-    </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>2D Framework\Manager</Filter>
     </ClCompile>
@@ -162,12 +159,18 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>2D Framework\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="KongAmmoManager.cpp">
+      <Filter>MainGame\Monster\Kong</Filter>
+    </ClCompile>
+    <ClCompile Include="EntAmmoManager.cpp">
+      <Filter>MainGame\Monster\Ent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CommonFunction.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="GameEntity.h">
@@ -248,9 +251,6 @@
     <ClInclude Include="Monkey.h">
       <Filter>MainGame\Monster\Monkey</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>MainGame\CollisionManager</Filter>
-    </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>2D Framework\Manager</Filter>
     </ClInclude>
@@ -277,6 +277,18 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>2D Framework\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonFunction.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="KongAmmoManager.h">
+      <Filter>MainGame\Monster\Kong</Filter>
+    </ClInclude>
+    <ClInclude Include="EntAmmoManager.h">
+      <Filter>MainGame\Monster\Ent</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

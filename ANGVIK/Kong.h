@@ -5,15 +5,14 @@
 
 class Image;
 class Player;
-class AmmoManager;
+class KongAmmoManager;
 class Subject;
-class CollisionManager;
 class Kong : public GameObject, public Observer
 {
 public:
 	virtual ~Kong() = default;
 
-	virtual HRESULT Init(Player* target, POINTFLOAT pos, CollisionManager* collisionManager);
+	virtual HRESULT Init(Player* target, POINTFLOAT pos);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
@@ -33,10 +32,8 @@ private:
 	
 	Subject* subject = nullptr;
 
-	CollisionManager* collisionManager = nullptr;
-
 	// ÃÑ¾Ë
-	AmmoManager* ammoManager = nullptr;
+	KongAmmoManager* ammoManager = nullptr;
 	// Å¸°ÙÁÂÇ¥
 	Player* target = nullptr;
 

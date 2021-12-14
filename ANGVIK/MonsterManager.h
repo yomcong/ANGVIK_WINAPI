@@ -7,13 +7,12 @@ class Player;
 class Kong;
 class Monkey;
 class Ent;
-class CollisionManager;
 class MonsterManager : public GameEntity, public Observer
 {
 public:
 	virtual ~MonsterManager() = default;
 
-	virtual HRESULT Init(Player* target, CollisionManager* collisionManager);
+	virtual HRESULT Init(Player* target);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
@@ -22,7 +21,7 @@ public:
 	void MonkeySpawn();
 	void EntSpawn();
 
-	bool CheckCollision(RECT shape);
+	bool CheckCollision(RECT shape, bool &toStepOn);
 
 	virtual void OnNotify(Subject* subject, MonsterType monsterType, SubjectTag subjectTag, EventTag eventTag);
 
@@ -38,8 +37,6 @@ private:
 	vector<Kong*> vecKongs = {};
 	vector<Monkey*> vecMonkeys = {};
 	vector<Ent*> vecEnts = {};
-
-	CollisionManager* collisionManager = nullptr;
 
 	Player* target = nullptr;
 

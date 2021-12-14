@@ -3,13 +3,12 @@
 #include "GameEntity.h"
 
 class Trap;
-class CollisionManager;
 class TrapManager : public GameEntity
 {
 public:
 	virtual ~TrapManager() = default;
 
-	virtual HRESULT Init(CollisionManager* collisionManager);
+	virtual HRESULT Init();
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
@@ -22,7 +21,6 @@ private:
 	int trapMaxCount = 2;
 
 	vector<Trap*> vecTraps = {};
-	CollisionManager* collisionManager = nullptr;
 
 };
 

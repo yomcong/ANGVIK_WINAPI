@@ -1,22 +1,22 @@
 #pragma once
 #include "Config.h"
-#include "GameEntity.h"
+#include "Singleton.h"
 
 class Player;
 class MonsterManager;
 class TrapManager;
-class CollisionManager : public GameEntity
+class CollisionManager : public Singleton<CollisionManager>
 {
 public:
 	virtual ~CollisionManager() = default;
 
-	virtual HRESULT Init(Player* player, MonsterManager* monsterManager, TrapManager* trapManager);
-	virtual void Update();
-	virtual void Render(HDC hdc);
-	virtual void Release();
+	virtual HRESULT Init();
 
+	void AddPlayer(Player* player);
+	void AddMonster(MonsterManager* monsterManager);
+	void AddTrap(TrapManager* trapManager);
 	void AddObject(SubjectTag subject, EventTag object, RECT* shape);
-	void CheckCollision(SubjectTag subject, EventTag object, RECT shape);
+	bool CheckCollision(SubjectTag subject, RECT shape, EventTag eventTag = EventTag::IDLE);
 	SubjectTag testCheck(SubjectTag subjectTag, RECT shape);
 						
 private:

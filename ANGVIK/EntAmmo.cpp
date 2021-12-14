@@ -56,7 +56,8 @@ void EntAmmo::Update()
 
 		if (renderPos.x <0 || renderPos.x >WIN_SIZE_X ||
 			renderPos.y <0 || renderPos.y > WIN_SIZE_Y ||
-			MapColliderManager::GetSingleton()->checkCollision(shape, (int)dir, bodySize))
+			MapColliderManager::GetSingleton()->checkCollision(shape, (int)dir, bodySize) ||
+			CollisionManager::GetSingleton()->CheckCollision(subTag, shape))
 		{
 			b_IsAlive = false;
 		}

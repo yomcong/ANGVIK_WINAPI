@@ -11,6 +11,7 @@ HRESULT MainGame::Init()
 	GameManager::GetSingleton()->Init();
 	MapColliderManager::GetSingleton()->Init();
 	CameraManager::GetSingleton()->Init();
+	
 
 	Input::Init(g_hWnd);
 

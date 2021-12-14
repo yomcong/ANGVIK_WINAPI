@@ -7,14 +7,13 @@ enum class Action { IDLE, LEFTMOVE, RIGHTMOVE, ATTACK };
 
 //class PixelCollider;
 class Imgae;
-class CollisionManager;
 class Player : public GameObject
 {
 public:
 	//static enum class Action { IDLE, LeftMove, RightMove, Jump, SitDown, Attack, Hit };
 	virtual ~Player() = default;
 
-	virtual HRESULT Init(CollisionManager* collisionManager);
+	virtual HRESULT Init();
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
@@ -22,6 +21,9 @@ public:
 	void ChangeAction(Action action);
 	void ChangeState(State state);
 	void DoAnimation();
+	void ToStepOn();
+	void ToBeHit();
+	bool CheckCollision(SubjectTag subject, RECT shape);
 
 	bool FindImage();
 	void PosUpdate();
@@ -61,12 +63,16 @@ private:
 
 	// 점프력
 	float jumpPower = 0.0f;
+	float invisibleTime = 0.0f;
+	float invisibleCount = 0.0f;
+	bool b_invisible = false;
+
 
 	// 캐릭터 상태관리
 	Action action = Action::IDLE;
 	State state = State::IDLE;
+	SubjectTag subTag = SubjectTag::PLAYER;
 
-	CollisionManager* collisionManager = nullptr;
 	// 디버그용
 	Image* DBbackArm = nullptr;
 	Image* DBfrontArm = nullptr;

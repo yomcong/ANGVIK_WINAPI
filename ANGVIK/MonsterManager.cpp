@@ -9,10 +9,9 @@
 // ¸ó½ºÅÍ ½ºÆùÀ§Ä¡´Â Á¤ÇØÁ®ÀÖ´Â ÁÂÇ¥ ¾È¿¡¼­ ·£´ýÀ¸·Î ±¸Çö¿¹Á¤ 
 //  
 
-HRESULT MonsterManager::Init(Player* target, CollisionManager* collisionManager)
+HRESULT MonsterManager::Init(Player* target)
 {
 	this->target = target;
-	this->collisionManager = collisionManager;
 	KongSpawn();
 	MonkeySpawn();
 	EntSpawn();
@@ -104,7 +103,7 @@ void MonsterManager::KongSpawn()
 	for (int i = 0; i < vecKongs.size(); ++i)
 	{
 		vecKongs[i] = new Kong;
-		vecKongs[i]->Init(target, { spawnPosX[i],spawnPosY[i] }, collisionManager);
+		vecKongs[i]->Init(target, { spawnPosX[i],spawnPosY[i] });
 		vecKongs[i]->GetSubject()->AddObserver(this);
 	}
 }
@@ -120,7 +119,7 @@ void MonsterManager::MonkeySpawn()
 	for (int i = 0; i < vecMonkeys.size(); ++i)
 	{
 		vecMonkeys[i] = new Monkey;
-		vecMonkeys[i]->Init(target, { spawnPosX[i],spawnPosY[i] }, collisionManager);
+		vecMonkeys[i]->Init(target, { spawnPosX[i],spawnPosY[i] });
 		vecMonkeys[i]->GetSubject()->AddObserver(this);
 	}
 }
@@ -128,7 +127,7 @@ void MonsterManager::MonkeySpawn()
 
 void MonsterManager::EntSpawn()
 {
-	EntMaxCount = RANDOM(1, EntMaxCount);
+	//EntMaxCount = RANDOM(1, EntMaxCount);
 	vecEnts.resize(EntMaxCount);
 
 	float spawnPosX[] = { 380.0f, 550.0f, 900.0f };
@@ -137,72 +136,73 @@ void MonsterManager::EntSpawn()
 	for (int i = 0; i < vecEnts.size(); ++i)
 	{
 		vecEnts[i] = new Ent;
-		vecEnts[i]->Init(target, { spawnPosX[i],spawnPosY[i] }, collisionManager);
+		vecEnts[i]->Init(target, { spawnPosX[i],spawnPosY[i] });
 		vecEnts[i]->GetSubject()->AddObserver(this);
 	}
 }
 
-bool MonsterManager::CheckCollision(RECT shape)
+bool MonsterManager::CheckCollision(RECT shape, bool &toStepOn)
 {
 	RECT tempRect = {};
 
 	for (int i = 0; i < vecKongs.size(); ++i)
 	{
-		if (false == kongWindow[i])
+		if (false == kongWindow[i] || false == vecKongs[i]->GetIsAlive())
 		{
 			continue;
 		}
 
 		if (IntersectRect(&tempRect, &shape, vecKongs[i]->GetShapeAddress()))
 		{
-			/*cout << tempRect.left << "\n";
-			cout << tempRect.top << "\n";
-			cout << tempRect.right << "\n";
-			cout << tempRect.bottom << "\n";
-			cout << vecKongs[i]->GetShapeAddress()->left << "\n";
-			cout << vecKongs[i]->GetShapeAddress()->top << "\n";
-			cout << vecKongs[i]->GetShapeAddress()->right << "\n";
-			cout << vecKongs[i]->GetShapeAddress()->bottom << "\n";*/
-
 			if (tempRect.left >= vecKongs[i]->GetShapeAddress()->left &&
 				tempRect.right <= vecKongs[i]->GetShapeAddress()->right &&
 				(((vecKongs[i]->GetShapeAddress()->top + vecKongs[i]->GetShapeAddress()->bottom) / 2) + vecKongs[i]->GetShapeAddress()->top) /2 > tempRect.bottom)
 			{
-				cout << "¹â¾Ñ´Ù." << "\n";
-				vecKongs[i]->SetIsAlive(false);
+				toStepOn = true;
+				//vecKongs[i]->SetIsAlive(false);
 			}
-			/*cout << (((vecKongs[i]->GetShapeAddress()->top + vecKongs[i]->GetShapeAddress()->bottom) / 2) + vecKongs[i]->GetShapeAddress()->top) / 2 << "\n";
-			cout << i << "¹ø Äá ºÎµúÈû" << "\n";*/
 
 			return true;
 		}
 	}
 	for (int i = 0; i < vecMonkeys.size(); ++i)
 	{
-		if (false == monkeyWindow[i])
+		if (false == monkeyWindow[i] || false == vecMonkeys[i]->GetIsAlive())
 		{
 			continue;
 		}
 		if (IntersectRect(&tempRect, &shape, vecMonkeys[i]->GetShapeAddress()))
 		{
-			cout << i << "¹ø ¸ùÅ° ºÎµúÈû" << "\n";
+			if (tempRect.left >= vecMonkeys[i]->GetShapeAddress()->left &&
+				tempRect.right <= vecMonkeys[i]->GetShapeAddress()->right &&
+				(((vecMonkeys[i]->GetShapeAddress()->top + vecMonkeys[i]->GetShapeAddress()->bottom) / 2) + vecMonkeys[i]->GetShapeAddress()->top) / 2 > tempRect.bottom)
+			{
+				toStepOn = true;
+				//vecMonkeys[i]->SetIsAlive(false);
+			}
+
 			return true;
 		}
 	}
 	for (int i = 0; i < vecEnts.size(); ++i)
 	{
-		if (false == entWindow[i])
+		if (false == entWindow[i] || false == vecEnts[i]->GetIsAlive())
 		{
-			continue;
+		continue;
 		}
 		if (IntersectRect(&tempRect, &shape, vecEnts[i]->GetShapeAddress()))
 		{
-			cout << i << "¹ø ¿£Æ® ºÎµúÈû" << "\n";
+			if (tempRect.left >= vecEnts[i]->GetShapeAddress()->left &&
+				tempRect.right <= vecEnts[i]->GetShapeAddress()->right &&
+				(((vecEnts[i]->GetShapeAddress()->top + vecEnts[i]->GetShapeAddress()->bottom) / 2) + vecEnts[i]->GetShapeAddress()->top) / 2 > tempRect.bottom)
+			{
+				toStepOn = true;
+				//vecEnts[i]->SetIsAlive(false);
+			}
 			return true;
 		}
 	}
 	return false;
-
 }
 
 void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, SubjectTag subjectTag, EventTag eventTag)

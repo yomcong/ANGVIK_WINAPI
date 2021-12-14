@@ -1,11 +1,10 @@
 #include "Ent.h"
 #include "Player.h"
 #include "Image.h"
-#include "AmmoManager.h"
+#include "EntAmmoManager.h"
 #include "Subject.h"
-#include "CollisionManager.h"
 
-HRESULT Ent::Init(Player* target, POINTFLOAT pos, CollisionManager* collisionManager)
+HRESULT Ent::Init(Player* target, POINTFLOAT pos)
 {
  	basicEnt = ImageManager::GetSingleton()->FindImage("image/monster/Ent_move_6f.bmp");
 	if (basicEnt == nullptr)
@@ -38,12 +37,13 @@ HRESULT Ent::Init(Player* target, POINTFLOAT pos, CollisionManager* collisionMan
 		return E_FAIL;
 	}
 	
-	ammoManager = new AmmoManager;
+	ammoManager = new EntAmmoManager;
 	ammoManager->Init(target);
 
-	this->collisionManager = collisionManager;
 	this->target = target;
 	this->pos = pos;
+
+	b_isAlive = true;
 
 	bodySize.x = 50;
 	bodySize.y = 85;
@@ -136,7 +136,7 @@ void Ent::Update()
 				b_attack = true;
 				b_attackReady = false;
 				attackEffectFrame.x = attackEffectMaxFrame.x;
-				ammoManager->EntFire(pos, (int)dir);
+				ammoManager->Fire(pos, (int)dir);
 
 			}
 			else

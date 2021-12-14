@@ -11,7 +11,7 @@ using namespace std;
 
 #pragma comment(lib, "winmm.lib")
 
-enum class SubjectTag { IDLE, PLAYER, MONSTER, ITEM, TRAP, PLATFORM };
+enum class SubjectTag { IDLE, PLAYER, MONSTER, ITEM	, TRAP, PLATFORM , Ammo };
 enum class EventTag { IDLE, ADD, INWINDOW, OUTWINDOW, COLLISION, RELEASE, };
 enum class direction { LEFT = -1, RIGHT = 1};
 enum class MonsterType {KONG, MONKEY, ENT};
@@ -48,6 +48,7 @@ enum class MonsterType {KONG, MONKEY, ENT};
 #include "MapColliderManager.h"
 #include "CameraManager.h"
 #include "InputManager.h"
+#include "CollisionManager.h"
 
 extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;

@@ -5,14 +5,13 @@
 class Player;
 class Image;
 class Subject;
-class AmmoManager;
-class CollisionManager;
+class EntAmmoManager;
 class Ent : public GameObject
 {
 public:
 	virtual ~Ent() = default;
 
-	virtual HRESULT Init(Player* target, POINTFLOAT pos, CollisionManager* collisionManager);
+	virtual HRESULT Init(Player* target, POINTFLOAT pos);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
@@ -34,11 +33,9 @@ private:
 	POINT attackEffectFrame = { 6, 0 };
 
 	// ÃÑ¾Ë
-	AmmoManager* ammoManager = nullptr;
+	EntAmmoManager* ammoManager = nullptr;
 	// Å¸°ÙÁÂÇ¥
 	Player* target = nullptr;
-
-	CollisionManager* collisionManager = nullptr;
 
 	// ¸Æ½º ÇÁ·¹ÀÓ
 	const POINT attackMaxFrame = { 5, 0 };

@@ -2,9 +2,8 @@
 #include "Image.h"
 #include "Player.h"
 #include "Subject.h"
-#include "CollisionManager.h"
 
-HRESULT Monkey::Init(Player* target, POINTFLOAT pos, CollisionManager* collisionManager)
+HRESULT Monkey::Init(Player* target, POINTFLOAT pos)
 {
 	monkey = ImageManager::GetSingleton()->FindImage("image/monster/¿ø¼þÀÌ.bmp");
 	if (monkey == nullptr)
@@ -18,13 +17,14 @@ HRESULT Monkey::Init(Player* target, POINTFLOAT pos, CollisionManager* collision
 	}
 	
 	subject = new Subject;
-	this->collisionManager = collisionManager;
 
 	this->target = target;
 
 	this->pos = pos;
 	renderPos = pos;
 	
+	b_isAlive = true;
+
 	bodySize.x = 20;
 	bodySize.y = 20;
 

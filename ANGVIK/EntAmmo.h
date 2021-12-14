@@ -31,6 +31,9 @@ private:
 
 	// °¢µµ
 	float moveAngle = 0.0f;
+
+	SubjectTag subTag = SubjectTag::Ammo;
+
 };
 
 

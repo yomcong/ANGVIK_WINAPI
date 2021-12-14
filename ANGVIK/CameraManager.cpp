@@ -7,6 +7,7 @@ HRESULT CameraManager::Init()
 
 void CameraManager::Update()
 {
+	// µð¹ö±ë
 	if (KeyManager::GetSingleton()->IsStayKeyDown(VK_NUMPAD6))
 	{
 		pos.x += 5;

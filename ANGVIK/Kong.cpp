@@ -1,13 +1,12 @@
 #include "Kong.h"
 #include "Image.h"
-#include "AmmoManager.h"
+#include "KongAmmoManager.h"
 #include "Player.h"
 #include "Subject.h"
-#include "CollisionManager.h"
 
 // 플레이어 조준하는 삼각함수 계산 다시해야함
 
-HRESULT Kong::Init(Player* target, POINTFLOAT pos, CollisionManager* collisionManager)
+HRESULT Kong::Init(Player* target, POINTFLOAT pos)
 {
 	attackMotion = ImageManager::GetSingleton()->FindImage("image/monster/kong_atk_8f.bmp");
 	if (attackMotion == nullptr)
@@ -29,10 +28,9 @@ HRESULT Kong::Init(Player* target, POINTFLOAT pos, CollisionManager* collisionMa
 	{
 		return E_FAIL;
 	}
-	ammoManager = new AmmoManager;
+	ammoManager = new KongAmmoManager;
 	ammoManager->Init(target);
 
-	this->collisionManager = collisionManager;
 	this->target = target;
 	this->pos = pos;
 	
@@ -119,7 +117,7 @@ void Kong::Update()
 				this->dir = direction::LEFT;
 			}
 
-			ammoManager->KongFire(pos, targetAngle, dir);
+			ammoManager->Fire(pos, targetAngle, dir);
 
 			testElpsedCount = 0.0f;
 		}

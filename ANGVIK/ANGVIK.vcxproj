@@ -146,6 +146,7 @@
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Ent.cpp" />
     <ClCompile Include="EntAmmo.cpp" />
+    <ClCompile Include="EntAmmoManager.cpp" />
     <ClCompile Include="Extern.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Kong.cpp" />
     <ClCompile Include="KongAmmo.cpp" />
+    <ClCompile Include="KongAmmoManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="MapColliderManager.cpp" />
@@ -187,6 +189,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Ent.h" />
     <ClInclude Include="EntAmmo.h" />
+    <ClInclude Include="EntAmmoManager.h" />
     <ClInclude Include="Extern.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="GameManager.h" />
@@ -200,6 +203,7 @@
     <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Kong.h" />
     <ClInclude Include="KongAmmo.h" />
+    <ClInclude Include="KongAmmoManager.h" />
     <ClInclude Include="Macro.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MapColliderManager.h" />

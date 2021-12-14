@@ -39,12 +39,14 @@ HRESULT StageScene::Init()
 	player = new Player;
 	monsterManager = new MonsterManager;
 	trapManager = new TrapManager;
-	collisionManager = new CollisionManager;
 
-	player->Init(collisionManager);
-	monsterManager->Init(player, collisionManager);
-	trapManager->Init(collisionManager);
-	collisionManager->Init(player, monsterManager, trapManager);
+	CollisionManager::GetSingleton()->AddPlayer(player);
+	CollisionManager::GetSingleton()->AddMonster(monsterManager);
+	CollisionManager::GetSingleton()->AddTrap(trapManager);
+
+	player->Init();
+	monsterManager->Init(player);
+	trapManager->Init();
 	
 	return S_OK;
 }
