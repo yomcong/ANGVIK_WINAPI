@@ -167,6 +167,8 @@
     <ClCompile Include="Monkey.cpp" />
     <ClCompile Include="MonsterManager.cpp" />
     <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="ParticleManager.cpp" />
+    <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="StageScene.cpp" />
@@ -210,6 +212,8 @@
     <ClInclude Include="Monkey.h" />
     <ClInclude Include="MonsterManager.h" />
     <ClInclude Include="Observer.h" />
+    <ClInclude Include="ParticleManager.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />

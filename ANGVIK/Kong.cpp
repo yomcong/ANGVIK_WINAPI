@@ -46,6 +46,11 @@ HRESULT Kong::Init(Player* target, POINTFLOAT pos)
 	shape.right = (int)pos.x + bodySize.x / 2;
 	shape.bottom = (int)pos.y + bodySize.y / 2;
 
+	rangeRect.left = (int)pos.x - bodySize.x * 3;
+	rangeRect.top = (int)pos.y - bodySize.y * 3;
+	rangeRect.right = (int)pos.x + bodySize.x * 3;
+	rangeRect.bottom = (int)pos.y + bodySize.y * 3; 
+
 	renderPos = pos;
 
 	return S_OK;
@@ -55,6 +60,83 @@ void Kong::Update()
 {
 	ammoManager->Update();
 
+	if (b_isAlive)
+	{
+		DoAction();
+		CheckAttackRange();
+		CheckWindow();
+	}
+
+	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
+	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
+	
+	/*shape.left = (int)pos.x - bodySize.x / 2;
+	shape.top = (int)pos.y - bodySize.y / 2;
+	shape.right = (int)pos.x + bodySize.x / 2;
+	shape.bottom = (int)pos.y + bodySize.y / 2;*/
+
+	
+	if (Input::GetButtonDown(VK_NUMPAD9))
+	{
+		DBrect == false ? DBrect = true : DBrect = false;
+	}
+	if (Input::GetButtonDown(VK_NUMPAD1))
+	{
+		DBRangeRect == false ? DBRangeRect = true : DBRangeRect = false;
+	}
+}
+
+void Kong::Render(HDC hdc)
+{
+	ammoManager->Render(hdc);
+
+	if (b_isAlive)
+	{
+		if (DBRangeRect)
+			Rectangle(hdc, rangeRect.left - (int)CameraManager::GetSingleton()->GetPos().x,
+				rangeRect.top - (int)CameraManager::GetSingleton()->GetPos().y,
+				rangeRect.right - (int)CameraManager::GetSingleton()->GetPos().x,
+				rangeRect.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
+
+		if (dir == direction::RIGHT)
+		{
+			//attackMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
+			basicMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
+		}
+		else
+		{
+			//R_attackMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
+			R_basicMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
+		}
+
+		//attackMotion->Render(hdc, 375, 350, attackFrame.x, attackFrame.y);
+
+		if (DBrect)
+			Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x,
+				shape.top - (int)CameraManager::GetSingleton()->GetPos().y,
+				shape.right - (int)CameraManager::GetSingleton()->GetPos().x,
+				shape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
+	}
+}
+
+void Kong::Release()
+{
+	SAFE_RELEASE(ammoManager);
+	SAFE_DELETE(subject);
+	//SAFE_RELEASE(target);	
+}
+
+void Kong::ToBeHit()
+{
+	if (b_isAlive)
+	{
+		ParticleManager::GetSingleton()->CallParticle(pos);
+		b_isAlive = false;
+	}
+}
+
+void Kong::DoAction()
+{
 	frameCount += TimerManager().GetSingleton()->GetDeltaTime();
 	if (frameCount > 0.125)
 	{
@@ -66,7 +148,7 @@ void Kong::Update()
 		{
 			++basicFrame.x;
 		}
-		
+
 		if (attackFrame.x == 7)
 		{
 			attackFrame.x = 0;
@@ -77,7 +159,10 @@ void Kong::Update()
 		}
 		frameCount = 0;
 	}
+}
 
+void Kong::CheckWindow()
+{
 	if (renderPos.x > 0 && renderPos.x < WIN_SIZE_X &&
 		renderPos.y > 0 && renderPos.y < WIN_SIZE_Y)
 	{
@@ -95,8 +180,12 @@ void Kong::Update()
 			windowIn = false;
 		}
 	}
+}
 
-	// 테스트용 아모발싸 함수화하기
+void Kong::CheckAttackRange()
+{
+	RECT testRect = {};
+
 	if (IntersectRect(&testRect, target->GetShapeAddress(), &rangeRect))
 	{
 		testElpsedCount += TimerManager::GetSingleton()->GetDeltaTime();
@@ -122,72 +211,4 @@ void Kong::Update()
 			testElpsedCount = 0.0f;
 		}
 	}
-
-	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
-	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
-	
-	if (Input::GetButtonDown(VK_NUMPAD9))
-	{
-		DBrect == false ? DBrect = true : DBrect = false;
-	}
-	if (Input::GetButtonDown(VK_NUMPAD1))
-	{
-		DBRangeRect == false ? DBRangeRect = true : DBRangeRect = false;
-	}
-
-	shape.left = (int)pos.x - bodySize.x / 2;
-	shape.top = (int)pos.y - bodySize.y / 2;
-	shape.right = (int)pos.x + bodySize.x / 2;
-	shape.bottom = (int)pos.y + bodySize.y / 2;
-
-	rangeRect.left = (int)pos.x - bodySize.x*3;
-	rangeRect.top = (int)pos.y - bodySize.y*3;
-	rangeRect.right = (int)pos.x + bodySize.x*3;
-	rangeRect.bottom = (int)pos.y + bodySize.y*3;
-	
-}
-
-void Kong::Render(HDC hdc)
-{
-	if (b_isAlive)
-	{
-		if (DBRangeRect)
-			Rectangle(hdc, rangeRect.left - (int)CameraManager::GetSingleton()->GetPos().x,
-				rangeRect.top - (int)CameraManager::GetSingleton()->GetPos().y,
-				rangeRect.right - (int)CameraManager::GetSingleton()->GetPos().x,
-				rangeRect.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
-
-		if (dir == direction::RIGHT)
-		{
-			//attackMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
-			basicMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
-		}
-		else
-		{
-			//R_attackMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
-			R_basicMotion->Render(hdc, (int)renderPos.x, (int)renderPos.y, basicFrame.x, basicFrame.y);
-		}
-
-		//attackMotion->Render(hdc, 375, 350, attackFrame.x, attackFrame.y);
-
-		ammoManager->Render(hdc);
-
-		if (DBrect)
-			Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x,
-				shape.top - (int)CameraManager::GetSingleton()->GetPos().y,
-				shape.right - (int)CameraManager::GetSingleton()->GetPos().x,
-				shape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
-	}
-}
-
-void Kong::Release()
-{
-	SAFE_RELEASE(ammoManager);
-	SAFE_DELETE(subject);
-	//SAFE_RELEASE(target);	
-}
-
-void Kong::OnNotify(Subject* subject, MonsterType monsterType, SubjectTag subjectTag, EventTag eventTag)
-{
-	
 }

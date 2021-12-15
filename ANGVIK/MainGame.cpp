@@ -8,10 +8,10 @@ HRESULT MainGame::Init()
 	ImageManager::GetSingleton()->Init();
 	TimerManager::GetSingleton()->Init();
 	SceneManager::GetSingleton()->Init();
-	GameManager::GetSingleton()->Init();
+	//GameManager::GetSingleton()->Init();
 	MapColliderManager::GetSingleton()->Init();
 	CameraManager::GetSingleton()->Init();
-	
+	ParticleManager::GetSingleton()->Init();
 
 	Input::Init(g_hWnd);
 
@@ -39,6 +39,8 @@ void MainGame::Update()
 
 	CameraManager::GetSingleton()->Update();
 
+	ParticleManager::GetSingleton()->Update();
+
 	InvalidateRect(g_hWnd, NULL, false);
 }
 
@@ -50,7 +52,7 @@ void MainGame::Render(HDC hdc)
 
 	SceneManager::GetSingleton()->Render(hBackBufferDC);
 	
-
+	ParticleManager::GetSingleton()->Render(hBackBufferDC);
 	//fps Ç¥½Ã.
 #ifdef _DEBUG
 	TimerManager::GetSingleton()->Render(hBackBufferDC);

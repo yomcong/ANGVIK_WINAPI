@@ -1,6 +1,6 @@
-#include "GameManager.h"
-
-void GameManager::Init()
-{
-
-}
+//#include "GameManager.h"
+//
+//void GameManager::Init()
+//{
+//
+//}

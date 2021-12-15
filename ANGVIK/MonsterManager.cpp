@@ -159,7 +159,7 @@ bool MonsterManager::CheckCollision(RECT shape, bool &toStepOn)
 				(((vecKongs[i]->GetShapeAddress()->top + vecKongs[i]->GetShapeAddress()->bottom) / 2) + vecKongs[i]->GetShapeAddress()->top) /2 > tempRect.bottom)
 			{
 				toStepOn = true;
-				//vecKongs[i]->SetIsAlive(false);
+				vecKongs[i]->ToBeHit();
 			}
 
 			return true;
@@ -178,7 +178,7 @@ bool MonsterManager::CheckCollision(RECT shape, bool &toStepOn)
 				(((vecMonkeys[i]->GetShapeAddress()->top + vecMonkeys[i]->GetShapeAddress()->bottom) / 2) + vecMonkeys[i]->GetShapeAddress()->top) / 2 > tempRect.bottom)
 			{
 				toStepOn = true;
-				//vecMonkeys[i]->SetIsAlive(false);
+				vecMonkeys[i]->ToBeHit();
 			}
 
 			return true;
@@ -188,7 +188,7 @@ bool MonsterManager::CheckCollision(RECT shape, bool &toStepOn)
 	{
 		if (false == entWindow[i] || false == vecEnts[i]->GetIsAlive())
 		{
-		continue;
+			continue;
 		}
 		if (IntersectRect(&tempRect, &shape, vecEnts[i]->GetShapeAddress()))
 		{
@@ -197,7 +197,7 @@ bool MonsterManager::CheckCollision(RECT shape, bool &toStepOn)
 				(((vecEnts[i]->GetShapeAddress()->top + vecEnts[i]->GetShapeAddress()->bottom) / 2) + vecEnts[i]->GetShapeAddress()->top) / 2 > tempRect.bottom)
 			{
 				toStepOn = true;
-				//vecEnts[i]->SetIsAlive(false);
+				vecEnts[i]->ToBeHit();
 			}
 			return true;
 		}
@@ -314,58 +314,3 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 		}
 	}
 }
-/*switch (eventTag)
-{
-case EventTag::INWINDOW:
-	cout << "화면 영역에 들어옴" << "\n";
-	for (int i = 0; i < vecKongs.size(); ++i)
-	{
-		if (vecKongs[i]->GetSubject() == subject)
-		{
-			kongWindow[i] = true;
-		}
-		else
-		{
-			cout << "객체를 못찾았다." << "\n";
-		}
-
-	}
-	break;
-case EventTag::OUTWINDOW:
-	cout << "화면 영역 밖으로 나감" << "\n";
-	for (int i = 0; i < vecKongs.size(); ++i)
-	{
-		if (vecKongs[i]->GetSubject() == subject)
-		{
-			kongWindow[i] = false;
-		}
-		else
-		{
-			cout << "객체를 못찾았다." << "\n";
-		}
-
-	}
-	break;
-case EventTag::RELEASE:
-	for (int i = 0; i < vecKongs.size(); ++i)
-	{
-
-		if (vecKongs[i]->GetSubject() == subject)
-		{
-			cout << "객체를 특정했다" << "\n";
-			cout << " index : " << i << "\n";
-			kongWindow[i] = true;
-		}
-		else
-		{
-			cout << "객체를 못찾았다." << "\n";
-		}
-
-	}
-	cout << "화면 밖으로 나감 " << "\n";
-	break;
-}
-break;
-}*/
-
-

@@ -49,6 +49,7 @@ enum class MonsterType {KONG, MONKEY, ENT};
 #include "CameraManager.h"
 #include "InputManager.h"
 #include "CollisionManager.h"
+#include "ParticleManager.h"
 
 extern HWND g_hWnd;
 extern HINSTANCE g_hInstance;

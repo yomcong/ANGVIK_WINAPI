@@ -15,14 +15,14 @@ HRESULT Monkey::Init(Player* target, POINTFLOAT pos)
 	{
 		return E_FAIL;
 	}
-	
+
 	subject = new Subject;
 
 	this->target = target;
 
 	this->pos = pos;
 	renderPos = pos;
-	
+
 	b_isAlive = true;
 
 	bodySize.x = 20;
@@ -43,20 +43,58 @@ HRESULT Monkey::Init(Player* target, POINTFLOAT pos)
 
 void Monkey::Update()
 {
-	if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize))
+	if (b_isAlive)
 	{
-		pos.y += 3.0f;
+		DoAnimation();
+		DoAction();
 	}
 
-	POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
-		Move(pos, shape, moveSpeed, (int)dir, bodySize);
-	if (tempPos.x == 0.0f)
-	{
-		dir == direction::RIGHT ? dir = direction::LEFT : dir = direction::RIGHT;
-	}
-	pos.x += tempPos.x;
-	pos.y += tempPos.y;
+	PosUpdate();
+	CheckWindow();
 
+	if (Input::GetButtonDown(VK_NUMPAD9))
+	{
+		DBrect == false ? DBrect = true : DBrect = false;
+	}
+}
+
+void Monkey::Render(HDC hdc)
+{
+	if (b_isAlive)
+	{
+		if (dir == direction::RIGHT)
+		{
+			monkey->Render(hdc, (int)renderPos.x, (int)renderPos.y, framePos.x, framePos.y);
+		}
+		else
+		{
+			R_monkey->Render(hdc, (int)renderPos.x, (int)renderPos.y, framePos.x, framePos.y);
+		}
+
+		if (DBrect)
+			Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x,
+				shape.top - (int)CameraManager::GetSingleton()->GetPos().y,
+				shape.right - (int)CameraManager::GetSingleton()->GetPos().x,
+				shape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
+	}
+}
+
+void Monkey::Release()
+{
+	SAFE_DELETE(subject);
+}
+
+void Monkey::ToBeHit()
+{
+	if (b_isAlive)
+	{
+		ParticleManager::GetSingleton()->CallParticle(pos);
+		b_isAlive = false;
+	}
+}
+
+void Monkey::DoAnimation()
+{
 	frameCount += TimerManager().GetSingleton()->GetDeltaTime();
 
 	if (frameCount > 0.125)
@@ -72,7 +110,21 @@ void Monkey::Update()
 
 		frameCount = 0.0f;
 	}
+}
 
+void Monkey::PosUpdate()
+{
+	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
+	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
+
+	shape.left = (int)pos.x - bodySize.x;
+	shape.top = (int)pos.y - bodySize.y;
+	shape.right = (int)pos.x + bodySize.x;
+	shape.bottom = (int)pos.y + bodySize.y;
+}
+
+void Monkey::CheckWindow()
+{
 	if (renderPos.x > 0 && renderPos.x < WIN_SIZE_X &&
 		renderPos.y > 0 && renderPos.y < WIN_SIZE_Y)
 	{
@@ -90,40 +142,26 @@ void Monkey::Update()
 			windowIn = false;
 		}
 	}
-
-	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
-	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
-
-	shape.left = (int)pos.x - bodySize.x;
-	shape.top = (int)pos.y - bodySize.y;
-	shape.right = (int)pos.x + bodySize.x;
-	shape.bottom = (int)pos.y + bodySize.y;
-
-	if (Input::GetButtonDown(VK_NUMPAD9))
-	{
-		DBrect == false ? DBrect = true : DBrect = false;
-	}
 }
 
-void Monkey::Render(HDC hdc)
+void Monkey::DoAction()
 {
-	if (dir == direction::RIGHT)
+	if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize))
 	{
-		monkey->Render(hdc, (int)renderPos.x, (int)renderPos.y, framePos.x, framePos.y);
-	}
-	else
-	{
-		R_monkey->Render(hdc, (int)renderPos.x, (int)renderPos.y, framePos.x, framePos.y);
+		pos.y += 3.0f;
 	}
 
-	if (DBrect)
-		Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x,
-			shape.top - (int)CameraManager::GetSingleton()->GetPos().y,
-			shape.right - (int)CameraManager::GetSingleton()->GetPos().x,
-			shape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
-}
+	POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
+		Move(pos, shape, moveSpeed, (int)dir, bodySize);
+	if (tempPos.x == 0.0f)
+	{
+		dir == direction::RIGHT ? dir = direction::LEFT : dir = direction::RIGHT;
+	}
+	pos.x += tempPos.x;
+	pos.y += tempPos.y;
 
-void Monkey::Release()
-{
-	SAFE_DELETE(subject);
+	if (CollisionManager::GetSingleton()->CheckCollision(subTag, shape))
+	{
+		ToBeHit();
+	}
 }

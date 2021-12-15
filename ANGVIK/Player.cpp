@@ -53,32 +53,15 @@ HRESULT Player::Init()
 
 void Player::Update()
 {
-	if (Input::GetButtonDown(VK_NUMPAD3))
-	{
-		SubjectTag tempSubjectTag;
-		tempSubjectTag = CollisionManager::GetSingleton()->testCheck(SubjectTag::PLAYER, shape);
-		switch (tempSubjectTag)
-		{
-		case SubjectTag::IDLE:
-			cout << "부딪히지 않음 " << "\n";
-			break;
-		case SubjectTag::MONSTER:
-			cout << "몬스터 부딪힘 " << "\n";
-			break;
-		case SubjectTag::TRAP:
-			cout << "트랩 부딪힘 " << "\n";
-			break;
-		}
-
-	}
-
+	CollisionManager::GetSingleton()->CheckCollision(subTag, shape);
 
 	// 점프상태가 아닐경우
 	if (false == (state == State::JUMP))
 	{
 		// 내리막길(이동+낙하) 일경우 스테이트를 계속 바꿔주면서 애니메이션이 굉장히 부자연스러워짐. 고쳐야함
 		// 테스트용 트랩 충돌체크 최적화 하기
-		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize))
+		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize)
+			&& b_platform == false)
 		{
 			ChangeState(State::Fall);
 
@@ -91,7 +74,6 @@ void Player::Update()
 			{
 				CameraManager::GetSingleton()->SetPosY(3);
 			}
-
 		}
 		else
 		{
@@ -160,7 +142,6 @@ void Player::Update()
 			// 상태 변경
 			ChangeAction(Action::LEFTMOVE);
 			dir = direction::LEFT;
-			CollisionManager::GetSingleton()->CheckCollision(subTag, shape);
 		}
 		if (Input::GetButton(VK_RIGHT))
 		{
@@ -181,7 +162,6 @@ void Player::Update()
 			// 상태 변경
 			ChangeAction(Action::RIGHTMOVE);
 			dir = direction::RIGHT;
-			CollisionManager::GetSingleton()->CheckCollision(subTag, shape);
 		}
 		if (Input::GetButton(VK_UP))
 		{
@@ -236,7 +216,7 @@ void Player::Update()
 	//디버그용 인체실험
 #ifdef _DEBUG
 	// 디버깅용
-	if (KeyManager::GetSingleton()->IsOnceKeyDown('Y'))
+	/*if (KeyManager::GetSingleton()->IsOnceKeyDown('Y'))
 		if (DBarmPos.y == 2)
 			DBarmPos.y = 0;
 		else
@@ -275,7 +255,7 @@ void Player::Update()
 		if (DBbodyPos.y == 0)
 			DBbodyPos.y = 1;
 		else
-			--DBbodyPos.y;
+			--DBbodyPos.y;*/
 #endif
 	// 디버그용 캐릭터 랙트표시
 	if (Input::GetButtonDown(VK_NUMPAD9))
@@ -573,7 +553,6 @@ void Player::DoAnimation()
 			{
 				renderPos.y -= 200;
 				CameraManager::GetSingleton()->SetPosY(+200);
-				cout << CameraManager::GetSingleton()->GetPos().y << "\n";
 				sitDownCamera = true;
 			}
 
@@ -601,7 +580,6 @@ void Player::DoAnimation()
 				invisibleCount = 0.0f;
 			}
 		}
-		cout << invisibleTime << "\n";
 	}
 	else
 	{
@@ -613,22 +591,45 @@ void Player::DoAnimation()
 bool Player::CheckCollision(SubjectTag subject, RECT shape)
 {
 	RECT tempRect;
+	bool temp = false;
 
 	if (IntersectRect(&tempRect, &shape, &this->shape))
 	{
+		if (tempRect.left >= shape.left &&
+			tempRect.right <= shape.right &&
+			(((shape.top + shape.bottom) / 2) + shape.top) / 2 > tempRect.bottom)
+		{
+			temp = true;
+		}
+		else
+		{
+			temp = false;
+		}
+
 		switch (subject)
 		{
 		case SubjectTag::IDLE:
 			break;
-		case SubjectTag::PLAYER:
-			break;
 		case SubjectTag::MONSTER:
+			if (temp == false)
+			{
+				ToBeHit();
+			}
 			break;
 		case SubjectTag::ITEM:
 			break;
-		case SubjectTag::TRAP:
-			break;
 		case SubjectTag::PLATFORM:
+			if (temp)
+			{
+				return true;
+			}
+			else
+			{
+				b_platform = false;
+				return false;
+			}
+			break;
+		case SubjectTag::TRAP:
 			break;
 		case SubjectTag::Ammo:
 			ToBeHit();

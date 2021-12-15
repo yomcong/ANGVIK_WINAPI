@@ -15,17 +15,27 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
+	void ToBeHit();
+	void DoAnimation();
+	void PosUpdate();
+	void CheckWindow();
+	void DoAction();
+
 	Subject* GetSubject() { return subject; }
 
 private:
 	Image* monkey = nullptr;
 	Image* R_monkey = nullptr;
+	Image* deathEffect = nullptr;
 
 	Player* target = nullptr;
 
 	Subject* subject = nullptr;
 
+	POINT deathEffectFrame = { 7,0 };
+
 	const POINT monkeyMaxFrame = { 8, 0 };
+	const POINT deathEffectMaxFrame = { 6,0 };
 
 	SubjectTag subTag = SubjectTag::MONSTER;
 	MonsterType myType = MonsterType::MONKEY;

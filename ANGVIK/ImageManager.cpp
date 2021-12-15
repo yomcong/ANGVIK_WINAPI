@@ -49,6 +49,9 @@ void ImageManager::Init()
 	AddImage("image/player/gold/foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// È²±Ý ½Å¹ß
 
 	// ¸ó½ºÅÍ
+	// µ¥½º ÀÌÆåÆ®
+	AddImage("image/effect.bmp", 600, 100, 6, 1, true, RGB(255, 255, 255));	// µ¥½º ÀÌÆåÆ®
+	
 	// --Äá--
 	AddImage("image/monster/kong_atk_8f.bmp", 272, 40, 8, 1, true, RGB(255, 255, 255));	// °ø°Ý¸ð¼Ç 
 	AddImage("image/monster/kong_idle_6f.bmp", 192, 54, 6, 1, true, RGB(255, 255, 255));// ±âº»ÀÚ¼¼
@@ -79,9 +82,9 @@ void ImageManager::Init()
 	AddImage("image/monster/R_leaf3.bmp", 15, 15, true, RGB(255, 255, 255));// ³ª¹µÀÙ 3(Reverse)
 	AddImage("image/monster/R_leaf4.bmp", 15, 15, true, RGB(255, 255, 255));// ³ª¹µÀÙ 4(Reverse)
 
-	// ÇÔÁ¤
-	AddImage("image/Stage/treetrap.bmp", 53, 90, 1, 6, true, RGB(255, 255, 255));	// Æ®·¦
-	AddImage("image/Stage/R_treetrap.bmp", 53, 90, 1, 6, true, RGB(255, 255, 255));	// Æ®·¦(Reverse)
+	// ÇÃ·§Æû
+	AddImage("image/Stage/treetrap.bmp", 53, 90, 1, 6, true, RGB(255, 255, 255));	// ÇÃ·§Æû
+	AddImage("image/Stage/R_treetrap.bmp", 53, 90, 1, 6, true, RGB(255, 255, 255));	// ÇÃ·§Æû(Reverse)
 
 }
 

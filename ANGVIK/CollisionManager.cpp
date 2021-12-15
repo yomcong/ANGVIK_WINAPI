@@ -34,15 +34,15 @@ void CollisionManager::AddObject(SubjectTag subject, EventTag object, RECT* shap
 	}
 }
 
-bool CollisionManager::CheckCollision(SubjectTag subject,RECT shape, EventTag eventTag)
+bool CollisionManager::CheckCollision(SubjectTag subject, RECT shape, EventTag eventTag)
 {
+	bool b_temp = false;
 	switch (subject)
 	{
 	case SubjectTag::IDLE:
 		break;
 	case SubjectTag::PLAYER:
 	{
-		bool b_temp = false;
 		if (monsterManager->CheckCollision(shape, b_temp))
 		{
 			if (b_temp)
@@ -59,23 +59,37 @@ bool CollisionManager::CheckCollision(SubjectTag subject,RECT shape, EventTag ev
 		{
 			if (b_temp)
 			{
-				// 나무위에 서잇기
-				//player->();
+				player->SetIsPlatform(true);
 			}
 			else
 			{
 				player->ToBeHit();
 			}
 		}
+		else
+		{
+			player->SetIsPlatform(false);
+		}
 		break;
 	}
 	case SubjectTag::MONSTER:
+		player->CheckCollision(subject, shape);
+
+		if (trapManager->CheckCollision(shape, b_temp))
+		{
+			return true;
+		}
 		break;
 	case SubjectTag::ITEM:
 		break;
 	case SubjectTag::TRAP:
 		break;
 	case SubjectTag::PLATFORM:
+		if (player->CheckCollision(subject, shape))
+		{
+			return true;
+		}
+	
 		break;
 	case SubjectTag::Ammo:
 		if (player->CheckCollision(subject, shape))
@@ -106,6 +120,6 @@ SubjectTag CollisionManager::testCheck(SubjectTag subjectTag, RECT shape)
 	default:
 		break;
 	}
-	
+
 	return SubjectTag::IDLE;
 }

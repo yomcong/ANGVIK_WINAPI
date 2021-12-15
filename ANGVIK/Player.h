@@ -21,12 +21,14 @@ public:
 	void ChangeAction(Action action);
 	void ChangeState(State state);
 	void DoAnimation();
+	void PosUpdate();
 	void ToStepOn();
 	void ToBeHit();
 	bool CheckCollision(SubjectTag subject, RECT shape);
-
 	bool FindImage();
-	void PosUpdate();
+
+	inline bool SetIsPlatform(bool b_platform) { return this->b_platform = b_platform; }
+
 
 private:
 	Image* backArm = nullptr;	// 왼팔
@@ -66,6 +68,7 @@ private:
 	float invisibleTime = 0.0f;
 	float invisibleCount = 0.0f;
 	bool b_invisible = false;
+	bool b_platform = false;
 
 
 	// 캐릭터 상태관리

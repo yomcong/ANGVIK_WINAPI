@@ -1,13 +1,12 @@
 #pragma once
 #include "Config.h"
 #include "GameObject.h"
-#include "Observer.h"
 
 class Image;
 class Player;
 class KongAmmoManager;
 class Subject;
-class Kong : public GameObject, public Observer
+class Kong : public GameObject
 {
 public:
 	virtual ~Kong() = default;
@@ -17,7 +16,11 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
-	virtual void OnNotify(Subject* subject, MonsterType monsterType, SubjectTag subjectTag, EventTag eventTag) override;
+	void ToBeHit();
+	void DoAction();
+	void CheckWindow();
+	void CheckAttackRange();
+
 	Subject* GetSubject() { return subject; }
 
 private:
@@ -25,11 +28,13 @@ private:
 	Image* basicMotion = nullptr;
 	Image* R_attackMotion = nullptr;
 	Image* R_basicMotion = nullptr;
+	Image* deathEffect = nullptr;
 
 	// 애니메이션 프레임
 	POINT basicFrame = { 0,0 };
 	POINT attackFrame = { 0,0 };
-	
+	POINT deathEffectFrame = { 7,0 };
+
 	Subject* subject = nullptr;
 
 	// 총알
@@ -39,16 +44,13 @@ private:
 
 	const POINT attackMotionMaxFrame = { 8, 0 };
 	const POINT basicMaxFrame = { 6, 0 };
+	const POINT deathEffectMaxFrame = { 5,0 };
 
 	RECT rangeRect = {};
 
 	SubjectTag subTag = SubjectTag::MONSTER;
 	MonsterType myType = MonsterType::KONG;
 	
-
-
-	// 충돌체크 함수로 제외할때 지역변수화 하기.
-	RECT testRect = {};
 
 	// 사정거리 디버깅
 	bool DBRangeRect = false;

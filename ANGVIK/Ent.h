@@ -16,6 +16,12 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
+	void DoAnimation();
+	void PosUpdate();
+	void ToBeHit();
+	void CheckWindow();
+	void DoAction();
+
 	Subject* GetSubject() { return subject; }
 
 private:
@@ -25,12 +31,14 @@ private:
 	Image* R_entAttack = nullptr;
 	Image* attackEffect = nullptr;
 	Image* R_attackEffect = nullptr;
+	//Image* deathEffect = nullptr;
 
 
 	// 애니메이션 프레임
 	POINT basicFrame = { 0,0 };
 	POINT attackFrame = { 0,0 };
 	POINT attackEffectFrame = { 6, 0 };
+	//POINT deathEffectFrame = { 0,0 };
 
 	// 총알
 	EntAmmoManager* ammoManager = nullptr;
@@ -41,7 +49,7 @@ private:
 	const POINT attackMaxFrame = { 5, 0 };
 	const POINT basicMaxFrame = { 5, 0 };
 	const POINT attackEffectMaxFrame = { 6, 0 };
-
+	//const POINT deathEffectMaxFrame = { 5,0 };
 	// 공격 , 공격 준비 모션
 	bool b_attackReady = false;
 	bool b_attack = false;

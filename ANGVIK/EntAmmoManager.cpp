@@ -67,7 +67,7 @@ void EntAmmoManager::Fire(POINTFLOAT pos, int dir)
 			angle *= -1;
 		}
 
-		float moveSpeed = (int)RANDOM(50, 150);
+		float moveSpeed = (float)RANDOM(50, 150);
 
 		vecEntAmmos[i]->IsFire(pos, angle, dir, moveSpeed);
 	}

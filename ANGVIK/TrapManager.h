@@ -3,6 +3,7 @@
 #include "GameEntity.h"
 
 class Trap;
+class Platform;
 class TrapManager : public GameEntity
 {
 public:
@@ -14,13 +15,16 @@ public:
 	virtual void Release();
 
 	void TrapSpawn();
+	void PlatformSpawn();
+
 	bool CheckCollision(RECT rect, bool &b_temp);
 
 
 private:
 	int trapMaxCount = 2;
+	int PlatformMaxCount = 2;
 
 	vector<Trap*> vecTraps = {};
-
+	vector<Platform*> vecPlatforms = {};
 };
 
