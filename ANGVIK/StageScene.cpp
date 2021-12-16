@@ -7,6 +7,7 @@
 #include "MonsterManager.h"
 #include "TrapManager.h"
 #include "CollisionManager.h"
+#include "ItemManager.h"
 
 #define stage1Width 6709
 #define stage1Height 1290
@@ -31,23 +32,30 @@ HRESULT StageScene::Init()
 	{
 		return E_FAIL;
 	}
-
-	// Å×½ºÆ®¿ë (½ºÅ©·Ñ ¹Ì±¸Çö)
+	DBlogo = ImageManager::GetSingleton()->FindImage("image/etc/·Î°í.bmp");	// ¾Óºò ·Î°í
+	if (DBlogo == nullptr)
+	{
+		return E_FAIL;
+	}
+	
 	mapPos.x = 6709 / 2;
 	mapPos.y = 1290 / 2;
 
 	player = new Player;
 	monsterManager = new MonsterManager;
 	trapManager = new TrapManager;
+	itemManager = new ItemManager;
 
 	CollisionManager::GetSingleton()->AddPlayer(player);
 	CollisionManager::GetSingleton()->AddMonster(monsterManager);
 	CollisionManager::GetSingleton()->AddTrap(trapManager);
+	CollisionManager::GetSingleton()->AddItem(itemManager);
 
 	player->Init();
 	monsterManager->Init(player);
 	trapManager->Init();
-	
+	itemManager->Init();
+
 	return S_OK;
 }
 
@@ -56,6 +64,8 @@ void StageScene::Update()
 	player->Update();
 	monsterManager->Update();
 	trapManager->Update();
+	itemManager->Update();
+
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë ¿ë
 	if (Input::GetButtonDown(VK_NUMPAD7))
 	{
@@ -76,9 +86,17 @@ void StageScene::Render(HDC hdc)
 	stageBackgruond->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
 		mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);	// ¸Ê 
 
+	DBlogo->Render(hdc, 1000 - (int)CameraManager::GetSingleton()->GetPos().x, 200 - (int)CameraManager::GetSingleton()->GetPos().y);
+	DBlogo->Render(hdc, 2000 - (int)CameraManager::GetSingleton()->GetPos().x, 200 - (int)CameraManager::GetSingleton()->GetPos().y);
+	DBlogo->Render(hdc, 3000 - (int)CameraManager::GetSingleton()->GetPos().x, 200 - (int)CameraManager::GetSingleton()->GetPos().y);
+	DBlogo->Render(hdc, 4000 - (int)CameraManager::GetSingleton()->GetPos().x, 200 - (int)CameraManager::GetSingleton()->GetPos().y);
+	DBlogo->Render(hdc, 5000 - (int)CameraManager::GetSingleton()->GetPos().x, 200 - (int)CameraManager::GetSingleton()->GetPos().y);
+
 	player->Render(hdc);
 	monsterManager->Render(hdc);
 	trapManager->Render(hdc);
+	itemManager->Render(hdc);
+
 
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë
 	if (debugPixelMap)
@@ -93,5 +111,5 @@ void StageScene::Release()
 	SAFE_RELEASE(player);
 	SAFE_RELEASE(monsterManager);
 	SAFE_RELEASE(trapManager);
-
+	SAFE_RELEASE(itemManager);
 }

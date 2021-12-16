@@ -46,9 +46,6 @@
     <Filter Include="MainGame\Monster\Monkey">
       <UniqueIdentifier>{c28d8163-04d6-4bf6-bb38-9c6609ead7f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\CollisionManager">
-      <UniqueIdentifier>{4cf0208a-eca5-4b92-8d0b-0d5501ed07e0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MainGame\Observer">
       <UniqueIdentifier>{3b2ff5b8-6fa2-4dde-9fd2-69b392a8f63a}</UniqueIdentifier>
     </Filter>
@@ -57,6 +54,9 @@
     </Filter>
     <Filter Include="MainGame\TrapManager">
       <UniqueIdentifier>{18eed0a5-12c6-4890-848f-faa29b454979}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Inventory">
+      <UniqueIdentifier>{4cf0208a-eca5-4b92-8d0b-0d5501ed07e0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +173,12 @@
     </ClCompile>
     <ClCompile Include="Platform.cpp">
       <Filter>MainGame\TrapManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>MainGame\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="TestItem.cpp">
+      <Filter>MainGame\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +307,12 @@
     </ClInclude>
     <ClInclude Include="Platform.h">
       <Filter>MainGame\TrapManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>MainGame\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="TestItem.h">
+      <Filter>MainGame\Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

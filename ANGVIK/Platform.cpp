@@ -29,7 +29,7 @@ HRESULT Platform::Init(POINTFLOAT pos, int dir)
 	framePos.x = 0;
 	framePos.y = 0;
 
-	bodySize.x = 40;
+	bodySize.x = 46;
 	bodySize.y = 20;
 
 	shape.left = (int)pos.x - bodySize.x / 2;

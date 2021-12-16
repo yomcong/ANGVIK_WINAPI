@@ -19,7 +19,7 @@ void ImageManager::Init()
 	AddImage("image/etc/options.bmp", 79, 18, true, RGB(0, 0, 0));	//타이틀 메뉴 option text
 	AddImage("image/etc/exit.bmp", 47, 14, true, RGB(255, 255, 255));		//타이틀 메뉴 exit text
 	//AddImage("image/etc/선택.bmp", 1363, 34, 8, 1, true, RGB(255, 255, 255));//	선택창 에니매이션
-	AddImage("image/etc/선택2.bmp", 1384, 34, 8, 1, true, RGB(255, 255, 255));// 선택창 에니매이션
+	AddImage("image/etc/선택2.bmp", 1384, 34, 8, 1, true, RGB(0, 0, 0));// 선택창 에니매이션
 	AddImage("image/etc/로고.bmp", 330, 78, true, RGB(255, 255, 255));//타이틀 메뉴 ANGVIK 로고
 
 	// 스테이지 
@@ -48,6 +48,15 @@ void ImageManager::Init()
 	AddImage("image/player/gold/body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 갑옷
 	AddImage("image/player/gold/foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 신발
 
+	// 인벤토리
+
+	// 아이템
+	AddImage("image/item/골드칼.bmp", 88, 20, true, RGB(255, 255, 255));	// 황금 갑옷
+	AddImage("image/item/골드랜스.bmp", 96, 18, true, RGB(255, 255, 255));	// 황금 갑옷
+	AddImage("image/item/황투.bmp", 28, 15, true, RGB(255, 255, 255));	// 황금 갑옷
+	AddImage("image/item/황갑.bmp", 24, 28, true, RGB(255, 255, 255));	// 황금 갑옷
+	AddImage("image/item/황신.bmp", 10, 11, true, RGB(255, 255, 255));	// 황금 갑옷
+	
 	// 몬스터
 	// 데스 이펙트
 	AddImage("image/effect.bmp", 600, 100, 6, 1, true, RGB(255, 255, 255));	// 데스 이펙트
@@ -83,7 +92,7 @@ void ImageManager::Init()
 	AddImage("image/monster/R_leaf4.bmp", 15, 15, true, RGB(255, 255, 255));// 나뭇잎 4(Reverse)
 
 	// 플랫폼
-	AddImage("image/Stage/treetrap.bmp", 53, 90, 1, 6, true, RGB(255, 255, 255));	// 플랫폼
+	AddImage("image/Stage/treetrap.bmp", 53, 90, 1, 6, true, RGB(0, 0, 0));	// 플랫폼
 	AddImage("image/Stage/R_treetrap.bmp", 53, 90, 1, 6, true, RGB(255, 255, 255));	// 플랫폼(Reverse)
 
 }

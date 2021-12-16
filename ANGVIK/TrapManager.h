@@ -21,8 +21,8 @@ public:
 
 
 private:
-	int trapMaxCount = 2;
-	int PlatformMaxCount = 2;
+	int trapMaxCount = 1;
+	int PlatformMaxCount = 6;
 
 	vector<Trap*> vecTraps = {};
 	vector<Platform*> vecPlatforms = {};

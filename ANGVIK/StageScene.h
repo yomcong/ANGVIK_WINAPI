@@ -20,6 +20,7 @@ class MonsterManager;
 class Image;
 class TrapManager;
 class CollisionManager;
+class ItemManager;
 class StageScene : public GameEntity	
 {
 public:
@@ -34,6 +35,7 @@ private:
 	Image* stageBackgruond = nullptr;
 	Image* stageBackgruond2 = nullptr;
 	Image* stagePixelMap = nullptr;
+	Image* DBlogo = nullptr;
 
 
 	POINT mapPos = {};
@@ -42,6 +44,7 @@ private:
 	MonsterManager* monsterManager = nullptr;
 	TrapManager* trapManager = nullptr;
 	CollisionManager* collisionManager = nullptr;
+	ItemManager* itemManager = nullptr;
 	//Kong* kong = nullptr;
 
 	// 픽셀 충돌
@@ -50,7 +53,6 @@ private:
 
 	//디버그용
 	bool debugPixelMap = false;
-	
 
 
 

@@ -26,6 +26,7 @@ public:
 	void ToBeHit();
 	bool CheckCollision(SubjectTag subject, RECT shape);
 	bool FindImage();
+	void GetItem(ItemType itemType, ItemGrade itemGrade);
 
 	inline bool SetIsPlatform(bool b_platform) { return this->b_platform = b_platform; }
 
@@ -40,6 +41,9 @@ private:
 	Image* R_backArm = nullptr;	// 왼팔
 	Image* R_frontArm = nullptr;// 오른팔
 	Image* R_head = nullptr;	// 몸통
+
+	Image* goldArmor = nullptr;	// 황금 갑옷
+	Image* goldShoes = nullptr; // 황금 신발
 
 	// 랜더링 포스
 	POINT armPos = {};
@@ -69,6 +73,12 @@ private:
 	float invisibleCount = 0.0f;
 	bool b_invisible = false;
 	bool b_platform = false;
+	
+	bool b_equipArmor = false;
+	bool b_equipHelmet = false;
+	bool b_equipShoes = false;
+	bool b_equipLeftWeapon = false;
+	bool b_equipRightWeapon = false;
 
 
 	// 캐릭터 상태관리
@@ -90,7 +100,6 @@ private:
 	// 이미지 디버깅용 (인체실험)
 	POINT DBarmPos = { 0, 0 };
 	POINT DBbodyPos = { 0, 0 };
-
 
 
 };

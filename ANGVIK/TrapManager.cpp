@@ -4,7 +4,7 @@
 
 HRESULT TrapManager::Init()
 {
-	//TrapSpawn();
+	TrapSpawn();
 	PlatformSpawn();
 
 	return S_OK;
@@ -12,10 +12,10 @@ HRESULT TrapManager::Init()
 
 void TrapManager::Update()
 {
-	/*for (int i = 0; i < trapMaxCount; ++i)
+	for (int i = 0; i < trapMaxCount; ++i)
 	{
 		vecTraps[i]->Update();
-	}*/
+	}
 	for (int i = 0; i < PlatformMaxCount; ++i)
 	{
 		vecPlatforms[i]->Update();
@@ -24,10 +24,10 @@ void TrapManager::Update()
 
 void TrapManager::Render(HDC hdc)
 {
-	/*for (int i = 0; i < trapMaxCount; ++i)
+	for (int i = 0; i < trapMaxCount; ++i)
 	{
 		vecTraps[i]->Render(hdc);
-	}*/
+	}
 	for (int i = 0; i < PlatformMaxCount; ++i)
 	{
 		vecPlatforms[i]->Render(hdc);
@@ -36,10 +36,10 @@ void TrapManager::Render(HDC hdc)
 
 void TrapManager::Release()
 {
-	/*for (int i = 0; i < trapMaxCount; ++i)
+	for (int i = 0; i < trapMaxCount; ++i)
 	{
 		SAFE_RELEASE(vecTraps[i]);
-	}*/
+	}
 	//vecTraps.clear();
 	for (int i = 0; i < PlatformMaxCount; ++i)
 	{
@@ -52,14 +52,13 @@ void TrapManager::TrapSpawn()
 {
 	vecTraps.resize(trapMaxCount);
 
-	float spawnPosX[] = { 450.0f, 90.0f };
-	float spawnPosY[] = { 310.0f, 410.0f };
+	float spawnPosX[] = { 990.0f, 700.0f };
+	float spawnPosY[] = { 445.0f, 250.0f };
 
 	for (int i = 0; i < trapMaxCount; ++i)
 	{
-		int dir = i < trapMaxCount / 2;
 		vecTraps[i] = new Trap;
-		vecTraps[i]->Init({ spawnPosX[i],spawnPosY[i] }, dir);
+		vecTraps[i]->Init({ spawnPosX[i],spawnPosY[i] });
 	}
 }
 
@@ -67,8 +66,8 @@ void TrapManager::PlatformSpawn()
 {
 	vecPlatforms.resize(PlatformMaxCount);
 
-	float spawnPosX[] = { 450.0f, 90.0f };
-	float spawnPosY[] = { 310.0f, 410.0f };
+	float spawnPosX[] = { 2628.0f, 2860.0f, 2861.0f, 2736.0f, 2740.0f, 2740.0f };
+	float spawnPosY[] = { 441.0f, 485.0f, 602.0f, 417.0f, 530.0f, 643.0f };
 
 	for (int i = 0; i < PlatformMaxCount; ++i)
 	{
@@ -80,25 +79,15 @@ void TrapManager::PlatformSpawn()
 
 bool TrapManager::CheckCollision(RECT rect, bool& b_temp)
 {
-	//for (int i = 0; i < trapMaxCount; ++i)
-	//{
-	//	// 충돌 최적화 해보기
-	//	if (false == vecTraps[i]->GetIsAlive())
-	//	{
-	//		continue;
-	//	}
-
-	//	// 렉트충돌비교가 아니라 따로 해야함
-	//	RECT testRect = {};
-	//	if (IntersectRect(&testRect, vecTraps[i]->GetShapeAddress(), &rect))
-	//	{
-	//		vecTraps[i]->SetIsCollision(true);
-	//		b_temp = true;
-	//		isCollision = true;
-	//		continue;
-	//	}
-	//	vecTraps[i]->SetIsCollision(false);
-	//}
+	for (int i = 0; i < trapMaxCount; ++i)
+	{
+		// 렉트충돌비교가 아니라 따로 해야함
+		RECT temprect = {};
+		if (IntersectRect(&temprect, vecTraps[i]->GetShapeAddress(), &rect))
+		{
+			return true;
+		}
+	}
 
 	for (int i = 0; i < PlatformMaxCount; ++i)
 	{

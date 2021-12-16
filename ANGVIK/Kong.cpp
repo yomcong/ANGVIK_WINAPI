@@ -46,10 +46,10 @@ HRESULT Kong::Init(Player* target, POINTFLOAT pos)
 	shape.right = (int)pos.x + bodySize.x / 2;
 	shape.bottom = (int)pos.y + bodySize.y / 2;
 
-	rangeRect.left = (int)pos.x - bodySize.x * 3;
-	rangeRect.top = (int)pos.y - bodySize.y * 3;
-	rangeRect.right = (int)pos.x + bodySize.x * 3;
-	rangeRect.bottom = (int)pos.y + bodySize.y * 3; 
+	rangeRect.left = (int)pos.x - bodySize.x * 5;
+	rangeRect.top = (int)pos.y - bodySize.y * 5;
+	rangeRect.right = (int)pos.x + bodySize.x * 5;
+	rangeRect.bottom = (int)pos.y + bodySize.y * 5; 
 
 	renderPos = pos;
 

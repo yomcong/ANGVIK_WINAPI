@@ -178,6 +178,7 @@ void Player::Update()
 	{
 		if (!Input::GetButton(VK_DOWN))
 		{
+			CollisionManager::GetSingleton()->CheckItem(shape);
 			ChangeState(State::IDLE);
 		}
 	}
@@ -257,7 +258,7 @@ void Player::Update()
 		else
 			--DBbodyPos.y;*/
 #endif
-	// 디버그용 캐릭터 랙트표시
+			// 디버그용 캐릭터 랙트표시
 	if (Input::GetButtonDown(VK_NUMPAD9))
 	{
 		DBrect == false ? DBrect = true : DBrect = false;
@@ -284,6 +285,14 @@ void Player::Render(HDC hdc)
 		{
 			backArm->Render(hdc, (int)armPos.x, (int)armPos.y, backArmFrame.x, backArmFrame.y);
 			body->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
+			if (b_equipArmor)
+			{
+				goldArmor->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
+			}
+			if (b_equipShoes)
+			{
+				goldShoes->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
+			}
 			head->Render(hdc, (int)headPos.x, (int)headPos.y);
 			frontArm->Render(hdc, (int)armPos.x, (int)armPos.y, frontArmFrame.x, frontArmFrame.y);
 		}
@@ -701,7 +710,16 @@ bool Player::FindImage()
 	{
 		return false;
 	}
-
+	goldArmor = ImageManager::GetSingleton()->FindImage("image/player/gold/body.bmp");
+	if (goldArmor == nullptr)
+	{
+		return false;
+	}
+	goldShoes = ImageManager::GetSingleton()->FindImage("image/player/gold/foot.bmp");
+	if (goldShoes == nullptr)
+	{
+		return false;
+	}
 
 	// 디버깅
 	DBbackArm = ImageManager::GetSingleton()->FindImage("image/player/unarmed/arm_back.bmp");
@@ -751,6 +769,27 @@ bool Player::FindImage()
 	}
 
 	return true;
+}
+
+void Player::GetItem(ItemType itemType, ItemGrade itemGrade)
+{
+	switch (itemType)
+	{
+	case ItemType::IDLE:
+		break;
+	case ItemType::HELMET:
+		break;
+	case ItemType::ARMOR:
+		b_equipArmor = true;
+		break;
+	case ItemType::WEAPON:
+		break;
+	case ItemType::SHOES:
+		b_equipShoes = true;
+		break;
+	default:
+		break;
+	}
 }
 
 void Player::PosUpdate()

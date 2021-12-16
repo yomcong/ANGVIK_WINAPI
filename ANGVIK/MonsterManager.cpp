@@ -29,6 +29,7 @@ void MonsterManager::Update()
 
 	for (int i = 0; i < vecMonkeys.size(); ++i)
 	{
+		
 		vecMonkeys[i]->Update();
 	}
 
@@ -95,10 +96,10 @@ void MonsterManager::Release()
 
 void MonsterManager::KongSpawn()
 {
-	kongMaxCount = RANDOM(1, kongMaxCount);
+	//kongMaxCount = RANDOM(1, kongMaxCount);
 	vecKongs.resize(kongMaxCount);
-	float spawnPosX[] = { 350.0f, 500.0f, 850.0f };
-	float spawnPosY[] = { 360.0f, 275.0f, 382.0f };
+	float spawnPosX[] = { 880.0f, 1475.0f, 1910.0f, 2500.0f };
+	float spawnPosY[] = { 385.0, 265.0f, 388.0f, 508.0f };
 
 	for (int i = 0; i < vecKongs.size(); ++i)
 	{
@@ -110,11 +111,12 @@ void MonsterManager::KongSpawn()
 
 void MonsterManager::MonkeySpawn()
 {
-	MonkeyMaxCount = RANDOM(1, MonkeyMaxCount);
+	//MonkeyMaxCount = RANDOM(1, MonkeyMaxCount);
 	vecMonkeys.resize(MonkeyMaxCount);
 
-	float spawnPosX[] = { 350.0f, 500.0f, 850.0f };
-	float spawnPosY[] = { 360.0f, 275.0f, 382.0f };
+	// 5,6¹øÂ° ¿ÉÀú¹ö È°¿ëÇØ¼­ Æ®¸®°Å·Î ÀÌ´ÖÇØÁÖ±â
+	float spawnPosX[] = { 500.0f, 850.0f, 1100.0f, 1400.0f, 2000.0f, 2100.0f};
+	float spawnPosY[] = { 350.0f, 382.0f, 390.0f, 390.0f, 250.0f, 250.0f};
 
 	for (int i = 0; i < vecMonkeys.size(); ++i)
 	{
@@ -221,7 +223,7 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					if (vecKongs[i]->GetSubject() == subject)
 					{
 						kongWindow[i] = true;
-						cout << "Äá in :  " << i << "\n";
+						cout << i << " ¸ùÅ° ÀÎ " << "\n";
 						break;
 					}
 					if (i == vecKongs.size() - 1)
@@ -234,7 +236,7 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					if (vecKongs[i]->GetSubject() == subject)
 					{
 						kongWindow[i] = false;
-						cout << "Äá out: " << i << "\n";
+						cout << i << " ¸ùÅ° ¾Æ¿ô " << "\n";
 						break;
 					}
 					if (i == vecKongs.size() - 1)
@@ -254,7 +256,7 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					if (vecMonkeys[i]->GetSubject() == subject)
 					{
 						monkeyWindow[i] = true;
-						cout << "¸ùÅ° in: " << i << "\n";
+						cout << i << " ¸ùÅ° ÀÎ " << "\n";
 						break;
 					}
 					if (i == vecMonkeys.size() - 1)
@@ -267,7 +269,7 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					if (vecMonkeys[i]->GetSubject() == subject)
 					{
 						monkeyWindow[i] = false;
-						cout << "¸ùÅ° out: " << i << "\n";
+						cout << i << " ¸ùÅ° ¾Æ¿ô " << "\n";
 						break;
 					}
 					if (i == vecMonkeys.size() - 1)
@@ -287,7 +289,7 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					if (vecEnts[i]->GetSubject() == subject)
 					{
 						entWindow[i] = true;
-						cout << "³ª¹« in : " << i << "\n";
+						cout << i << " ³ª¹« ÀÎ " << "\n";
 						break;
 					}
 					if (i == vecEnts.size() - 1)
@@ -300,7 +302,7 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					if (vecEnts[i]->GetSubject() == subject)
 					{
 						entWindow[i] = false;
-						cout << "³ª¹« out: " << i << "\n";
+						cout <<i << " ³ª¹« ¾Æ¿ô " << "\n";
 						break;
 					}
 					if (i == vecEnts.size() - 1)

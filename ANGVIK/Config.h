@@ -14,7 +14,11 @@ using namespace std;
 enum class SubjectTag { IDLE, PLAYER, MONSTER, ITEM	, TRAP, PLATFORM , Ammo };
 enum class EventTag { IDLE, ADD, INWINDOW, OUTWINDOW, COLLISION, RELEASE, };
 enum class direction { LEFT = -1, RIGHT = 1};
+
 enum class MonsterType {KONG, MONKEY, ENT};
+
+enum class ItemType {IDLE, HELMET, ARMOR, WEAPON, SHOES};
+enum class ItemGrade {IDLE, BASIC, GOLD, SILVER};
 
 // 창 시작위치
 #define WIN_START_POS_X	200

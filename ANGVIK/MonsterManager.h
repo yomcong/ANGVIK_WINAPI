@@ -26,12 +26,12 @@ public:
 	virtual void OnNotify(Subject* subject, MonsterType monsterType, SubjectTag subjectTag, EventTag eventTag);
 
 private:
-	int kongMaxCount = 3;
-	int MonkeyMaxCount = 3;
+	int kongMaxCount = 4;
+	int MonkeyMaxCount = 6;
 	int EntMaxCount = 3;
 	
-	bool kongWindow[3] = { true };
-	bool monkeyWindow[3] = { true };
+	bool kongWindow[4] = { true };
+	bool monkeyWindow[6] = { true };
 	bool entWindow[3] = { true };
 
 	vector<Kong*> vecKongs = {};

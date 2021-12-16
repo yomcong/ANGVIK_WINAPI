@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "MonsterManager.h"
 #include "TrapManager.h"
+#include "ItemManager.h"
 
 HRESULT CollisionManager::Init()
 {
@@ -22,6 +23,11 @@ void CollisionManager::AddMonster(MonsterManager* monsterManager)
 void CollisionManager::AddTrap(TrapManager* trapManager)
 {
 	this->trapManager = trapManager;
+}
+
+void CollisionManager::AddItem(ItemManager* itemManager)
+{
+	this->itemManager = itemManager;
 }
 
 void CollisionManager::AddObject(SubjectTag subject, EventTag object, RECT* shape)
@@ -77,7 +83,7 @@ bool CollisionManager::CheckCollision(SubjectTag subject, RECT shape, EventTag e
 
 		if (trapManager->CheckCollision(shape, b_temp))
 		{
-			return true;
+			//return true;
 		}
 		break;
 	case SubjectTag::ITEM:
@@ -99,6 +105,16 @@ bool CollisionManager::CheckCollision(SubjectTag subject, RECT shape, EventTag e
 		break;
 	}
 	return false;
+}
+
+void CollisionManager::CheckItem(RECT shape)
+{
+	ItemType tempType;
+	ItemGrade tempGrade;
+	if (itemManager->CheckCollision(shape, tempType, tempGrade))
+	{
+		player->GetItem(tempType, tempGrade);
+	}
 }
 
 SubjectTag CollisionManager::testCheck(SubjectTag subjectTag, RECT shape)
