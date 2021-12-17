@@ -7,7 +7,7 @@ class Trap : public GameObject
 public:
 	virtual ~Trap() = default;
 
-	virtual HRESULT Init(POINTFLOAT pos);
+	virtual HRESULT Init(POINTFLOAT pos, POINT bodySize);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();

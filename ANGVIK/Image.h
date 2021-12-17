@@ -69,7 +69,8 @@ public:
 	void Render(HDC hdc, int destX, int destY);	// 이미지 데이터를 화면에 복사
 
 	void Render(HDC hdc, int destX, int destY, int frameX, int frameY, float scale = 1.0f);	// 이미지 데이터를 화면에 복사
-
+	
+	
 	HDC GetMemDC() { if (imageInfo) return imageInfo->hMemDc; return NULL; }
 
 	LPIMAGE_INFO GetImageInfo() { return imageInfo; }

@@ -1,13 +1,13 @@
 #include "Trap.h"
 
-HRESULT Trap::Init(POINTFLOAT pos)
+HRESULT Trap::Init(POINTFLOAT pos, POINT bodySize)
 {
 	this->pos = pos;
 
 	b_isAlive = true;
 
-	bodySize.x = 30;
-	bodySize.y = 30;
+	this->bodySize.x = bodySize.x;
+	this->bodySize.y = bodySize.y;
 
 	shape.left = (int)pos.x - bodySize.x / 2;
 	shape.top = (int)pos.y - bodySize.y / 2;

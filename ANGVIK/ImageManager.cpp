@@ -47,7 +47,8 @@ void ImageManager::Init()
 
 	AddImage("image/player/gold/body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// »≤±› ∞©ø 
 	AddImage("image/player/gold/foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// »≤±› Ω≈πﬂ
-
+	AddImage("image/player/gold/R_body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// »≤±› ∞©ø (Reverse)
+	AddImage("image/player/gold/R_foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// »≤±› Ω≈πﬂ(Reverse)
 	// ¿Œ∫•≈‰∏Æ
 
 	// æ∆¿Ã≈€
@@ -56,6 +57,10 @@ void ImageManager::Init()
 	AddImage("image/item/»≤≈ı.bmp", 28, 15, true, RGB(255, 255, 255));	// »≤±› ∞©ø 
 	AddImage("image/item/»≤∞©.bmp", 24, 28, true, RGB(255, 255, 255));	// »≤±› ∞©ø 
 	AddImage("image/item/»≤Ω≈.bmp", 10, 11, true, RGB(255, 255, 255));	// »≤±› ∞©ø 
+	AddImage("image/item/∞ÒµÂƒÆ_SP.bmp", 6960, 258,24,1, true, RGB(255, 255, 255));	// »≤±› ƒÆ Ω∫«¡∂Û¿Ã∆Æ
+	AddImage("image/item/∞ÒµÂ∑£Ω∫.bmp", 96, 18, true, RGB(255, 255, 255));	// »≤±› √¢ 
+	AddImage("image/item/∞ÒµÂ∑£Ω∫_SP.bmp", 1392, 116, 12, 1, true, RGB(255, 255, 255));	// »≤±› √¢ Ω∫«¡∂Û¿Ã∆Æ
+
 	
 	// ∏ÛΩ∫≈Õ
 	// µ•Ω∫ ¿Ã∆Â∆Æ

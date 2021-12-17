@@ -4,7 +4,7 @@
 HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade)
 {
 	string itemName = "image/item/";
-
+	
 	this->pos = pos;
 	this->itemType = itemType;
 	this->itemGrade = itemGrade;
@@ -55,8 +55,14 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade)
 		case ItemGrade::BASIC:
 			break;
 		case ItemGrade::GOLD:
+			itemName += "°ñµå·£½º_SP.bmp";
+			bodySize.x = 10;
+			bodySize.y = 10;
 			break;
 		case ItemGrade::SILVER:
+			itemName += "°ñµå·£½º.bmp";
+			bodySize.x = 10;
+			bodySize.y = 10;
 			break;
 		default:
 			break;
@@ -128,7 +134,15 @@ void TestItem::Update()
 
 void TestItem::Render(HDC hdc)
 {
-	itemImage->Render(hdc, (int)renderPos.x, (int)renderPos.y);
+	if (itemType == ItemType::WEAPON && itemGrade == ItemGrade::GOLD)
+	{
+		itemImage->Render(hdc, (int)renderPos.x, (int)renderPos.y, framePos.x, framePos.y);
+	}
+	else
+	{
+		itemImage->Render(hdc, (int)renderPos.x, (int)renderPos.y);
+	}
+	
 
 	if (DBrect)
 		Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x,

@@ -52,13 +52,16 @@ void TrapManager::TrapSpawn()
 {
 	vecTraps.resize(trapMaxCount);
 
-	float spawnPosX[] = { 990.0f, 700.0f };
-	float spawnPosY[] = { 445.0f, 250.0f };
+	float spawnPosX[] = { 990.0f, 1593.0f, 2260.0f, 2282.0f, 2378.0f, 2412.0f, 2755.0f, 3240.0f, 3412.0f };
+	float spawnPosY[] = { 445.0f, 714.0f , 444.0f, 462.0f, 512.0f, 530.0f, 787.0f, 752.0f, 750.0f};
+
+	int bodySizeX[] = { 30,80, 24, 24, 30, 31, 110, 55, 155 };
+	int bodySizeY[] = { 30,30, 46, 26, 30, 30, 40, 40, 40 };
 
 	for (int i = 0; i < trapMaxCount; ++i)
 	{
 		vecTraps[i] = new Trap;
-		vecTraps[i]->Init({ spawnPosX[i],spawnPosY[i] });
+		vecTraps[i]->Init({ spawnPosX[i],spawnPosY[i] }, { bodySizeX[i], bodySizeY[i] });
 	}
 }
 
@@ -66,8 +69,8 @@ void TrapManager::PlatformSpawn()
 {
 	vecPlatforms.resize(PlatformMaxCount);
 
-	float spawnPosX[] = { 2628.0f, 2860.0f, 2861.0f, 2736.0f, 2740.0f, 2740.0f };
-	float spawnPosY[] = { 441.0f, 485.0f, 602.0f, 417.0f, 530.0f, 643.0f };
+	float spawnPosX[] = { 2628.0f, 2860.0f, 2861.0f, 3465.0f, 3465.0f, 3352.0f, 3354.0f,  2736.0f,  2740.0f, 2740.0f };
+	float spawnPosY[] = { 441.0f , 485.0f , 602.0f , 382.0f , 561.0f , 477.0f , 645.0f , 417.0f , 530.0f , 643.0f };
 
 	for (int i = 0; i < PlatformMaxCount; ++i)
 	{

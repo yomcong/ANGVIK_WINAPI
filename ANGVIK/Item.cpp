@@ -17,7 +17,6 @@ HRESULT Item::Init()
 	this->itemManager = itemManager;
 
 	return S_OK;
-
 }
 
 void Item::Update()

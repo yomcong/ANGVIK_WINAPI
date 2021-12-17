@@ -190,3 +190,4 @@ void Image::Render(HDC hdc, int destX, int destY, int frameX, int frameY, float 
 			SRCCOPY);			// 복사 옵션
 	}
 }
+

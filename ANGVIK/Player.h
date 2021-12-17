@@ -45,8 +45,11 @@ private:
 	Image* goldArmor = nullptr;	// È²±Ý °©¿Ê
 	Image* goldShoes = nullptr; // È²±Ý ½Å¹ß
 
+	Image* R_goldArmor = nullptr;	// È²±Ý °©¿Ê
+	Image* R_goldShoes = nullptr; // È²±Ý ½Å¹ß
 	// ·£´õ¸µ Æ÷½º
-	POINT armPos = {};
+	POINT frontArmPos = {};
+	POINT backArmPos = {};
 	POINT headPos = {};
 	POINT bodyPos = {};
 

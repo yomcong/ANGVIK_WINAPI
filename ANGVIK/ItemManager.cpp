@@ -15,12 +15,18 @@ HRESULT ItemManager::Init()
 
 	Titem[0] = new TestItem;
 	Titem[1] = new TestItem;
+	Titem[2] = new TestItem;
+	Titem[3] = new TestItem;
 
 	Titem[0]->Init({ 340, 350 }, ItemType::ARMOR, ItemGrade::GOLD);
 	Titem[1]->Init({ 350, 350 }, ItemType::SHOES, ItemGrade::GOLD);
+	Titem[2]->Init({ 360, 350 }, ItemType::WEAPON, ItemGrade::GOLD);
+	Titem[3]->Init({ 370, 350 }, ItemType::WEAPON, ItemGrade::SILVER);
 
 	vecItems.push_back(Titem[0]);
 	vecItems.push_back(Titem[1]);
+	vecItems.push_back(Titem[2]);
+	vecItems.push_back(Titem[3]);
 
     return S_OK;
 }

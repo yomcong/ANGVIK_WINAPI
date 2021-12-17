@@ -276,14 +276,22 @@ void Player::Render(HDC hdc)
 	{
 		if (dir == direction::LEFT)
 		{
-			R_backArm->Render(hdc, (int)armPos.x, (int)armPos.y, backArmFrame.x, backArmFrame.y);	// øﬁ∆»
+			R_backArm->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, backArmFrame.x, backArmFrame.y);	// øﬁ∆»
 			R_body->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);			// ∏ˆ
+			if (b_equipArmor)
+			{
+				R_goldArmor->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
+			}
+			if (b_equipShoes)
+			{
+				R_goldShoes->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
+			}
 			R_head->Render(hdc, (int)headPos.x, (int)headPos.y);								// ∏”∏Æ
-			R_frontArm->Render(hdc, (int)armPos.x, (int)armPos.y, frontArmFrame.x, frontArmFrame.y);// ø¿∏•∆»
+			R_frontArm->Render(hdc, (int)backArmPos.x, (int)backArmPos.y, frontArmFrame.x, frontArmFrame.y);// ø¿∏•∆»
 		}
 		else
 		{
-			backArm->Render(hdc, (int)armPos.x, (int)armPos.y, backArmFrame.x, backArmFrame.y);
+			backArm->Render(hdc, (int)backArmPos.x, (int)backArmPos.y, backArmFrame.x, backArmFrame.y);
 			body->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
 			if (b_equipArmor)
 			{
@@ -294,7 +302,7 @@ void Player::Render(HDC hdc)
 				goldShoes->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
 			}
 			head->Render(hdc, (int)headPos.x, (int)headPos.y);
-			frontArm->Render(hdc, (int)armPos.x, (int)armPos.y, frontArmFrame.x, frontArmFrame.y);
+			frontArm->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, frontArmFrame.x, frontArmFrame.y);
 		}
 	}
 
@@ -412,7 +420,7 @@ void Player::ChangeState(State state)
 
 			headPos.y += 15;
 
-			armPos.y += 5;
+			frontArmPos.y += 5;
 
 			frontArmFrame.x = 9;
 			backArmFrame.x = 13;
@@ -720,6 +728,18 @@ bool Player::FindImage()
 	{
 		return false;
 	}
+	R_goldArmor = ImageManager::GetSingleton()->FindImage("image/player/gold/R_body.bmp");
+	if (R_goldArmor == nullptr)
+	{
+		return false;
+	}
+	R_goldShoes = ImageManager::GetSingleton()->FindImage("image/player/gold/R_foot.bmp");
+	if (R_goldShoes == nullptr)
+	{
+		return false;
+	}
+	
+		
 
 	// µπˆ±Î
 	DBbackArm = ImageManager::GetSingleton()->FindImage("image/player/unarmed/arm_back.bmp");
@@ -797,13 +817,15 @@ void Player::PosUpdate()
 	pos.x = renderPos.x + CameraManager::GetSingleton()->GetPos().x;
 	pos.y = renderPos.y + CameraManager::GetSingleton()->GetPos().y;
 
-
+	// æ…¿∫ ¿⁄ºº∞° æ∆¥“∂ß
 	if (false == (state == State::SITDOWN))
 	{
-		armPos.x = (int)renderPos.x;
-		armPos.y = (int)renderPos.y;
-		headPos.x = (int)renderPos.x + 2;
-		headPos.y = (int)renderPos.y - 20;
+		frontArmPos.x = (int)renderPos.x-5;
+		frontArmPos.y = (int)renderPos.y- 1;
+		backArmPos.x = (int)renderPos.x + 3;
+		backArmPos.y = (int)renderPos.y;
+		headPos.x = (int)renderPos.x + 1;
+		headPos.y = (int)renderPos.y - 18;
 		bodyPos.x = (int)renderPos.x;
 		bodyPos.y = (int)renderPos.y;
 
@@ -821,10 +843,13 @@ void Player::PosUpdate()
 			sitDownCamera = false;
 		}
 	}
+	// æ…¿∫ ¿⁄ºº¿œ∂ß
 	else
 	{
-		armPos.x = (int)renderPos.x;
-		armPos.y = (int)renderPos.y + 5;
+		frontArmPos.x = (int)renderPos.x - 4;
+		frontArmPos.y = (int)renderPos.y + 9;
+		backArmPos.x = (int)renderPos.x + 4;
+		backArmPos.y = (int)renderPos.y + 6;
 		headPos.x = (int)renderPos.x;
 		headPos.y = (int)renderPos.y - 5;
 		bodyPos.x = (int)renderPos.x;
