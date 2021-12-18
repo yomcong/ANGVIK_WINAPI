@@ -111,9 +111,10 @@ void CollisionManager::CheckItem(RECT shape)
 {
 	ItemType tempType;
 	ItemGrade tempGrade;
-	if (itemManager->CheckCollision(shape, tempType, tempGrade))
+	WeaponType tempWeapon;
+	if (itemManager->CheckCollision(shape, tempType, tempGrade, tempWeapon))
 	{
-		player->GetItem(tempType, tempGrade);
+		player->GetItem(tempType, tempGrade, tempWeapon);
 	}
 }
 

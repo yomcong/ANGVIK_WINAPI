@@ -18,7 +18,7 @@ public:
 	void Release();
 
 	void CreateItem(MonsterType monsterType);
-	bool CheckCollision(RECT shape, ItemType &itemType, ItemGrade &itemGrade);
+	bool CheckCollision(RECT shape, ItemType& itemType, ItemGrade& itemGrade, WeaponType& weaponType);
 	//void UseItem();
 
 

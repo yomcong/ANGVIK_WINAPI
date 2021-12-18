@@ -1,14 +1,14 @@
 #include "TestItem.h"
 #include "Image.h"
 
-HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade)
+HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, WeaponType weaponType)
 {
 	string itemName = "image/item/";
-	
+
 	this->pos = pos;
 	this->itemType = itemType;
 	this->itemGrade = itemGrade;
-
+	this->weaponType = weaponType;
 	switch (itemType)
 	{
 	case ItemType::IDLE:
@@ -24,8 +24,6 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade)
 			itemName += "È²Åõ.bmp";
 			break;
 		case ItemGrade::SILVER:
-			break;
-		default:
 			break;
 		}
 		break;
@@ -43,30 +41,72 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade)
 			break;
 		case ItemGrade::SILVER:
 			break;
-		default:
-			break;
 		}
 		break;
 	case ItemType::WEAPON:
-		switch (itemGrade)
+		switch (weaponType)
 		{
-		case ItemGrade::IDLE:
+		case WeaponType::IDLE:
+			switch (itemGrade)
+			{
+			case ItemGrade::IDLE:
+				break;
+			case ItemGrade::BASIC:
+				break;
+			case ItemGrade::GOLD:
+				break;
+			case ItemGrade::SILVER:
+				break;
+			}
 			break;
-		case ItemGrade::BASIC:
+		case WeaponType::SWORD:
+			switch (itemGrade)
+			{
+			case ItemGrade::IDLE:
+				break;
+			case ItemGrade::BASIC:
+				break;
+			case ItemGrade::GOLD:
+				itemName += "°ñµå·£½º_SP.bmp";
+				bodySize.x = 10;
+				bodySize.y = 10;
+				break;
+			case ItemGrade::SILVER:
+				break;
+			}
 			break;
-		case ItemGrade::GOLD:
-			itemName += "°ñµå·£½º_SP.bmp";
-			bodySize.x = 10;
-			bodySize.y = 10;
+		case WeaponType::STAFF:
+			switch (itemGrade)
+			{
+			case ItemGrade::IDLE:
+				break;
+			case ItemGrade::BASIC:
+				break;
+			case ItemGrade::GOLD:
+				break;
+			case ItemGrade::SILVER:
+				break;
+			}
 			break;
-		case ItemGrade::SILVER:
-			itemName += "°ñµå·£½º.bmp";
-			bodySize.x = 10;
-			bodySize.y = 10;
-			break;
-		default:
+		case WeaponType::LANCE:
+			switch (itemGrade)
+			{
+			case ItemGrade::IDLE:
+				break;
+			case ItemGrade::BASIC:
+				break;
+			case ItemGrade::GOLD:
+				itemName += "°ñµå·£½º_SP.bmp";
+				bodySize.x = 10;
+				bodySize.y = 10;
+				framePos.x = 3;
+				break;
+			case ItemGrade::SILVER:
+				break;
+			}
 			break;
 		}
+		
 		break;
 	case ItemType::SHOES:
 		switch (itemGrade)
@@ -85,8 +125,6 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade)
 		default:
 			break;
 		}
-		break;
-	default:
 		break;
 	}
 
@@ -142,7 +180,7 @@ void TestItem::Render(HDC hdc)
 	{
 		itemImage->Render(hdc, (int)renderPos.x, (int)renderPos.y);
 	}
-	
+
 
 	if (DBrect)
 		Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x,

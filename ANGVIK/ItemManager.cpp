@@ -16,17 +16,17 @@ HRESULT ItemManager::Init()
 	Titem[0] = new TestItem;
 	Titem[1] = new TestItem;
 	Titem[2] = new TestItem;
-	Titem[3] = new TestItem;
+	//Titem[3] = new TestItem;
 
 	Titem[0]->Init({ 340, 350 }, ItemType::ARMOR, ItemGrade::GOLD);
 	Titem[1]->Init({ 350, 350 }, ItemType::SHOES, ItemGrade::GOLD);
-	Titem[2]->Init({ 360, 350 }, ItemType::WEAPON, ItemGrade::GOLD);
-	Titem[3]->Init({ 370, 350 }, ItemType::WEAPON, ItemGrade::SILVER);
+	Titem[2]->Init({ 380, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::LANCE);
+	//Titem[3]->Init({ 370, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::SWORD);
 
 	vecItems.push_back(Titem[0]);
 	vecItems.push_back(Titem[1]);
 	vecItems.push_back(Titem[2]);
-	vecItems.push_back(Titem[3]);
+	//vecItems.push_back(Titem[3]);
 
     return S_OK;
 }
@@ -82,7 +82,7 @@ void ItemManager::CreateItem(MonsterType monsterType)
 	//vecItems.push_back(tempItem);
 }
 
-bool ItemManager::CheckCollision(RECT shape, ItemType &itemType, ItemGrade &itemGrade)
+bool ItemManager::CheckCollision(RECT shape, ItemType &itemType, ItemGrade &itemGrade, WeaponType &weaponType)
 {
 	RECT tempRect = {};
 
@@ -92,6 +92,7 @@ bool ItemManager::CheckCollision(RECT shape, ItemType &itemType, ItemGrade &item
 		{
 			itemType = vecItems[i]->GetItemType();
 			itemGrade = vecItems[i]->GetItemGrade();
+			weaponType = vecItems[i]->GetWeaponType();
 			SAFE_DELETE(vecItems[i]);
 			vecItems.erase(vecItems.begin() + i);
 			return true;

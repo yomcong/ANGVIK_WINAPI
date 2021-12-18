@@ -26,7 +26,8 @@ public:
 	void ToBeHit();
 	bool CheckCollision(SubjectTag subject, RECT shape);
 	bool FindImage();
-	void GetItem(ItemType itemType, ItemGrade itemGrade);
+	bool GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType);
+	//bool ChangeItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType, Image* equip = nullptr);
 
 	inline bool SetIsPlatform(bool b_platform) { return this->b_platform = b_platform; }
 
@@ -42,11 +43,19 @@ private:
 	Image* R_frontArm = nullptr;// 오른팔
 	Image* R_head = nullptr;	// 몸통
 
-	Image* goldArmor = nullptr;	// 황금 갑옷
-	Image* goldShoes = nullptr; // 황금 신발
+	Image* helmet = nullptr;	// 헬맷
+	Image* armor = nullptr;		// 갑옷
+	Image* shoes = nullptr;		// 신발
 
-	Image* R_goldArmor = nullptr;	// 황금 갑옷
-	Image* R_goldShoes = nullptr; // 황금 신발
+	Image* R_helmet = nullptr;	// 헬맷
+	Image* R_armor = nullptr;	// 갑옷
+	Image* R_shoes = nullptr;	// 신발
+
+	Image* backWeapon = nullptr;	// back 무기
+	Image* frontWeapon = nullptr;	// front 무기
+
+	Image* R_backWeapon = nullptr;
+	Image* R_frontWeapon = nullptr;
 	// 랜더링 포스
 	POINT frontArmPos = {};
 	POINT backArmPos = {};
@@ -57,6 +66,8 @@ private:
 	POINT bodyFrame = { 0, 0 };
 	POINT frontArmFrame = { 11, 0 };
 	POINT backArmFrame = { 13, 0 };
+	POINT frontWeaponFrame = { 0,0 };
+	POINT backWeaponFrame = { 0,0 };
 
 	// 앉아있을때 카메라 내리기
 	bool sitDownCamera = false;
@@ -64,6 +75,22 @@ private:
 	// 팔 흔들기 변수
 	bool b_frontArmMove = true;
 	bool b_backArmMove = true;
+
+	// 착용 아이템 상태
+	ItemType itemType = ItemType::IDLE;
+	ItemGrade helmetGrade = ItemGrade::IDLE;
+	ItemGrade armorGrade = ItemGrade::IDLE;
+	ItemGrade shoesGrade = ItemGrade::IDLE;
+	ItemGrade backWeaponGrade = ItemGrade::IDLE;
+	ItemGrade frontWeaponGrade = ItemGrade::IDLE;
+	WeaponType backWeaponType = WeaponType::IDLE;
+	WeaponType frontWeaponType = WeaponType::IDLE;
+
+	bool b_equipArmor = false;
+	bool b_equipHelmet = false;
+	bool b_equipShoes = false;
+	bool b_equipBackWeapon = false;
+	bool b_equipFrontWeapon = false;
 
 	// 이동 애니메이션 맥스프레임
 	const POINT frontArmMaxFrame = { 15, 2 };
@@ -76,12 +103,8 @@ private:
 	float invisibleCount = 0.0f;
 	bool b_invisible = false;
 	bool b_platform = false;
-	
-	bool b_equipArmor = false;
-	bool b_equipHelmet = false;
-	bool b_equipShoes = false;
-	bool b_equipLeftWeapon = false;
-	bool b_equipRightWeapon = false;
+
+
 
 
 	// 캐릭터 상태관리

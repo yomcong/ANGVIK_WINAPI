@@ -110,7 +110,7 @@ void Player::Update()
 		else
 		{
 			jumpPower = 0;
-			ChangeState(State::IDLE);
+			ChangeState(State::Fall);
 		}
 	}
 
@@ -270,39 +270,70 @@ void Player::Render(HDC hdc)
 {
 	if (invisibleTime > 0 && b_invisible)
 	{
-		// 그려주지않는다.
+		// 피격시 무적상태 ->그려주지 않는다.
 	}
 	else
 	{
+		// 반대쪽을 보고있으므로 back, front 가 반대
 		if (dir == direction::LEFT)
 		{
+			if (b_equipBackWeapon)
+			{
+				backWeapon->Render(hdc, (int)frontArmPos.x - 10, (int)frontArmPos.y -10, backWeaponFrame.x, backWeaponFrame.y);
+			}
+			
 			R_backArm->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, backArmFrame.x, backArmFrame.y);	// 왼팔
+
 			R_body->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);			// 몸
 			if (b_equipArmor)
 			{
-				R_goldArmor->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
+				R_armor->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
 			}
 			if (b_equipShoes)
 			{
-				R_goldShoes->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
+				R_shoes->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
 			}
+
 			R_head->Render(hdc, (int)headPos.x, (int)headPos.y);								// 머리
+			if (b_equipHelmet)
+			{
+
+			}
+			if (b_equipFrontWeapon)
+			{
+				frontWeapon->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, frontWeaponFrame.x, frontWeaponFrame.y);
+			}
 			R_frontArm->Render(hdc, (int)backArmPos.x, (int)backArmPos.y, frontArmFrame.x, frontArmFrame.y);// 오른팔
+			
 		}
 		else
 		{
+			if (b_equipBackWeapon)
+			{
+				backWeapon->Render(hdc, (int)frontArmPos.x+20, (int)frontArmPos.y-10, backWeaponFrame.x, backWeaponFrame.y);
+			}
 			backArm->Render(hdc, (int)backArmPos.x, (int)backArmPos.y, backArmFrame.x, backArmFrame.y);
 			body->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
 			if (b_equipArmor)
 			{
-				goldArmor->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
+				armor->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
 			}
 			if (b_equipShoes)
 			{
-				goldShoes->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
+				shoes->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
 			}
+
 			head->Render(hdc, (int)headPos.x, (int)headPos.y);
+			if (b_equipHelmet)
+			{
+
+			}
+
 			frontArm->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, frontArmFrame.x, frontArmFrame.y);
+			if (b_equipFrontWeapon)
+			{
+				frontWeapon->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, frontWeaponFrame.x, frontWeaponFrame.y);
+			}
 		}
 	}
 
@@ -470,6 +501,7 @@ void Player::DoAnimation()
 					{
 						--frontArmFrame.x;
 					}
+
 				}
 				// 왼손 프레임 관리
 				if (b_backArmMove)
@@ -718,28 +750,27 @@ bool Player::FindImage()
 	{
 		return false;
 	}
-	goldArmor = ImageManager::GetSingleton()->FindImage("image/player/gold/body.bmp");
-	if (goldArmor == nullptr)
+	/*armor = ImageManager::GetSingleton()->FindImage("image/player/gold/body.bmp");
+	if (armor == nullptr)
 	{
 		return false;
 	}
-	goldShoes = ImageManager::GetSingleton()->FindImage("image/player/gold/foot.bmp");
-	if (goldShoes == nullptr)
+	shoes = ImageManager::GetSingleton()->FindImage("image/player/gold/foot.bmp");
+	if (shoes == nullptr)
 	{
 		return false;
 	}
-	R_goldArmor = ImageManager::GetSingleton()->FindImage("image/player/gold/R_body.bmp");
-	if (R_goldArmor == nullptr)
+	R_armor = ImageManager::GetSingleton()->FindImage("image/player/gold/R_body.bmp");
+	if (R_armor == nullptr)
 	{
 		return false;
 	}
-	R_goldShoes = ImageManager::GetSingleton()->FindImage("image/player/gold/R_foot.bmp");
-	if (R_goldShoes == nullptr)
+	R_shoes = ImageManager::GetSingleton()->FindImage("image/player/gold/R_foot.bmp");
+	if (R_shoes == nullptr)
 	{
 		return false;
-	}
-	
-		
+	}*/
+
 
 	// 디버깅
 	DBbackArm = ImageManager::GetSingleton()->FindImage("image/player/unarmed/arm_back.bmp");
@@ -791,26 +822,296 @@ bool Player::FindImage()
 	return true;
 }
 
-void Player::GetItem(ItemType itemType, ItemGrade itemGrade)
+bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType)
 {
+	string tempitemName = "image/player/";
+	string tempR_itemName = "image/player/";
+
 	switch (itemType)
 	{
 	case ItemType::IDLE:
 		break;
 	case ItemType::HELMET:
+		if (b_equipHelmet == false)
+		{
+			b_equipHelmet = true;
+			helmetGrade = itemGrade;
+			switch (itemGrade)
+			{
+			case ItemGrade::IDLE:
+				break;
+			case ItemGrade::BASIC:
+				break;
+			case ItemGrade::GOLD:
+				tempitemName += "황투.bmp";
+				break;
+			case ItemGrade::SILVER:
+				break;
+			}
+			helmet = ImageManager::GetSingleton()->FindImage(tempitemName.c_str());
+			if (helmet == nullptr)
+			{
+				return false;
+			}
+			return true;
+		}
+		else
+		{
+			//인벤
+		}
 		break;
 	case ItemType::ARMOR:
-		b_equipArmor = true;
+		if (b_equipArmor == false)
+		{
+			b_equipArmor = true;
+			armorGrade = itemGrade;
+			switch (itemGrade)
+			{
+			case ItemGrade::IDLE:
+				break;
+			case ItemGrade::BASIC:
+				break;
+			case ItemGrade::GOLD:
+				tempitemName += "gold/body.bmp";
+				tempR_itemName += "gold/R_body.bmp";
+				break;
+			case ItemGrade::SILVER:
+				break;
+			}
+			armor = ImageManager::GetSingleton()->FindImage(tempitemName.c_str());
+			if (armor == nullptr)
+			{
+				return false;
+			}
+			R_armor = ImageManager::GetSingleton()->FindImage(tempR_itemName.c_str());
+			if (R_armor == nullptr)
+			{
+				return false;
+			}
+			return true;
+		}
+		else
+		{
+			//인벤
+		}
+
 		break;
 	case ItemType::WEAPON:
+		tempitemName = "image/item/";
+		// 두 손에 아이템이 있을경우
+		if (b_equipBackWeapon && b_equipFrontWeapon)
+		{
+			//인벤토리로
+		}
+		else
+		{
+
+			switch (weaponType)
+			{
+			case WeaponType::SWORD:
+				switch (itemGrade)
+				{
+				case ItemGrade::BASIC:
+					break;
+				case ItemGrade::GOLD:
+					break;
+				case ItemGrade::SILVER:
+					break;
+				}
+				break;
+			case WeaponType::STAFF:
+				switch (itemGrade)
+				{
+				case ItemGrade::BASIC:
+					break;
+				case ItemGrade::GOLD:
+					break;
+				case ItemGrade::SILVER:
+					break;
+				}
+				break;
+			case WeaponType::LANCE:
+				switch (itemGrade)
+				{
+				case ItemGrade::BASIC:
+					break;
+				case ItemGrade::GOLD:
+					tempitemName += "골드랜스_SP.bmp";
+					break;
+				case ItemGrade::SILVER:
+					break;
+				}
+				break;
+			}
+
+			// back 손이 비어있으면 먼저 장착 
+			if (b_equipBackWeapon == false)
+			{
+				b_equipBackWeapon = true;
+				backWeaponGrade = itemGrade;
+				backWeaponType = weaponType;
+				backWeapon = ImageManager::GetSingleton()->FindImage(tempitemName.c_str());
+				if (backWeapon == nullptr)
+				{
+					return false;
+				}
+				return true;
+			}
+			else
+			{
+				b_equipFrontWeapon = true;
+				frontWeaponGrade = itemGrade;
+				frontWeaponType = weaponType;
+				frontWeapon = ImageManager::GetSingleton()->FindImage(tempitemName.c_str());
+				if (frontWeapon == nullptr)
+				{
+					return false;
+				}
+				return true;
+			}
+			break;
+		}
 		break;
 	case ItemType::SHOES:
-		b_equipShoes = true;
-		break;
-	default:
+		if (b_equipShoes == false)
+		{
+			b_equipShoes = true;
+			shoesGrade = itemGrade;
+			switch (itemGrade)
+			{
+			case ItemGrade::IDLE:
+				break;
+			case ItemGrade::BASIC:
+				break;
+			case ItemGrade::GOLD:
+				tempitemName += "gold/foot.bmp";
+				tempR_itemName += "gold/R_foot.bmp";
+				break;
+			case ItemGrade::SILVER:
+				break;
+			}
+			shoes = ImageManager::GetSingleton()->FindImage(tempitemName.c_str());
+			if (shoes == nullptr)
+			{
+				return false;
+			}
+			R_shoes = ImageManager::GetSingleton()->FindImage(tempR_itemName.c_str());
+			if (R_shoes == nullptr)
+			{
+				return false;
+			}
+			return true;
+			break;
+		}
+		else
+		{
+			//인벤
+		}
+
 		break;
 	}
+	return false;
 }
+//
+//bool Player::ChangeItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType, Image* equip)
+//{
+//	string itemName = "image/item/";
+//
+//	switch (itemType)
+//	{
+//	case ItemType::HELMET:
+//		switch (itemGrade)
+//		{
+//		case ItemGrade::IDLE:
+//			break;
+//		case ItemGrade::BASIC:
+//			break;
+//		case ItemGrade::GOLD:
+//			itemName += "황투.bmp";
+//			return true;
+//			break;
+//		case ItemGrade::SILVER:
+//			break;
+//		}
+//		break; 
+//	case ItemType::ARMOR:
+//		switch (itemGrade)
+//		{
+//		case ItemGrade::IDLE:
+//			break;
+//		case ItemGrade::BASIC:
+//			break;
+//		case ItemGrade::GOLD:
+//			itemName += "황갑.bmp";
+//			return true;
+//			break;
+//		case ItemGrade::SILVER:
+//			break;
+//		}
+//		break;
+//	case ItemType::WEAPON:
+//		switch (weaponType)
+//		{
+//		case WeaponType::SWORD:
+//			switch (itemGrade)
+//			{
+//			case ItemGrade::BASIC:
+//				break;
+//			case ItemGrade::GOLD:
+//				break;
+//			case ItemGrade::SILVER:
+//				break;
+//			}
+//			break;
+//		case WeaponType::STAFF:
+//			switch (itemGrade)
+//			{
+//			case ItemGrade::BASIC:
+//				break;
+//			case ItemGrade::GOLD:
+//				break;
+//			case ItemGrade::SILVER:
+//				break;
+//			}
+//			break;
+//		case WeaponType::LANCE:
+//			switch (itemGrade)
+//			{
+//			case ItemGrade::BASIC:
+//				break;
+//			case ItemGrade::GOLD:
+//				itemName += "골드랜스_SP.bmp";
+//				break;
+//			case ItemGrade::SILVER:
+//				break;
+//			}
+//			break;
+//		}
+//		break;
+//	case ItemType::SHOES:
+//		switch (itemGrade)
+//		{
+//		case ItemGrade::IDLE:
+//			break;
+//		case ItemGrade::BASIC:
+//			break;
+//		case ItemGrade::GOLD:
+//			itemName += "황신.bmp";
+//			break;
+//		case ItemGrade::SILVER:
+//			break;
+//		}
+//		break;
+//	}
+//
+//	equip = ImageManager::GetSingleton()->FindImage(itemName.c_str());
+//	if (equip == nullptr)
+//	{
+//		return false;
+//	}
+//
+//	return true;
+//}
 
 void Player::PosUpdate()
 {
@@ -820,8 +1121,8 @@ void Player::PosUpdate()
 	// 앉은 자세가 아닐때
 	if (false == (state == State::SITDOWN))
 	{
-		frontArmPos.x = (int)renderPos.x-5;
-		frontArmPos.y = (int)renderPos.y- 1;
+		frontArmPos.x = (int)renderPos.x - 5;
+		frontArmPos.y = (int)renderPos.y - 1;
 		backArmPos.x = (int)renderPos.x + 3;
 		backArmPos.y = (int)renderPos.y;
 		headPos.x = (int)renderPos.x + 1;
@@ -849,7 +1150,7 @@ void Player::PosUpdate()
 		frontArmPos.x = (int)renderPos.x - 4;
 		frontArmPos.y = (int)renderPos.y + 9;
 		backArmPos.x = (int)renderPos.x + 4;
-		backArmPos.y = (int)renderPos.y + 6;
+		backArmPos.y = (int)renderPos.y + 9;
 		headPos.x = (int)renderPos.x;
 		headPos.y = (int)renderPos.y - 5;
 		bodyPos.x = (int)renderPos.x;
