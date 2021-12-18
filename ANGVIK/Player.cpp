@@ -194,12 +194,27 @@ void Player::Update()
 		}
 	}
 
+	if (frontAttack == false && backAttack == false)
+	{
+		if (Input::GetButtonDown('A'))
+		{
+			ChangeAction(Action::FRONTATTACK);
+		}
+
+		if (Input::GetButtonDown('D'))
+		{
+			ChangeAction(Action::BACKATTACK);
+		}
+	}
+
+
 	// 액션중이 아닐때 기본자세 이후에 좀더 디테일 수정
 	if (!Input::GetButton(VK_LEFT) &&
 		!Input::GetButton(VK_RIGHT) &&
 		false == (state == State::SITDOWN) &&
 		false == (state == State::Fall) &&
-		false == (state == State::JUMP))
+		false == (state == State::JUMP) &&
+		false == (state == State::ATTACK))
 	{
 		action = Action::IDLE;
 
@@ -274,15 +289,28 @@ void Player::Render(HDC hdc)
 	}
 	else
 	{
+
 		// 반대쪽을 보고있으므로 back, front 가 반대
 		if (dir == direction::LEFT)
 		{
-			if (b_equipBackWeapon)
+			if (backAttack)
 			{
-				backWeapon->Render(hdc, (int)frontArmPos.x - 10, (int)frontArmPos.y -10, backWeaponFrame.x, backWeaponFrame.y);
+				if (b_equipBackWeapon)
+				{
+					R_backWeapon->Render(hdc, (int)backWeaponPos.x, (int)backWeaponPos.y, backWeaponFrame.x, backWeaponFrame.y);
+				}
+
+				R_backArm->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, backAttackArmFrame.x, backAttackArmFrame.y);	// 왼팔
 			}
-			
-			R_backArm->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, backArmFrame.x, backArmFrame.y);	// 왼팔
+			else
+			{
+				if (b_equipBackWeapon)
+				{
+					R_backWeapon->Render(hdc, (int)backWeaponPos.x, (int)backWeaponPos.y, backWeaponFrame.x, backWeaponFrame.y);
+				}
+
+				R_backArm->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, backArmFrame.x, backArmFrame.y);	// 왼팔
+			}
 
 			R_body->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);			// 몸
 			if (b_equipArmor)
@@ -299,20 +327,41 @@ void Player::Render(HDC hdc)
 			{
 
 			}
-			if (b_equipFrontWeapon)
+			if (frontAttack)
 			{
-				frontWeapon->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, frontWeaponFrame.x, frontWeaponFrame.y);
+				if (b_equipFrontWeapon)
+				{
+					R_frontWeapon->Render(hdc, (int)frontWeaponPos.x, (int)frontWeaponPos.y, frontWeaponFrame.x, frontWeaponFrame.y);
+				}
+				R_frontArm->Render(hdc, (int)backArmPos.x, (int)backArmPos.y, frontAttackArmFrame.x, frontAttackArmFrame.y);
 			}
-			R_frontArm->Render(hdc, (int)backArmPos.x, (int)backArmPos.y, frontArmFrame.x, frontArmFrame.y);// 오른팔
-			
+			else
+			{
+				if (b_equipFrontWeapon)
+				{
+					R_frontWeapon->Render(hdc, (int)frontWeaponPos.x, (int)frontWeaponPos.y, frontWeaponFrame.x, frontWeaponFrame.y);
+				}
+				R_frontArm->Render(hdc, (int)backArmPos.x, (int)backArmPos.y, frontArmFrame.x, frontArmFrame.y);// 오른팔
+			}
 		}
 		else
 		{
-			if (b_equipBackWeapon)
+			if (backAttack)
 			{
-				backWeapon->Render(hdc, (int)frontArmPos.x+20, (int)frontArmPos.y-10, backWeaponFrame.x, backWeaponFrame.y);
+				if (b_equipBackWeapon)
+				{
+					backWeapon->Render(hdc, (int)backWeaponPos.x, (int)backWeaponPos.y, backWeaponFrame.x, backWeaponFrame.y);
+				}
+				backArm->Render(hdc, (int)backArmPos.x, (int)backArmPos.y, backAttackArmFrame.x, backAttackArmFrame.y);
 			}
-			backArm->Render(hdc, (int)backArmPos.x, (int)backArmPos.y, backArmFrame.x, backArmFrame.y);
+			else
+			{
+				if (b_equipBackWeapon)
+				{
+					backWeapon->Render(hdc, (int)backWeaponPos.x, (int)backWeaponPos.y, backWeaponFrame.x, backWeaponFrame.y);
+				}
+				backArm->Render(hdc, (int)backArmPos.x, (int)backArmPos.y, backArmFrame.x, backArmFrame.y);
+			}
 			body->Render(hdc, (int)bodyPos.x, (int)bodyPos.y, bodyFrame.x, bodyFrame.y);
 			if (b_equipArmor)
 			{
@@ -329,10 +378,22 @@ void Player::Render(HDC hdc)
 
 			}
 
-			frontArm->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, frontArmFrame.x, frontArmFrame.y);
-			if (b_equipFrontWeapon)
+			if (frontAttack)
 			{
-				frontWeapon->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, frontWeaponFrame.x, frontWeaponFrame.y);
+				if (b_equipFrontWeapon)
+				{
+					frontWeapon->Render(hdc, (int)frontWeaponPos.x, (int)frontWeaponPos.y, frontWeaponFrame.x, frontWeaponFrame.y);
+				}
+				frontArm->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, frontAttackArmFrame.x, frontAttackArmFrame.y);
+			}
+			else
+			{
+				if (b_equipFrontWeapon)
+				{
+					frontWeapon->Render(hdc, (int)frontWeaponPos.x, (int)frontWeaponPos.y, frontWeaponFrame.x, frontWeaponFrame.y);
+				}
+				frontArm->Render(hdc, (int)frontArmPos.x, (int)frontArmPos.y, frontArmFrame.x, frontArmFrame.y);
+
 			}
 		}
 	}
@@ -378,7 +439,6 @@ void Player::ChangeAction(Action action)
 		// 새로운 액션일경우 애니메이션들 기본상태로 변경
 		this->action = action;
 
-
 		frameCount = 0.0f;
 		// 점프중일때는 무브동작 X
 		if ((action == Action::RIGHTMOVE || action == Action::LEFTMOVE))
@@ -391,6 +451,22 @@ void Player::ChangeAction(Action action)
 			frontArmFrame.y = 1;
 			backArmFrame.y = 1;
 		}
+
+		if (action == Action::FRONTATTACK)
+		{
+			frontAttack = true;
+			frontAttackArmFrame.x = 9;
+			frontAttackArmFrame.y = 2;
+			attackCount = 0.0f;
+		}
+		if (action == Action::BACKATTACK)
+		{
+			backAttack = true;
+			backAttackArmFrame.x = 9;
+			backAttackArmFrame.y = 2;
+			attackCount = 0.0f;
+		}
+
 	}
 }
 
@@ -462,9 +538,12 @@ void Player::ChangeState(State state)
 			frontArmFrame.y = 0;
 			backArmFrame.y = 0;
 		}
+
+
 	}
 
 }
+
 
 void Player::DoAnimation()
 {
@@ -484,11 +563,14 @@ void Player::DoAnimation()
 					{
 						--frontArmFrame.x;
 						b_frontArmMove = false;
+
 					}
 					else
 					{
 						++frontArmFrame.x;
 					}
+					frontWeaponFrame.x = 3;
+					backWeaponFrame.x = 1;
 				}
 				else
 				{
@@ -609,6 +691,35 @@ void Player::DoAnimation()
 		}
 	}
 
+	attackCount += TimerManager::GetSingleton()->GetDeltaTime();
+	if (frontAttack)
+	{
+		if (attackCount > 0.0625)
+		{
+			if (frontAttackArmFrame.x >= 11)
+			{
+				frontAttack = false;
+				action = Action::IDLE;
+			}
+			++frontAttackArmFrame.x;
+			attackCount = 0.0f;
+		}
+	}
+	
+	if (backAttack)
+	{
+		if (attackCount > 0.0625)
+		{
+			if (backAttackArmFrame.x >= 11)
+			{
+				backAttack = false;
+				action = Action::IDLE;
+			}
+			++backAttackArmFrame.x;
+			attackCount = 0.0f;
+		}
+	}
+
 	if (invisibleTime > 0)
 	{
 		invisibleTime -= TimerManager::GetSingleton()->GetDeltaTime();
@@ -634,6 +745,95 @@ void Player::DoAnimation()
 	{
 		b_invisible = false;
 		invisibleCount = 0.0f;
+	}
+
+	// 무기 프레임, 포지션 관리
+	switch (backWeaponType)
+	{
+	case WeaponType::SWORD:
+		if (dir == direction::RIGHT)
+		{
+			backWeaponPos.x = (int)renderPos.x + 25;
+			backWeaponPos.y = (int)renderPos.y - 2;
+		}
+		else
+		{
+			backWeaponPos.x = (int)renderPos.x - 20;
+			backWeaponPos.y = (int)renderPos.y - 2;
+		}
+		break;
+	case WeaponType::BOOMERANG:
+		if (dir == direction::RIGHT)
+		{
+			backWeaponPos.x = (int)renderPos.x + 17;
+			backWeaponPos.y = (int)renderPos.y - 11;
+		}
+		else
+		{
+			backWeaponPos.x = (int)renderPos.x - 21;
+			backWeaponPos.y = (int)renderPos.y - 11;
+		}
+		break;
+	case WeaponType::LANCE:
+		if (dir == direction::RIGHT)
+		{
+			backWeaponPos.x = (int)renderPos.x + 17;
+			backWeaponPos.y = (int)renderPos.y - 11;
+		}
+		else
+		{
+			backWeaponPos.x = (int)renderPos.x - 21;
+			backWeaponPos.y = (int)renderPos.y - 11;
+		}
+		break;
+	case WeaponType::STAFF:
+		backWeaponPos.x = (int)renderPos.x - 10;
+		backWeaponPos.y = (int)renderPos.y - 10;
+		break;
+	}
+
+	switch (frontWeaponType)
+	{
+	case WeaponType::SWORD:
+		if (dir == direction::RIGHT)
+		{
+			frontWeaponPos.x = (int)renderPos.x + 15;
+			frontWeaponPos.y = (int)renderPos.y - 5;
+		}
+		else
+		{
+			frontWeaponPos.x = (int)renderPos.x - 18;
+			frontWeaponPos.y = (int)renderPos.y - 8;
+		}
+		break;
+	case WeaponType::BOOMERANG:
+		if (dir == direction::RIGHT)
+		{
+			frontWeaponPos.x = (int)renderPos.x + 2;
+			frontWeaponPos.y = (int)renderPos.y + 2;
+		}
+		else
+		{
+			frontWeaponPos.x = (int)renderPos.x - 20;
+			frontWeaponPos.y = (int)renderPos.y + 2;
+		}
+		break;
+	case WeaponType::LANCE:
+		if (dir == direction::RIGHT)
+		{
+			frontWeaponPos.x = (int)renderPos.x + 2;
+			frontWeaponPos.y = (int)renderPos.y + 2;
+		}
+		else
+		{
+			frontWeaponPos.x = (int)renderPos.x - 20;
+			frontWeaponPos.y = (int)renderPos.y + 2;
+		}
+		break;
+	case WeaponType::STAFF:
+		backWeaponPos.x = (int)renderPos.x - 10;
+		backWeaponPos.y = (int)renderPos.y - 10;
+		break;
 	}
 }
 
@@ -898,6 +1098,7 @@ bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponTy
 		break;
 	case ItemType::WEAPON:
 		tempitemName = "image/item/";
+		tempR_itemName = "image/item/";
 		// 두 손에 아이템이 있을경우
 		if (b_equipBackWeapon && b_equipFrontWeapon)
 		{
@@ -914,17 +1115,21 @@ bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponTy
 				case ItemGrade::BASIC:
 					break;
 				case ItemGrade::GOLD:
+					tempitemName += "골드칼_SP.bmp";
+					tempR_itemName += "R_골드칼_SP.bmp";
 					break;
 				case ItemGrade::SILVER:
 					break;
 				}
 				break;
-			case WeaponType::STAFF:
+			case WeaponType::BOOMERANG:
 				switch (itemGrade)
 				{
 				case ItemGrade::BASIC:
 					break;
 				case ItemGrade::GOLD:
+					tempitemName += "골드부메랑_SP.bmp";
+					tempR_itemName += "R_골드부메랑_SP.bmp";
 					break;
 				case ItemGrade::SILVER:
 					break;
@@ -937,6 +1142,7 @@ bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponTy
 					break;
 				case ItemGrade::GOLD:
 					tempitemName += "골드랜스_SP.bmp";
+					tempR_itemName += "R_골드랜스_SP.bmp";
 					break;
 				case ItemGrade::SILVER:
 					break;
@@ -955,6 +1161,11 @@ bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponTy
 				{
 					return false;
 				}
+				R_backWeapon = ImageManager::GetSingleton()->FindImage(tempR_itemName.c_str());
+				if (R_backWeapon == nullptr)
+				{
+					return false;
+				}
 				return true;
 			}
 			else
@@ -964,6 +1175,11 @@ bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponTy
 				frontWeaponType = weaponType;
 				frontWeapon = ImageManager::GetSingleton()->FindImage(tempitemName.c_str());
 				if (frontWeapon == nullptr)
+				{
+					return false;
+				}
+				R_frontWeapon = ImageManager::GetSingleton()->FindImage(tempR_itemName.c_str());
+				if (R_frontWeapon == nullptr)
 				{
 					return false;
 				}
@@ -1063,7 +1279,7 @@ bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponTy
 //				break;
 //			}
 //			break;
-//		case WeaponType::STAFF:
+//		case WeaponType::BOOMERANG:
 //			switch (itemGrade)
 //			{
 //			case ItemGrade::BASIC:
@@ -1135,8 +1351,6 @@ void Player::PosUpdate()
 		shape.right = (int)pos.x + (bodySize.x / 2);
 		shape.bottom = (int)pos.y + (bodySize.y / 2);
 
-
-
 		if (sitDownCamera)
 		{
 			renderPos.y += 200;
@@ -1155,8 +1369,8 @@ void Player::PosUpdate()
 		headPos.y = (int)renderPos.y - 5;
 		bodyPos.x = (int)renderPos.x;
 		bodyPos.y = (int)renderPos.y;
-
 	}
+
 
 
 }

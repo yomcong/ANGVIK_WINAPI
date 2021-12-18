@@ -49,17 +49,25 @@ void ImageManager::Init()
 	AddImage("image/player/gold/foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 신발
 	AddImage("image/player/gold/R_body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 갑옷(Reverse)
 	AddImage("image/player/gold/R_foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 신발(Reverse)
+
+	AddImage("image/item/골드칼_SP.bmp", 756, 108, 7, 1, true, RGB(255, 255, 255));			// 황금 칼 스프라이트
+	AddImage("image/item/골드랜스_SP.bmp", 812, 116, 7, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트
+	AddImage("image/item/골드부메랑_SP.bmp", 1296, 54, 24, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트
+
+	AddImage("image/item/R_골드칼_SP.bmp", 756, 108, 7, 1, true, RGB(255, 255, 255));		// 황금 칼 스프라이트
+	AddImage("image/item/R_골드랜스_SP.bmp", 812, 116, 7, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트
+	AddImage("image/item/R_골드부메랑_SP.bmp", 1296, 54, 24, 1, true, RGB(255, 255, 255));	// 황금 부메랑 스프라이트
+
 	// 인벤토리
 
-	// 아이템
-	AddImage("image/item/골드칼.bmp", 88, 20, true, RGB(255, 255, 255));	// 황금 갑옷
-	AddImage("image/item/골드랜스.bmp", 96, 18, true, RGB(255, 255, 255));	// 황금 갑옷
+	// 아이템 
 	AddImage("image/item/황투.bmp", 28, 15, true, RGB(255, 255, 255));	// 황금 갑옷
 	AddImage("image/item/황갑.bmp", 24, 28, true, RGB(255, 255, 255));	// 황금 갑옷
 	AddImage("image/item/황신.bmp", 10, 11, true, RGB(255, 255, 255));	// 황금 갑옷
-	AddImage("image/item/골드칼_SP.bmp", 6960, 258,24,1, true, RGB(255, 255, 255));	// 황금 칼 스프라이트
+	
+	AddImage("image/item/골드칼.bmp", 88, 20, true, RGB(255, 255, 255));	// 황금 갑옷
 	AddImage("image/item/골드랜스.bmp", 96, 18, true, RGB(255, 255, 255));	// 황금 창 
-	AddImage("image/item/골드랜스_SP.bmp", 1392, 116, 12, 1, true, RGB(255, 255, 255));	// 황금 창 스프라이트
+	AddImage("image/item/골드부메랑.bmp", 34, 24, true, RGB(255, 255, 255));	// 황금 부메랑
 
 	
 	// 몬스터

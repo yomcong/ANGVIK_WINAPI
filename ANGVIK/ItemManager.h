@@ -28,7 +28,7 @@ private:
 
 	ItemFactory* itemFactory[6] = {};*/
 
-	TestItem* Titem[4] = {};
+	TestItem* Titem[5] = {};
 	vector<TestItem*> vecItems = {};
 
 };

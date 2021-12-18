@@ -2,8 +2,8 @@
 #include "Config.h"
 #include "GameObject.h"
 
-enum class State { IDLE, JUMP, Fall, SITDOWN, HIT };
-enum class Action { IDLE, LEFTMOVE, RIGHTMOVE, ATTACK };
+enum class State { IDLE, JUMP, Fall, SITDOWN, HIT, ATTACK};
+enum class Action { IDLE, LEFTMOVE, RIGHTMOVE, BACKATTACK, FRONTATTACK};
 
 //class PixelCollider;
 class Imgae;
@@ -54,13 +54,15 @@ private:
 	Image* backWeapon = nullptr;	// back 무기
 	Image* frontWeapon = nullptr;	// front 무기
 
-	Image* R_backWeapon = nullptr;
-	Image* R_frontWeapon = nullptr;
+	Image* R_backWeapon = nullptr;	// back 무기
+	Image* R_frontWeapon = nullptr;	// front 무기
 	// 랜더링 포스
 	POINT frontArmPos = {};
 	POINT backArmPos = {};
 	POINT headPos = {};
 	POINT bodyPos = {};
+	POINT backWeaponPos = {};
+	POINT frontWeaponPos = {};
 
 	// 캐릭터 애니메이션 프레임 관리
 	POINT bodyFrame = { 0, 0 };
@@ -68,6 +70,15 @@ private:
 	POINT backArmFrame = { 13, 0 };
 	POINT frontWeaponFrame = { 0,0 };
 	POINT backWeaponFrame = { 0,0 };
+	POINT backAttackArmFrame = { 0,0 };
+	POINT frontAttackArmFrame = { 0,0 };
+
+	// 공격중
+	bool backAttack = false;
+	bool frontAttack = false;
+
+	float attackCount = false;
+
 
 	// 앉아있을때 카메라 내리기
 	bool sitDownCamera = false;

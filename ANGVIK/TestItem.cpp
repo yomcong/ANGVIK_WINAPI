@@ -67,7 +67,7 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 			case ItemGrade::BASIC:
 				break;
 			case ItemGrade::GOLD:
-				itemName += "°ñµå·£½º_SP.bmp";
+				itemName += "°ñµåÄ®.bmp";
 				bodySize.x = 10;
 				bodySize.y = 10;
 				break;
@@ -75,7 +75,7 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 				break;
 			}
 			break;
-		case WeaponType::STAFF:
+		case WeaponType::BOOMERANG:
 			switch (itemGrade)
 			{
 			case ItemGrade::IDLE:
@@ -83,6 +83,9 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 			case ItemGrade::BASIC:
 				break;
 			case ItemGrade::GOLD:
+				itemName += "°ñµåºÎ¸Þ¶û.bmp";
+				bodySize.x = 10;
+				bodySize.y = 10;
 				break;
 			case ItemGrade::SILVER:
 				break;
@@ -96,17 +99,16 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 			case ItemGrade::BASIC:
 				break;
 			case ItemGrade::GOLD:
-				itemName += "°ñµå·£½º_SP.bmp";
-				bodySize.x = 10;
+				itemName += "°ñµå·£½º.bmp";
+				bodySize.x = 30;
 				bodySize.y = 10;
-				framePos.x = 3;
 				break;
 			case ItemGrade::SILVER:
 				break;
 			}
 			break;
 		}
-		
+
 		break;
 	case ItemType::SHOES:
 		switch (itemGrade)
@@ -133,8 +135,6 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 	{
 		return E_FAIL;
 	}
-
-	cout << itemName << "\n";
 
 	renderPos = pos;
 
@@ -172,14 +172,8 @@ void TestItem::Update()
 
 void TestItem::Render(HDC hdc)
 {
-	if (itemType == ItemType::WEAPON && itemGrade == ItemGrade::GOLD)
-	{
-		itemImage->Render(hdc, (int)renderPos.x, (int)renderPos.y, framePos.x, framePos.y);
-	}
-	else
-	{
-		itemImage->Render(hdc, (int)renderPos.x, (int)renderPos.y);
-	}
+	itemImage->Render(hdc, (int)renderPos.x, (int)renderPos.y);
+
 
 
 	if (DBrect)
