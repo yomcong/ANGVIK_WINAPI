@@ -1,8 +1,0 @@
-﻿  Player.cpp
-C:\Users\LEE\Desktop\작업\ANGVIK\Main\Player.cpp(300,37): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\작업\ANGVIK\Main\Player.cpp(300,29): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\작업\ANGVIK\Main\Player.cpp(301,30): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\작업\ANGVIK\Main\Player.cpp(301,23): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\작업\ANGVIK\Main\Player.cpp(302,34): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\LEE\Desktop\작업\ANGVIK\Main\Player.cpp(302,27): warning C4244: '인수': 'FLOAT'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  210830_WinMain.vcxproj -> C:\Users\LEE\Desktop\작업\ANGVIK\Main\x64\Debug\210830_WinMain.exe

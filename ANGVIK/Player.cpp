@@ -481,8 +481,8 @@ void Player::ChangeAction(Action action)
 			frontArmFrame.x = 9;
 			backArmFrame.x = 11;
 			bodyFrame.y = 1;
-			frontArmFrame.y = 1;
-			backArmFrame.y = 1;
+			frontArmFrame.y = 0;
+			backArmFrame.y = 0;
 		}
 
 		if (action == Action::FRONTATTACK)
@@ -812,6 +812,33 @@ void Player::PlayAnimation()
 			attackCount = 0.0f;
 		}
 	}
+	else
+	{
+		if (backArmFrame.x > 4 &&
+			backArmFrame.x < 8)
+		{
+			backWeaponFrame.x = 6;
+		}
+		else if (backArmFrame.x > 7 &&
+			backArmFrame.x < 10)
+		{
+			backWeaponFrame.x = 5;
+		}
+		else if (backArmFrame.x > 9 &&
+			backArmFrame.x < 12)
+		{
+			backWeaponFrame.x = 4;
+		}
+		else if (backArmFrame.x > 11 &&
+			backArmFrame.x < 13)
+		{
+			backWeaponFrame.x = 3;
+		}
+		else
+		{
+			backWeaponFrame.x = 2;
+		}
+	}
 
 	if (invisibleTime > 0)
 	{
@@ -846,38 +873,35 @@ void Player::PlayAnimation()
 	case WeaponType::SWORD:
 		if (dir == direction::RIGHT)
 		{
-			backWeaponPos.x = (int)renderPos.x + 21;
-			backWeaponPos.y = (int)renderPos.y - 12;
+			backWeaponPos.x = (int)renderPos.x + 30;
 		}
 		else
 		{
-			backWeaponPos.x = (int)renderPos.x - 24;
-			backWeaponPos.y = (int)renderPos.y - 12;
+			backWeaponPos.x = (int)renderPos.x - 30;
 		}
+		backWeaponPos.y = (int)renderPos.y - 27 + (backWeaponFrame.x * 5);
 		break;
 	case WeaponType::BOOMERANG:
 		if (dir == direction::RIGHT)
 		{
-			backWeaponPos.x = (int)renderPos.x + 18;
-			backWeaponPos.y = (int)renderPos.y - 6;
+			backWeaponPos.x = (int)renderPos.x + 25;
 		}
 		else
 		{
-			backWeaponPos.x = (int)renderPos.x - 20;
-			backWeaponPos.y = (int)renderPos.y - 6;
+			backWeaponPos.x = (int)renderPos.x - 25;
 		}
+		backWeaponPos.y = (int)renderPos.y - 5 + (backWeaponFrame.x * 5);
 		break;
 	case WeaponType::LANCE:
 		if (dir == direction::RIGHT)
 		{
-			backWeaponPos.x = (int)renderPos.x + 17;
-			backWeaponPos.y = (int)renderPos.y - 11;
+			backWeaponPos.x = (int)renderPos.x + 27;
 		}
 		else
 		{
-			backWeaponPos.x = (int)renderPos.x - 21;
-			backWeaponPos.y = (int)renderPos.y - 11;
+			backWeaponPos.x = (int)renderPos.x - 30;
 		}
+		backWeaponPos.y = (int)renderPos.y - 22 + (backWeaponFrame.x * 5);
 		break;
 	case WeaponType::STAFF:
 		backWeaponPos.x = (int)renderPos.x - 10;
@@ -891,37 +915,34 @@ void Player::PlayAnimation()
 		if (dir == direction::RIGHT)
 		{
 			frontWeaponPos.x = (int)renderPos.x + 18;
-			frontWeaponPos.y = (int)renderPos.y - 20 + (frontWeaponFrame.x * 5);
 		}
 		else
 		{
-			frontWeaponPos.x = (int)renderPos.x - 18;
-			frontWeaponPos.y = (int)renderPos.y;
+			frontWeaponPos.x = (int)renderPos.x - 20;
 		}
+		frontWeaponPos.y = (int)renderPos.y - 20 + (frontWeaponFrame.x * 5);
 		break;
 	case WeaponType::BOOMERANG:
 		if (dir == direction::RIGHT)
 		{
-			frontWeaponPos.x = (int)renderPos.x + 4;
-			frontWeaponPos.y = (int)renderPos.y + 7;
+			frontWeaponPos.x = (int)renderPos.x + 8;
 		}
 		else
 		{
-			frontWeaponPos.x = (int)renderPos.x - 13;
-			frontWeaponPos.y = (int)renderPos.y + 7;
+			frontWeaponPos.x = (int)renderPos.x - 10;
 		}
+		frontWeaponPos.y = (int)renderPos.y - 13 + (frontWeaponFrame.x * 5);
 		break;
 	case WeaponType::LANCE:
 		if (dir == direction::RIGHT)
 		{
 			frontWeaponPos.x = (int)renderPos.x + 7;
-			frontWeaponPos.y = (int)renderPos.y + 1;
 		}
 		else
 		{
 			frontWeaponPos.x = (int)renderPos.x - 18;
-			frontWeaponPos.y = (int)renderPos.y + 2;
 		}
+		frontWeaponPos.y = (int)renderPos.y - 15 + (frontWeaponFrame.x * 5);
 		break;
 	case WeaponType::STAFF:
 		backWeaponPos.x = (int)renderPos.x - 10;

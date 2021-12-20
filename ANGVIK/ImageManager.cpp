@@ -122,7 +122,7 @@ void ImageManager::Init()
 	AddImage("image/monster/R_leaf4.bmp", 15, 15, true, RGB(255, 255, 255));// ³ª¹µÀÙ 4(Reverse)
 
 	// ÇÃ·§Æû
-	AddImage("image/Stage/treetrap.bmp", 53, 90, 1, 6, true, RGB(0, 0, 0));	// ÇÃ·§Æû
+	AddImage("image/Stage/treetrap.bmp", 53, 90, 1, 6, true, RGB(255, 255, 255));	// ÇÃ·§Æû
 	AddImage("image/Stage/R_treetrap.bmp", 53, 90, 1, 6, true, RGB(255, 255, 255));	// ÇÃ·§Æû(Reverse)
 
 }

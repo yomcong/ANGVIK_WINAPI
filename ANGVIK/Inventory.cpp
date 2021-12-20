@@ -192,7 +192,7 @@ void Inventory::Update()
 					selectedNum = 0;
 				}
 				else if (selectedNum == 0 ||
-						selectedNum == 1)
+					selectedNum == 1)
 				{
 					vecItems[selectedItemNum] = nullptr;
 					vecItems.erase(vecItems.begin() + selectedItemNum);
@@ -331,26 +331,26 @@ void Inventory::PosUpdate()
 	{
 		selectBoxPos.y = (int)this->pos.y - 30 + (30 * selectedNum);
 		backTextPos.y = (int)this->pos.y + 62;
-		dropTextPos.x = pos.x;
-		dropTextPos.y = pos.y + 30;
-		backHTextPos.x = pos.x;
-		backHTextPos.y = pos.y - 30;
-		frontHTextPos.x = pos.x;
-		frontHTextPos.y = pos.y;
+		dropTextPos.x = (int)pos.x;
+		dropTextPos.y = (int)pos.y + 30;
+		backHTextPos.x = (int)pos.x;
+		backHTextPos.y = (int)pos.y - 30;
+		frontHTextPos.x = (int)pos.x;
+		frontHTextPos.y = (int)pos.y;
 	}
 	else if (inventoryType == InventoryType::SELECTOILS)
 	{
 		selectBoxPos.y = (int)this->pos.y - 20 + (35 * selectedNum);
 		backTextPos.y = (int)this->pos.y + 50;
-		dropTextPos.x = pos.x;
-		dropTextPos.y = pos.y + 18;
+		dropTextPos.x = (int)pos.x;
+		dropTextPos.y = (int)pos.y + 18;
 	}
-	itemPos.x = pos.x;
-	itemPos.y = pos.y - 56;
-	oilsPos.x = pos.x;
-	oilsPos.y = pos.y - 42;
-	equipTextPos.x = pos.x;
-	equipTextPos.y = pos.y - 20;
+	itemPos.x = (int)pos.x;
+	itemPos.y = (int)pos.y - 56;
+	oilsPos.x = (int)pos.x;
+	oilsPos.y = (int)pos.y - 42;
+	equipTextPos.x = (int)pos.x;
+	equipTextPos.y = (int)pos.y - 20;
 
 
 }
@@ -374,8 +374,8 @@ void Inventory::InventoryOpen(POINTFLOAT pos)
 
 	inventoryType = InventoryType::MAIN;
 
-	backTextPos.x = this->pos.x;
-	backTextPos.y = this->pos.y;
+	backTextPos.x = (int)this->pos.x;
+	backTextPos.y = (int)this->pos.y;
 
 	selectedNum = 0;
 
@@ -567,6 +567,8 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 		{
 			vecItems.push_back(tempImage);
 		}
-
 	}
+
+
+	return false;
 }
