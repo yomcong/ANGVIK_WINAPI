@@ -14,8 +14,8 @@ public:
 	virtual HRESULT Init();
 
 	void AddPlayer(Player* player);
-	void AddMonster(MonsterManager* monsterManager);
-	void AddTrap(TrapManager* trapManager);
+	void AddMonsterManager(MonsterManager* monsterManager);
+	void AddTrapManager(TrapManager* trapManager);
 	void AddItem(ItemManager* itemManager);
 	void AddObject(SubjectTag subject, EventTag object, RECT* shape);
 	bool CheckCollision(SubjectTag subject, RECT shape, EventTag eventTag = EventTag::IDLE);

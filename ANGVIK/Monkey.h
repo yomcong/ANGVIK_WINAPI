@@ -16,7 +16,7 @@ public:
 	virtual void Release();
 
 	void ToBeHit();
-	void DoAnimation();
+	void PlayAnimation();
 	void PosUpdate();
 	void CheckWindow();
 	void DoAction();

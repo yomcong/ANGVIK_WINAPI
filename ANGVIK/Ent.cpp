@@ -77,7 +77,7 @@ void Ent::Update()
 	if (b_isAlive)
 	{
 		DoAction();
-		DoAnimation();
+		PlayAnimation();
 	}
 	// 윈도우 영역에 있는지 확인
 	PosUpdate();
@@ -162,7 +162,7 @@ void Ent::Release()
 	SAFE_DELETE(subject);
 }
 
-void Ent::DoAnimation()
+void Ent::PlayAnimation()
 {
 	frameCount += TimerManager().GetSingleton()->GetDeltaTime();
 

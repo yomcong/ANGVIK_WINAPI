@@ -25,6 +25,7 @@ void ImageManager::Init()
 	// 스테이지 
 	AddImage("image/Stage/Stage1-Background.bmp", 6709, 1290, true, RGB(255, 255, 255)); // 스테이지1 백그라운드
 	AddImage("image/Stage/Stage1-Background2.bmp", 6709, 1290); // 스테이지1 백그라운드(배경)
+	AddImage("image/Stage/Stage1-Hidden.bmp", 6709, 1290, true, RGB(255, 255, 255)); // 스테이지1 히든지역
 
 	// 픽셀 맵
 	AddImage("image/Stage/Stage1-test.bmp", 6709, 1290, true, RGB(255, 0, 255)); // 스테이지1 백그라운드(픽셀ver)
@@ -63,13 +64,15 @@ void ImageManager::Init()
 	AddImage("image/etc/itemBox.bmp", 131, 245);	// 아이템 박스
 	AddImage("image/etc/oilsBox.bmp", 131, 206);	// 오일 박스
 	AddImage("image/etc/select.bmp", 60, 35);	// 셀렉티드 박스
-	AddImage("image/etc/SELET.bmp", 132, 161);	// 셀렉 아이템
+	AddImage("image/etc/SELET.bmp", 132, 186);	// 셀렉 아이템
 	AddImage("image/etc/item.bmp", 46, 14, true, RGB(0, 0, 0));	// 인벤토리 text
 	AddImage("image/etc/close.bmp", 58, 15, true, RGB(0, 0, 0));	// 아이템 text
 	AddImage("image/etc/oils.bmp", 45, 15, true, RGB(0, 0, 0));	// 오일 text
 	AddImage("image/etc/back.bmp", 50, 15, true, RGB(0, 0, 0));	// BACK text
-	AddImage("image/etc/equip.bmp", 58, 19, true, RGB(0, 0, 0));	// equip text
+	AddImage("image/etc/equip.bmp", 58, 19, true, RGB(0, 0, 0));// equip text
 	AddImage("image/etc/drop.bmp", 45, 18, true, RGB(0, 0, 0));	// drop text
+	AddImage("image/etc/backH.bmp", 70, 18, true, RGB(0, 0, 0));// back.H text
+	AddImage("image/etc/frontH.bmp", 70, 18, true, RGB(0, 0, 0));	// front.H text
 	
 
 	// 아이템 

@@ -16,7 +16,7 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
-	void DoAnimation();
+	void PlayAnimation();
 	void PosUpdate();
 	void ToBeHit();
 	void CheckWindow();

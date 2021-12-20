@@ -45,7 +45,7 @@ void Monkey::Update()
 {
 	if (b_isAlive)
 	{
-		DoAnimation();
+		PlayAnimation();
 		DoAction();
 	}
 
@@ -93,7 +93,7 @@ void Monkey::ToBeHit()
 	}
 }
 
-void Monkey::DoAnimation()
+void Monkey::PlayAnimation()
 {
 	frameCount += TimerManager().GetSingleton()->GetDeltaTime();
 

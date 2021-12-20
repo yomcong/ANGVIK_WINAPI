@@ -2,7 +2,7 @@
 #include "Config.h"
 #include "GameObject.h"
 
-enum class InventoryType { MAIN, ITEMBOX, OILSBOX, SELECTITEM};
+enum class InventoryType { MAIN, ITEMBOX, OILSBOX, SELECTITEM, SELECTOILS};
 enum class SelectItem { EQUIPMENT, OILS };
 
 class Image;
@@ -21,6 +21,8 @@ public:
 	void InventoryOpen(POINTFLOAT pos);
 	bool GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType = WeaponType::IDLE);
 
+	inline void SetInventoryOpen(bool b_inventoryOpen) { this->b_inventoryOpen = b_inventoryOpen; }
+
 private:
 	Image* inventoryUi = nullptr;
 	Image* ItemBox = nullptr;
@@ -33,6 +35,8 @@ private:
 	Image* backText = nullptr;
 	Image* equipText = nullptr;
 	Image* dropText = nullptr;
+	Image* backHText = nullptr;
+	Image* frontHText = nullptr;
 
 	Image* selectBox = nullptr;
 
@@ -50,12 +54,18 @@ private:
 	POINT selectBoxPos = { 0, 0 };
 	POINT itemPos = { 0,0 };
 	POINT oilsPos = { 0,0 };
+	POINT backHTextPos = {0,0};
+	POINT frontHTextPos = {0,0};
 
 	int seletedBoxFrame = 0;
 	int selectedNum = 0;
 	int selectedItemNum = 0;
+
 	int itemMaximum = 4;
 	int oilsMaximum = 3;
+
+	bool b_inventoryOpen = false;
+
 	InventoryType inventoryType = InventoryType::MAIN;
 
 	Player* player = nullptr;

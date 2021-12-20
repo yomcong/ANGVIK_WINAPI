@@ -27,7 +27,7 @@ HRESULT Inventory::Init(Player* player)
 	closeText = ImageManager::GetSingleton()->FindImage("image/etc/close.bmp");
 	if (closeText == nullptr)
 	{
-		return E_FAIL; 
+		return E_FAIL;
 	}
 	oilsText = ImageManager::GetSingleton()->FindImage("image/etc/oils.bmp");
 	if (oilsText == nullptr)
@@ -59,6 +59,16 @@ HRESULT Inventory::Init(Player* player)
 	{
 		return E_FAIL;
 	}
+	backHText = ImageManager::GetSingleton()->FindImage("image/etc/backH.bmp");
+	if (backHText == nullptr)
+	{
+		return E_FAIL;
+	}
+	frontHText = ImageManager::GetSingleton()->FindImage("image/etc/frontH.bmp");
+	if (frontHText == nullptr)
+	{
+		return E_FAIL;
+	}
 
 	this->player = player;
 
@@ -71,135 +81,163 @@ HRESULT Inventory::Init(Player* player)
 
 void Inventory::Update()
 {
-	if (Input::GetButtonDown(VK_UP))
+	if (b_inventoryOpen)
 	{
-		if (selectedNum > 0)
+		if (Input::GetButtonDown(VK_UP))
 		{
-			--selectedNum;;
-		}
-	}
-	if (Input::GetButtonDown(VK_DOWN))
-	{
-		if (inventoryType == InventoryType::MAIN)
-		{
-			if (selectedNum < 2)
+			if (selectedNum > 0)
 			{
-				++selectedNum;
+				--selectedNum;;
 			}
 		}
-		else if (inventoryType == InventoryType::ITEMBOX)
+		if (Input::GetButtonDown(VK_DOWN))
 		{
-			if (selectedNum < itemMaximum)
+			if (inventoryType == InventoryType::MAIN)
 			{
-				++selectedNum;
-			}
-		}
-		else if (inventoryType == InventoryType::OILSBOX)
-		{
-			if (selectedNum < oilsMaximum)
-			{
-				++selectedNum;
-			}
-		}
-		else if (inventoryType == InventoryType::SELECTITEM)
-		{
-			if (selectedNum < 2)
-			{
-				++selectedNum;
-			}
-		}
-	}
-
-	if (Input::GetButtonDown('S'))
-	{
-		if (inventoryType == InventoryType::MAIN)
-		{
-			if (selectedNum == 0)
-			{
-				inventoryType = InventoryType::ITEMBOX;
-				selectedNum = 0;
-			}
-			else if (selectedNum == 1)
-			{
-				inventoryType = InventoryType::OILSBOX;
-				selectedNum = 0;
-			}
-			else
-			{
-				player->SetInventoryClose(false);
-			}
-		}
-		else if (inventoryType == InventoryType::ITEMBOX)
-		{
-			if (selectedNum == itemMaximum)
-			{
-				inventoryType = InventoryType::MAIN;
-				selectedNum = 0;
-			}
-			else
-			{
-				if (selectedNum < vecItems.size())
+				if (selectedNum < 2)
 				{
-					inventoryType = InventoryType::SELECTITEM;
-					selectItemType = SelectItem::EQUIPMENT;
-					selectedItemNum = selectedNum;
-					selectedNum = 0;
+					++selectedNum;
+				}
+			}
+			else if (inventoryType == InventoryType::ITEMBOX)
+			{
+				if (selectedNum < itemMaximum)
+				{
+					++selectedNum;
+				}
+			}
+			else if (inventoryType == InventoryType::OILSBOX)
+			{
+				if (selectedNum < oilsMaximum)
+				{
+					++selectedNum;
+				}
+			}
+			else if (inventoryType == InventoryType::SELECTITEM)
+			{
+				if (selectedNum < 3)
+				{
+					++selectedNum;
+				}
+			}
+			else if (inventoryType == InventoryType::SELECTOILS)
+			{
+				if (selectedNum < 2)
+				{
+					++selectedNum;
 				}
 			}
 		}
-		else if (inventoryType == InventoryType::OILSBOX)
+		if (Input::GetButtonDown('S'))
 		{
-			if (selectedNum == oilsMaximum)
+			if (inventoryType == InventoryType::MAIN)
 			{
-				inventoryType = InventoryType::MAIN;
-				selectedNum = 0;
-			}
-			else
-			{
-				if (selectedNum < vecOils.size())
+				if (selectedNum == 0)
 				{
-					inventoryType = InventoryType::SELECTITEM;
-					selectItemType = SelectItem::OILS;
-					selectedItemNum = selectedNum;
+					inventoryType = InventoryType::ITEMBOX;
 					selectedNum = 0;
 				}
-			}
-		}
-		else if (inventoryType == InventoryType::SELECTITEM)
-		{
-			if (selectedNum == 2)
-			{
-				if (selectItemType == SelectItem::OILS)
+				else if (selectedNum == 1)
 				{
 					inventoryType = InventoryType::OILSBOX;
+					selectedNum = 0;
 				}
 				else
 				{
-					inventoryType = InventoryType::ITEMBOX;
+					player->SetInventoryClose(false);
+					b_inventoryOpen = false;
 				}
-				selectedNum = 0;
 			}
-			else if (selectedNum == 0)
+			else if (inventoryType == InventoryType::ITEMBOX)
 			{
-				// 현재 아이템 정보 넘겨주기
-				player->EquipItem(vecItemInfos[selectedItemNum].itemType,
-					vecItemInfos[selectedItemNum].itemgrade,
-					vecItemInfos[selectedItemNum].weaponType, true);
+				if (selectedNum == itemMaximum)
+				{
+					inventoryType = InventoryType::MAIN;
+					selectedNum = 0;
+				}
+				else
+				{
+					if (selectedNum < vecItems.size())
+					{
+						inventoryType = InventoryType::SELECTITEM;
+						selectItemType = SelectItem::EQUIPMENT;
+						selectedItemNum = selectedNum;
+						selectedNum = 0;
+					}
+				}
 			}
-			else if (selectedNum == 1)
+			else if (inventoryType == InventoryType::OILSBOX)
 			{
-				// 아이템 드랍
+				if (selectedNum == oilsMaximum)
+				{
+					inventoryType = InventoryType::MAIN;
+					selectedNum = 0;
+				}
+				else
+				{
+					if (selectedNum < vecOils.size())
+					{
+						inventoryType = InventoryType::SELECTOILS;
+						selectItemType = SelectItem::OILS;
+						selectedItemNum = selectedNum;
+						selectedNum = 0;
+					}
+				}
+			}
+			else if (inventoryType == InventoryType::SELECTITEM)
+			{
+				if (selectedNum == 3)
+				{
+					inventoryType = InventoryType::ITEMBOX;
+					selectedNum = 0;
+				}
+				else if (selectedNum == 0 ||
+						selectedNum == 1)
+				{
+					vecItems[selectedItemNum] = nullptr;
+					vecItems.erase(vecItems.begin() + selectedItemNum);
+					// 현재 아이템 정보 넘겨주기
+					player->EquipItem(vecItemInfos[selectedItemNum].itemType,
+						vecItemInfos[selectedItemNum].itemgrade,
+						vecItemInfos[selectedItemNum].weaponType, true, selectedNum);
+					// 이미지 nullptr
+					// 벡터에서 해당 아이템 제거
+					vecItemInfos.erase(vecItemInfos.begin() + selectedItemNum);
+					// 이전 화면으로 
+					inventoryType = InventoryType::ITEMBOX;
+					selectedNum = 0;
+				}
+				else if (selectedNum == 2)
+				{
+					// 아이템 드랍
+				}
+			}
+			else if (inventoryType == InventoryType::SELECTOILS)
+			{
+				if (selectedNum == 2)
+				{
+					inventoryType = InventoryType::OILSBOX;
+					selectedNum = 0;
+				}
+				else if (selectedNum == 0)
+				{
+					// 인챈트
+				}
+				else if (selectedNum == 1)
+				{
+					// 아이템 드랍
+				}
 			}
 		}
+		if (Input::GetButtonDown(VK_ESCAPE))
+		{
+			b_inventoryOpen = false;
+			player->SetInventoryClose(false);
+		}
 	}
-	if (Input::GetButtonDown(VK_ESCAPE))
-	{
-		player->SetInventoryClose(false);
-	}
-
 	PosUpdate();
 
-} 
+}
 
 void Inventory::Render(HDC hdc)
 {
@@ -243,11 +281,27 @@ void Inventory::Render(HDC hdc)
 			vecOils[selectedItemNum]->Render(hdc, (int)itemPos.x, (int)itemPos.y);
 		}
 		selectBox->Render(hdc, selectBoxPos.x, selectBoxPos.y);
+		backHText->Render(hdc, backHTextPos.x, backHTextPos.y);
+		frontHText->Render(hdc, frontHTextPos.x, frontHTextPos.y);
+		dropText->Render(hdc, dropTextPos.x, dropTextPos.y);
+		backText->Render(hdc, backTextPos.x, backTextPos.y);
+	}
+	else if (inventoryType == InventoryType::SELECTOILS)
+	{
+		seletItem->Render(hdc, (int)pos.x, (int)pos.y);
+		if (selectItemType == SelectItem::EQUIPMENT)
+		{
+			vecItems[selectedItemNum]->Render(hdc, (int)itemPos.x, (int)itemPos.y);
+		}
+		else
+		{
+			vecOils[selectedItemNum]->Render(hdc, (int)itemPos.x, (int)itemPos.y);
+		}
+		selectBox->Render(hdc, selectBoxPos.x, selectBoxPos.y);
 		equipText->Render(hdc, equipTextPos.x, equipTextPos.y);
 		dropText->Render(hdc, dropTextPos.x, dropTextPos.y);
 		backText->Render(hdc, backTextPos.x, backTextPos.y);
 	}
-	
 
 
 }
@@ -260,13 +314,13 @@ void Inventory::PosUpdate()
 {
 	if (inventoryType == InventoryType::MAIN)
 	{
-		selectBoxPos.y = (int)this->pos.y - 20 + (35* selectedNum);
+		selectBoxPos.y = (int)this->pos.y - 20 + (35 * selectedNum);
 	}
 	else if (inventoryType == InventoryType::ITEMBOX)
 	{
 		selectBoxPos.y = (int)this->pos.y - 57 + (35 * selectedNum);
 		backTextPos.y = (int)this->pos.y + 82;
-		
+
 	}
 	else if (inventoryType == InventoryType::OILSBOX)
 	{
@@ -275,8 +329,21 @@ void Inventory::PosUpdate()
 	}
 	else if (inventoryType == InventoryType::SELECTITEM)
 	{
+		selectBoxPos.y = (int)this->pos.y - 30 + (30 * selectedNum);
+		backTextPos.y = (int)this->pos.y + 62;
+		dropTextPos.x = pos.x;
+		dropTextPos.y = pos.y + 30;
+		backHTextPos.x = pos.x;
+		backHTextPos.y = pos.y - 30;
+		frontHTextPos.x = pos.x;
+		frontHTextPos.y = pos.y;
+	}
+	else if (inventoryType == InventoryType::SELECTOILS)
+	{
 		selectBoxPos.y = (int)this->pos.y - 20 + (35 * selectedNum);
 		backTextPos.y = (int)this->pos.y + 50;
+		dropTextPos.x = pos.x;
+		dropTextPos.y = pos.y + 18;
 	}
 	itemPos.x = pos.x;
 	itemPos.y = pos.y - 56;
@@ -284,8 +351,7 @@ void Inventory::PosUpdate()
 	oilsPos.y = pos.y - 42;
 	equipTextPos.x = pos.x;
 	equipTextPos.y = pos.y - 20;
-	dropTextPos.x = pos.x;
-	dropTextPos.y = pos.y + 18;
+
 
 }
 
@@ -300,11 +366,11 @@ void Inventory::InventoryOpen(POINTFLOAT pos)
 	oilsTextPos.x = (int)this->pos.x;
 	oilsTextPos.y = (int)this->pos.y + 15;
 
-	closeTextPos.x =(int) this->pos.x;
-	closeTextPos.y =(int) this->pos.y + 50;
+	closeTextPos.x = (int)this->pos.x;
+	closeTextPos.y = (int)this->pos.y + 50;
 
-	selectBoxPos.x =(int) this->pos.x;
-	selectBoxPos.y =(int) this->pos.y - 20;
+	selectBoxPos.x = (int)this->pos.x;
+	selectBoxPos.y = (int)this->pos.y - 20;
 
 	inventoryType = InventoryType::MAIN;
 
@@ -476,7 +542,7 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 			itemName += "골드오일.bmp";
 			tempInfo.itemgrade = ItemGrade::GOLD;
 			tempInfo.itemType = ItemType::OLIS;
-			vecItemInfos.push_back(tempInfo);
+			vecOilsInfos.push_back(tempInfo);
 			break;
 		case ItemGrade::SILVER:
 			break;
@@ -501,6 +567,6 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 		{
 			vecItems.push_back(tempImage);
 		}
-		
+
 	}
 }

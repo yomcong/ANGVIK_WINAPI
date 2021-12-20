@@ -21,7 +21,7 @@ public:
 
 	void ChangeAction(Action action);
 	void ChangeState(State state);
-	void DoAnimation();
+	void PlayAnimation();
 	void PosUpdate();
 	void ToStepOn();
 	void ToBeHit();

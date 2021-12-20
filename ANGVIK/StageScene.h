@@ -35,8 +35,11 @@ private:
 	Image* stageBackgruond = nullptr;
 	Image* stageBackgruond2 = nullptr;
 	Image* stagePixelMap = nullptr;
+	Image* stageHiddenMap = nullptr;
+
 	Image* DBlogo = nullptr;
 
+	bool b_hiddenMapDiscovery = false;
 
 	POINT mapPos = {};
 
@@ -53,7 +56,7 @@ private:
 
 	//디버그용
 	bool debugPixelMap = false;
-
+	bool DBstop = false;
 
 
 };

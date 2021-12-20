@@ -57,14 +57,16 @@ HRESULT Player::Init()
 
 void Player::Update()
 {
-
-	CollisionManager::GetSingleton()->CheckCollision(subTag, shape);
+	/*cout << "팔 프레임 : " << frontArmFrame.x << " \n";
+	cout << "무기 프레임 : "<< frontWeaponFrame.x << "\n";
+	cout << "팔 pos x, y : " << frontArmPos.x << ", "<< frontArmPos.y << "\n";
+	cout << "무기 pos x, y : " << frontWeaponPos.x << ", " << frontWeaponPos.y << "\n";*/
+	//cout << backWeaponFrame.x << "\n";
 
 	// 점프상태가 아닐경우
-	if (false == (state == State::JUMP))
+	if (state != State::JUMP)
 	{
 		// 내리막길(이동+낙하) 일경우 스테이트를 계속 바꿔주면서 애니메이션이 굉장히 부자연스러워짐. 고쳐야함
-		// 테스트용 트랩 충돌체크 최적화 하기
 		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize)
 			&& b_platform == false)
 		{
@@ -83,7 +85,7 @@ void Player::Update()
 		else
 		{
 			// 앉은 자세가 아닐경우에만 기본자세
-			if (false == (state == State::SITDOWN))
+			if (state != State::SITDOWN)
 			{
 				ChangeState(State::IDLE);
 			}
@@ -120,7 +122,7 @@ void Player::Update()
 	}
 
 	// 애니메이션프레임 
-	DoAnimation();
+	PlayAnimation();
 	// 포스값 업데이트
 	PosUpdate();
 
@@ -129,8 +131,8 @@ void Player::Update()
 	// 인벤토리를 열었을땐 행동 x
 	if (b_inventoryOpen == false)
 	{
-		//플레이어 이동 
-		if (false == (state == State::SITDOWN))
+		// 앉아있지 않을 때 플레이어 이동 
+		if (state != State::SITDOWN)
 		{
 			if (Input::GetButton(VK_LEFT))
 			{
@@ -172,7 +174,7 @@ void Player::Update()
 				ChangeAction(Action::RIGHTMOVE);
 				dir = direction::RIGHT;
 			}
-			if (Input::GetButton(VK_UP))
+			if (Input::GetButtonDown('S'))
 			{
 				// 점프중이거나 낙하상태가 아닐 경우
 				if (false == (state == State::JUMP) &&
@@ -195,12 +197,13 @@ void Player::Update()
 			}
 
 			if (Input::GetButtonDown(VK_SPACE) &&
-				false == (state == State::Fall) &&
-				false == (state == State::JUMP) &&
-				false == (state == State::SITDOWN))
+				state != State::Fall &&
+				state != State::JUMP &&
+				state != State::SITDOWN)
 			{
 				b_inventoryOpen = true;
-				playerInventory->InventoryOpen(pos);
+				playerInventory->SetInventoryOpen(true);
+				playerInventory->InventoryOpen(renderPos);
 			}
 		}
 		else
@@ -211,16 +214,8 @@ void Player::Update()
 				ChangeState(State::IDLE);
 			}
 		}
-
-		
 	}
-	else
-	{
-
-	}
-
-	
-
+	//공격
 	if (frontAttack == false && backAttack == false)
 	{
 		if (Input::GetButtonDown('A'))
@@ -238,10 +233,10 @@ void Player::Update()
 	// 액션중이 아닐때 기본자세 이후에 좀더 디테일 수정
 	if (!Input::GetButton(VK_LEFT) &&
 		!Input::GetButton(VK_RIGHT) &&
-		false == (state == State::SITDOWN) &&
-		false == (state == State::Fall) &&
-		false == (state == State::JUMP) &&
-		false == (state == State::ATTACK))
+		state != State::SITDOWN &&
+		state != State::Fall &&
+		state != State::JUMP &&
+		state != State::ATTACK)
 	{
 		action = Action::IDLE;
 
@@ -256,6 +251,7 @@ void Player::Update()
 	}
 
 	playerInventory->Update();
+	CollisionManager::GetSingleton()->CheckCollision(subTag, shape);
 
 	//디버그용 인체실험
 #ifdef _DEBUG
@@ -304,7 +300,9 @@ void Player::Update()
 			// 디버그용 캐릭터 랙트표시
 	if (Input::GetButtonDown(VK_NUMPAD9))
 	{
+		//DBrect = !DBrect;
 		DBrect == false ? DBrect = true : DBrect = false;
+		cout << CameraManager::GetSingleton()->GetPos().x << ", " << CameraManager::GetSingleton()->GetPos().y << "\n";
 	}
 
 }
@@ -489,10 +487,30 @@ void Player::ChangeAction(Action action)
 
 		if (action == Action::FRONTATTACK)
 		{
-			frontAttack = true;
-			frontAttackArmFrame.x = 9;
-			frontAttackArmFrame.y = 2;
-			attackCount = 0.0f;
+			if (b_equipFrontWeapon)
+			{
+				frontAttack = true;
+				attackCount = 0.0f;
+				if (frontWeaponType == WeaponType::SWORD)
+				{
+
+				}
+				else if(frontWeaponType == WeaponType::LANCE)
+				{
+
+				}
+				else if (frontWeaponType == WeaponType::BOOMERANG)
+				{
+
+				}
+			}
+			else
+			{
+				frontAttack = true;
+				frontAttackArmFrame.x = 9;
+				frontAttackArmFrame.y = 2;
+				attackCount = 0.0f;
+			}
 		}
 		if (action == Action::BACKATTACK)
 		{
@@ -519,8 +537,8 @@ void Player::ChangeState(State state)
 		{
 			b_frontArmMove = true;
 			b_backArmMove = true;
-			frontArmFrame.x = 9;
-			backArmFrame.x = 11;
+			frontArmFrame.x = 8;
+			backArmFrame.x = 10;
 			bodyFrame.y = 1;
 			frontArmFrame.y = 0;
 			backArmFrame.y = 0;
@@ -547,7 +565,22 @@ void Player::ChangeState(State state)
 		}
 		else if (state == State::HIT)
 		{
-
+			if (b_equipArmor)
+			{
+				b_equipArmor = false;
+			}
+			else if (b_equipHelmet)
+			{
+				b_equipHelmet = false;
+			}
+			else if (b_equipShoes)
+			{
+				b_equipShoes = false;
+			}
+			else
+			{
+				// 죽음
+			}
 		}
 		else if (state == State::SITDOWN)
 		{
@@ -580,7 +613,7 @@ void Player::ChangeState(State state)
 }
 
 
-void Player::DoAnimation()
+void Player::PlayAnimation()
 {
 	frameCount += TimerManager::GetSingleton()->GetDeltaTime();
 
@@ -604,12 +637,10 @@ void Player::DoAnimation()
 					{
 						++frontArmFrame.x;
 					}
-					frontWeaponFrame.x = 3;
-					backWeaponFrame.x = 1;
 				}
 				else
 				{
-					if (frontArmFrame.x == 9)
+					if (frontArmFrame.x == 8)
 					{
 						++frontArmFrame.x;
 						b_frontArmMove = true;
@@ -635,7 +666,7 @@ void Player::DoAnimation()
 				}
 				else
 				{
-					if (backArmFrame.x == 11)
+					if (backArmFrame.x == 10)
 					{
 						++backArmFrame.x;
 						b_backArmMove = true;
@@ -740,6 +771,33 @@ void Player::DoAnimation()
 			attackCount = 0.0f;
 		}
 	}
+	else
+	{
+		if(frontArmFrame.x >4 &&
+			frontArmFrame.x <8)
+		{
+			frontWeaponFrame.x = 6;
+		}
+		else if (frontArmFrame.x > 7 &&
+			frontArmFrame.x < 10)
+		{
+			frontWeaponFrame.x = 5;
+		}
+		else if (frontArmFrame.x > 9 &&
+			frontArmFrame.x < 12)
+		{
+			frontWeaponFrame.x = 4;
+		}
+		else if (frontArmFrame.x > 11 &&
+			frontArmFrame.x < 13)
+		{
+			frontWeaponFrame.x = 3;
+		}
+		else
+		{
+			frontWeaponFrame.x = 2;
+		}
+	}
 	
 	if (backAttack)
 	{
@@ -788,25 +846,25 @@ void Player::DoAnimation()
 	case WeaponType::SWORD:
 		if (dir == direction::RIGHT)
 		{
-			backWeaponPos.x = (int)renderPos.x + 25;
-			backWeaponPos.y = (int)renderPos.y - 2;
+			backWeaponPos.x = (int)renderPos.x + 21;
+			backWeaponPos.y = (int)renderPos.y - 12;
 		}
 		else
 		{
-			backWeaponPos.x = (int)renderPos.x - 20;
-			backWeaponPos.y = (int)renderPos.y - 2;
+			backWeaponPos.x = (int)renderPos.x - 24;
+			backWeaponPos.y = (int)renderPos.y - 12;
 		}
 		break;
 	case WeaponType::BOOMERANG:
 		if (dir == direction::RIGHT)
 		{
-			backWeaponPos.x = (int)renderPos.x + 17;
-			backWeaponPos.y = (int)renderPos.y - 11;
+			backWeaponPos.x = (int)renderPos.x + 18;
+			backWeaponPos.y = (int)renderPos.y - 6;
 		}
 		else
 		{
-			backWeaponPos.x = (int)renderPos.x - 21;
-			backWeaponPos.y = (int)renderPos.y - 11;
+			backWeaponPos.x = (int)renderPos.x - 20;
+			backWeaponPos.y = (int)renderPos.y - 6;
 		}
 		break;
 	case WeaponType::LANCE:
@@ -832,36 +890,36 @@ void Player::DoAnimation()
 	case WeaponType::SWORD:
 		if (dir == direction::RIGHT)
 		{
-			frontWeaponPos.x = (int)renderPos.x + 15;
-			frontWeaponPos.y = (int)renderPos.y - 5;
+			frontWeaponPos.x = (int)renderPos.x + 18;
+			frontWeaponPos.y = (int)renderPos.y - 20 + (frontWeaponFrame.x * 5);
 		}
 		else
 		{
 			frontWeaponPos.x = (int)renderPos.x - 18;
-			frontWeaponPos.y = (int)renderPos.y - 8;
+			frontWeaponPos.y = (int)renderPos.y;
 		}
 		break;
 	case WeaponType::BOOMERANG:
 		if (dir == direction::RIGHT)
 		{
-			frontWeaponPos.x = (int)renderPos.x + 2;
-			frontWeaponPos.y = (int)renderPos.y + 2;
+			frontWeaponPos.x = (int)renderPos.x + 4;
+			frontWeaponPos.y = (int)renderPos.y + 7;
 		}
 		else
 		{
-			frontWeaponPos.x = (int)renderPos.x - 20;
-			frontWeaponPos.y = (int)renderPos.y + 2;
+			frontWeaponPos.x = (int)renderPos.x - 13;
+			frontWeaponPos.y = (int)renderPos.y + 7;
 		}
 		break;
 	case WeaponType::LANCE:
 		if (dir == direction::RIGHT)
 		{
-			frontWeaponPos.x = (int)renderPos.x + 2;
-			frontWeaponPos.y = (int)renderPos.y + 2;
+			frontWeaponPos.x = (int)renderPos.x + 7;
+			frontWeaponPos.y = (int)renderPos.y + 1;
 		}
 		else
 		{
-			frontWeaponPos.x = (int)renderPos.x - 20;
+			frontWeaponPos.x = (int)renderPos.x - 18;
 			frontWeaponPos.y = (int)renderPos.y + 2;
 		}
 		break;
@@ -1192,7 +1250,7 @@ bool Player::EquipItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapon
 			}
 
 			// back 손이 비어있으면 먼저 장착 
-			if (b_equipBackWeapon == false || dir == 0)
+			if ( (b_equipBackWeapon == false || changeItem ) && dir == 0)
 			{
 				if (b_equipBackWeapon)
 				{
@@ -1201,6 +1259,7 @@ bool Player::EquipItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapon
 				b_equipBackWeapon = true;
 				backWeaponGrade = itemGrade;
 				backWeaponType = weaponType;
+				backWeaponFrame.x = 1;
 				backWeapon = ImageManager::GetSingleton()->FindImage(tempitemName.c_str());
 				if (backWeapon == nullptr)
 				{
@@ -1222,6 +1281,8 @@ bool Player::EquipItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapon
 				b_equipFrontWeapon = true;
 				frontWeaponGrade = itemGrade;
 				frontWeaponType = weaponType;
+				frontWeaponFrame.x = 3;
+
 				frontWeapon = ImageManager::GetSingleton()->FindImage(tempitemName.c_str());
 				if (frontWeapon == nullptr)
 				{

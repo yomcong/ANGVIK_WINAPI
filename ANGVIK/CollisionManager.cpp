@@ -6,7 +6,6 @@
 
 HRESULT CollisionManager::Init()
 {
-
 	return S_OK;
 }
 
@@ -15,12 +14,12 @@ void CollisionManager::AddPlayer(Player* player)
 	this->player = player;
 }
 
-void CollisionManager::AddMonster(MonsterManager* monsterManager)
+void CollisionManager::AddMonsterManager(MonsterManager* monsterManager)
 {
 	this->monsterManager = monsterManager;
 }
 
-void CollisionManager::AddTrap(TrapManager* trapManager)
+void CollisionManager::AddTrapManager(TrapManager* trapManager)
 {
 	this->trapManager = trapManager;
 }
@@ -59,7 +58,6 @@ bool CollisionManager::CheckCollision(SubjectTag subject, RECT shape, EventTag e
 			{
 				player->ToBeHit();
 			}
-
 		}
 		if (trapManager->CheckCollision(shape, b_temp))
 		{
