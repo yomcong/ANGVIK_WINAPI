@@ -17,9 +17,16 @@ enum class direction { LEFT = -1, RIGHT = 1};
 
 enum class MonsterType {KONG, MONKEY, ENT};
 
-enum class ItemType {IDLE, HELMET, ARMOR, WEAPON, SHOES};
+enum class ItemType {IDLE, HELMET, ARMOR, WEAPON, SHOES, OLIS};
 enum class WeaponType {IDLE, SWORD, BOOMERANG, LANCE, STAFF};
 enum class ItemGrade {IDLE, BASIC, GOLD, SILVER};
+
+struct ItemInfo
+{
+	ItemType itemType = ItemType::IDLE;
+	ItemGrade itemgrade= ItemGrade::IDLE;
+	WeaponType weaponType = WeaponType::IDLE;
+};
 
 // 창 시작위치
 #define WIN_START_POS_X	200
@@ -167,6 +174,12 @@ enemyManager 는 그 함수가 호출됬을때
 
 플랫폼 잇는 위치에 나무픽셀이 남아잇어서 플랫폼이 사라져도 올라가잇을수 잇음 < 픽셀을 지워주던지 해야함
 
+아이템 장비교체
+백핸드,프론트핸드 텍스트 추가해야함
+함수는 dir로 관리 0= back, 1= front
 
+아이템별 애니메이션 해줘야함
+
+기본 장착은 칼, 창 만 구현되있음
 
 */

@@ -17,7 +17,7 @@ void ImageManager::Init()
 	AddImage("image/etc/메뉴바.bmp", 960, 36);								//타이틀 메뉴 바
 	AddImage("image/etc/start.bmp", 64, 14, true, RGB(0, 0, 0));		//타이틀 메뉴 start text
 	AddImage("image/etc/options.bmp", 79, 18, true, RGB(0, 0, 0));	//타이틀 메뉴 option text
-	AddImage("image/etc/exit.bmp", 47, 14, true, RGB(255, 255, 255));		//타이틀 메뉴 exit text
+	AddImage("image/etc/exit.bmp", 47, 14, true, RGB(0, 0, 0));		//타이틀 메뉴 exit text
 	//AddImage("image/etc/선택.bmp", 1363, 34, 8, 1, true, RGB(255, 255, 255));//	선택창 에니매이션
 	AddImage("image/etc/선택2.bmp", 1384, 34, 8, 1, true, RGB(0, 0, 0));// 선택창 에니매이션
 	AddImage("image/etc/로고.bmp", 330, 78, true, RGB(255, 255, 255));//타이틀 메뉴 ANGVIK 로고
@@ -59,21 +59,35 @@ void ImageManager::Init()
 	AddImage("image/item/R_골드부메랑_SP.bmp", 1296, 54, 24, 1, true, RGB(255, 255, 255));	// 황금 부메랑 스프라이트
 
 	// 인벤토리
+	AddImage("image/etc/inventory.bmp", 132, 161);	// 인벤토리 ui
+	AddImage("image/etc/itemBox.bmp", 131, 245);	// 아이템 박스
+	AddImage("image/etc/oilsBox.bmp", 131, 206);	// 오일 박스
+	AddImage("image/etc/select.bmp", 60, 35);	// 셀렉티드 박스
+	AddImage("image/etc/SELET.bmp", 132, 161);	// 셀렉 아이템
+	AddImage("image/etc/item.bmp", 46, 14, true, RGB(0, 0, 0));	// 인벤토리 text
+	AddImage("image/etc/close.bmp", 58, 15, true, RGB(0, 0, 0));	// 아이템 text
+	AddImage("image/etc/oils.bmp", 45, 15, true, RGB(0, 0, 0));	// 오일 text
+	AddImage("image/etc/back.bmp", 50, 15, true, RGB(0, 0, 0));	// BACK text
+	AddImage("image/etc/equip.bmp", 58, 19, true, RGB(0, 0, 0));	// equip text
+	AddImage("image/etc/drop.bmp", 45, 18, true, RGB(0, 0, 0));	// drop text
+	
 
 	// 아이템 
 	AddImage("image/item/황투.bmp", 28, 15, true, RGB(255, 255, 255));	// 황금 갑옷
 	AddImage("image/item/황갑.bmp", 24, 28, true, RGB(255, 255, 255));	// 황금 갑옷
 	AddImage("image/item/황신.bmp", 10, 11, true, RGB(255, 255, 255));	// 황금 갑옷
-	
+
 	AddImage("image/item/골드칼.bmp", 88, 20, true, RGB(255, 255, 255));	// 황금 갑옷
 	AddImage("image/item/골드랜스.bmp", 96, 18, true, RGB(255, 255, 255));	// 황금 창 
 	AddImage("image/item/골드부메랑.bmp", 34, 24, true, RGB(255, 255, 255));	// 황금 부메랑
 
-	
+	AddImage("image/item/골드오일.bmp", 15, 22, true, RGB(255, 255, 255));	// 황금 부메랑
+
+
 	// 몬스터
 	// 데스 이펙트
 	AddImage("image/effect.bmp", 600, 100, 6, 1, true, RGB(255, 255, 255));	// 데스 이펙트
-	
+
 	// --콩--
 	AddImage("image/monster/kong_atk_8f.bmp", 272, 40, 8, 1, true, RGB(255, 255, 255));	// 공격모션 
 	AddImage("image/monster/kong_idle_6f.bmp", 192, 54, 6, 1, true, RGB(255, 255, 255));// 기본자세

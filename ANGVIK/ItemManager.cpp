@@ -13,25 +13,28 @@ HRESULT ItemManager::Init()
 	itemFactory[4] = new GrenadeItemFactory;
 	itemFactory[5] = new TankLifeItemFactory;*/
 
-	
-	
-	Titem[0] = new TestItem;
-	Titem[1] = new TestItem;
-	Titem[2] = new TestItem;
-	Titem[3] = new TestItem;
-	Titem[4] = new TestItem;
+	// µð¹ö±ëÁß 
+	for (int i = 0; i < 11; ++i)
+	{
+		Titem[i] = new TestItem;
+	}
 
 	Titem[0]->Init({ 340, 350 }, ItemType::ARMOR, ItemGrade::GOLD);
 	Titem[1]->Init({ 350, 350 }, ItemType::SHOES, ItemGrade::GOLD);
 	Titem[2]->Init({ 400, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::LANCE);
 	Titem[3]->Init({ 450, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::SWORD);
 	Titem[4]->Init({ 500, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::BOOMERANG);
+	Titem[5]->Init({ 520, 350 }, ItemType::OLIS, ItemGrade::GOLD, WeaponType::IDLE);
+	Titem[6]->Init({ 540, 350 }, ItemType::OLIS, ItemGrade::GOLD, WeaponType::IDLE);
+	Titem[7]->Init({ 560, 350 }, ItemType::OLIS, ItemGrade::GOLD, WeaponType::IDLE);
+	Titem[8]->Init({ 580, 350 }, ItemType::ARMOR, ItemGrade::GOLD);
+	Titem[9]->Init({ 600, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::LANCE);
+	Titem[10]->Init({ 620, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::SWORD);
 
-	vecItems.push_back(Titem[0]);
-	vecItems.push_back(Titem[1]);
-	vecItems.push_back(Titem[2]);
-	vecItems.push_back(Titem[3]);
-	vecItems.push_back(Titem[4]);
+	for (int i = 0; i < 11; ++i)
+	{
+		vecItems.push_back(Titem[i]);
+	}
 
     return S_OK;
 }

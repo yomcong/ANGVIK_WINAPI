@@ -163,8 +163,7 @@ void TitleScene::Render(HDC hdc)
 	angvikLogo->Render(hdc, (int)logoPos.x, (int)logoPos.y);
 	startText->Render(hdc, (int)startTextPos.x, (int)startTextPos.y);							// 스타트 text
 	optionText->Render(hdc, (int)optionTextPos.x, (int)optionTextPos.y);						// 옵션 text
-	exitText->Render(hdc, (int)exitTextPos.x, (int)exitTextPos.y);								// 엑시트 text
-
+	exitText->Render(hdc, (int)exitTextPos.x, (int)exitTextPos.y);
 }
 
 void TitleScene::Release()

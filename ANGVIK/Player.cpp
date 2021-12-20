@@ -2,6 +2,7 @@
 #include "Image.h"
 #include "TrapManager.h"
 #include "MonsterManager.h"
+#include "Inventory.h"
 
 // 캐릭터 이동
 // 팔 자연스럽게 해주기
@@ -48,11 +49,15 @@ HRESULT Player::Init()
 	shape.right = (int)pos.x + (bodySize.x / 2);
 	shape.bottom = (int)pos.y + (bodySize.y / 2);
 
+	playerInventory = new Inventory;
+	playerInventory->Init(this);
+
 	return S_OK;
 }
 
 void Player::Update()
 {
+
 	CollisionManager::GetSingleton()->CheckCollision(subTag, shape);
 
 	// 점프상태가 아닐경우
@@ -119,80 +124,102 @@ void Player::Update()
 	// 포스값 업데이트
 	PosUpdate();
 
-	//플레이어 이동 
-	if (false == (state == State::SITDOWN))
+	
+	
+	// 인벤토리를 열었을땐 행동 x
+	if (b_inventoryOpen == false)
 	{
-		if (Input::GetButton(VK_LEFT))
+		//플레이어 이동 
+		if (false == (state == State::SITDOWN))
 		{
-			// 카메라 예외조건
-			if (CameraManager::GetSingleton()->GetPos().x <= 0)
+			if (Input::GetButton(VK_LEFT))
 			{
-				renderPos.x += MapColliderManager::GetSingleton()->
-					Move(pos, shape, moveSpeed, -1, bodySize).x;
-				renderPos.y += MapColliderManager::GetSingleton()->
-					Move(pos, shape, moveSpeed, -1, bodySize).y;
+				// 카메라 예외조건
+				if (CameraManager::GetSingleton()->GetPos().x <= 0)
+				{
+					renderPos.x += MapColliderManager::GetSingleton()->
+						Move(pos, shape, moveSpeed, -1, bodySize).x;
+					renderPos.y += MapColliderManager::GetSingleton()->
+						Move(pos, shape, moveSpeed, -1, bodySize).y;
+				}
+				else
+				{
+					POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
+						Move(pos, shape, moveSpeed, -1, bodySize);
+					CameraManager::GetSingleton()->SetPosX(tempPos.x);
+					renderPos.y += tempPos.y;
+				}
+				// 상태 변경
+				ChangeAction(Action::LEFTMOVE);
+				dir = direction::LEFT;
 			}
-			else
+			if (Input::GetButton(VK_RIGHT))
 			{
-				POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
-					Move(pos, shape, moveSpeed, -1, bodySize);
-				CameraManager::GetSingleton()->SetPosX(tempPos.x);
-				renderPos.y += tempPos.y;
-			}
-			// 상태 변경
-			ChangeAction(Action::LEFTMOVE);
-			dir = direction::LEFT;
-		}
-		if (Input::GetButton(VK_RIGHT))
-		{
-			// 오른쪽 끝 예외처리 해야함
-			if (renderPos.x < StartPointX)
-			{
-				renderPos.x += 3.0f;
-			}
-			else
-			{
-				POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
-					Move(pos, shape, moveSpeed, 1, bodySize);
+				// 오른쪽 끝 예외처리 해야함
+				if (renderPos.x < StartPointX)
+				{
+					renderPos.x += 3.0f;
+				}
+				else
+				{
+					POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
+						Move(pos, shape, moveSpeed, 1, bodySize);
 
-				CameraManager::GetSingleton()->SetPosX(tempPos.x);
-				renderPos.y += tempPos.y;
+					CameraManager::GetSingleton()->SetPosX(tempPos.x);
+					renderPos.y += tempPos.y;
+				}
+				// 상태 변경
+				ChangeAction(Action::RIGHTMOVE);
+				dir = direction::RIGHT;
+			}
+			if (Input::GetButton(VK_UP))
+			{
+				// 점프중이거나 낙하상태가 아닐 경우
+				if (false == (state == State::JUMP) &&
+					false == (state == State::Fall))
+				{
+					ChangeState(State::JUMP);
+					jumpPower = JumpPower;
+				}
+			}
+			// 시점 부드럽게 + 캐릭터 랜더 좀더 수정
+			if (Input::GetButton(VK_DOWN))
+			{
+				// 점프중이거나 낙하상태가 아닐경우
+				if (false == (state == State::JUMP) &&
+					false == (state == State::Fall))
+				{
+					CollisionManager::GetSingleton()->CheckItem(shape);
+					ChangeState(State::SITDOWN);
+				}
 			}
 
-			// 상태 변경
-			ChangeAction(Action::RIGHTMOVE);
-			dir = direction::RIGHT;
-		}
-		if (Input::GetButton(VK_UP))
-		{
-			// 점프중이거나 낙하상태가 아닐 경우
-			if (false == (state == State::JUMP) &&
-				false == (state == State::Fall))
+			if (Input::GetButtonDown(VK_SPACE) &&
+				false == (state == State::Fall) &&
+				false == (state == State::JUMP) &&
+				false == (state == State::SITDOWN))
 			{
-				ChangeState(State::JUMP);
-				jumpPower = JumpPower;
+				b_inventoryOpen = true;
+				playerInventory->InventoryOpen(pos);
 			}
 		}
+		else
+		{
+			// 앉은키를 계속 누르고 잇는지 확인
+			if (!Input::GetButton(VK_DOWN))
+			{
+				ChangeState(State::IDLE);
+			}
+		}
+
+		
 	}
 	else
 	{
-		if (!Input::GetButton(VK_DOWN))
-		{
-			CollisionManager::GetSingleton()->CheckItem(shape);
-			ChangeState(State::IDLE);
-		}
+
 	}
 
-	// 시점 부드럽게 + 캐릭터 랜더 좀더 수정
-	if (Input::GetButton(VK_DOWN))
-	{
-		// 점프중이거나 낙하상태가 아닐경우
-		if (false == (state == State::JUMP) &&
-			false == (state == State::Fall))
-		{
-			ChangeState(State::SITDOWN);
-		}
-	}
+	
 
 	if (frontAttack == false && backAttack == false)
 	{
@@ -228,6 +255,7 @@ void Player::Update()
 		bodyFrame.x = 0;
 	}
 
+	playerInventory->Update();
 
 	//디버그용 인체실험
 #ifdef _DEBUG
@@ -396,6 +424,13 @@ void Player::Render(HDC hdc)
 
 			}
 		}
+
+		
+	}
+
+	if (b_inventoryOpen)
+	{
+		playerInventory->Render(hdc);
 	}
 
 	//--디버그--
@@ -425,7 +460,7 @@ void Player::Render(HDC hdc)
 
 void Player::Release()
 {
-
+	SAFE_RELEASE(playerInventory);
 }
 
 void Player::ChangeAction(Action action)
@@ -1022,7 +1057,7 @@ bool Player::FindImage()
 	return true;
 }
 
-bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType)
+bool Player::EquipItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType, bool changeItem ,int dir)
 {
 	string tempitemName = "image/player/";
 	string tempR_itemName = "image/player/";
@@ -1032,8 +1067,12 @@ bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponTy
 	case ItemType::IDLE:
 		break;
 	case ItemType::HELMET:
-		if (b_equipHelmet == false)
+		if (b_equipHelmet == false || changeItem)
 		{
+			if (b_equipHelmet)
+			{
+				playerInventory->GetItem(ItemType::HELMET, this->helmetGrade);
+			}
 			b_equipHelmet = true;
 			helmetGrade = itemGrade;
 			switch (itemGrade)
@@ -1057,12 +1096,16 @@ bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponTy
 		}
 		else
 		{
-			//인벤
+			playerInventory->GetItem(itemType, itemGrade, weaponType);
 		}
 		break;
 	case ItemType::ARMOR:
-		if (b_equipArmor == false)
+		if (b_equipArmor == false || changeItem)
 		{
+			if (b_equipArmor)
+			{
+				playerInventory->GetItem(ItemType::ARMOR, this->armorGrade);
+			}
 			b_equipArmor = true;
 			armorGrade = itemGrade;
 			switch (itemGrade)
@@ -1092,21 +1135,19 @@ bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponTy
 		}
 		else
 		{
-			//인벤
+			playerInventory->GetItem(itemType, itemGrade, weaponType);
 		}
-
 		break;
 	case ItemType::WEAPON:
 		tempitemName = "image/item/";
 		tempR_itemName = "image/item/";
 		// 두 손에 아이템이 있을경우
-		if (b_equipBackWeapon && b_equipFrontWeapon)
+		if (b_equipBackWeapon && b_equipFrontWeapon && (changeItem==false))
 		{
-			//인벤토리로
+			playerInventory->GetItem(itemType, itemGrade, weaponType);
 		}
 		else
 		{
-
 			switch (weaponType)
 			{
 			case WeaponType::SWORD:
@@ -1151,8 +1192,12 @@ bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponTy
 			}
 
 			// back 손이 비어있으면 먼저 장착 
-			if (b_equipBackWeapon == false)
+			if (b_equipBackWeapon == false || dir == 0)
 			{
+				if (b_equipBackWeapon)
+				{
+					playerInventory->GetItem(ItemType::WEAPON, backWeaponGrade, backWeaponType);
+				}
 				b_equipBackWeapon = true;
 				backWeaponGrade = itemGrade;
 				backWeaponType = weaponType;
@@ -1170,6 +1215,10 @@ bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponTy
 			}
 			else
 			{
+				if (b_equipFrontWeapon)
+				{
+					playerInventory->GetItem(ItemType::WEAPON, frontWeaponGrade, frontWeaponType);
+				}
 				b_equipFrontWeapon = true;
 				frontWeaponGrade = itemGrade;
 				frontWeaponType = weaponType;
@@ -1189,8 +1238,12 @@ bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponTy
 		}
 		break;
 	case ItemType::SHOES:
-		if (b_equipShoes == false)
+		if (b_equipShoes == false || changeItem)
 		{
+			if (b_equipShoes)
+			{
+				playerInventory->GetItem(ItemType::SHOES, this->shoesGrade);
+			}
 			b_equipShoes = true;
 			shoesGrade = itemGrade;
 			switch (itemGrade)
@@ -1221,9 +1274,12 @@ bool Player::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponTy
 		}
 		else
 		{
-			//인벤
+			playerInventory->GetItem(itemType, itemGrade, weaponType);
 		}
 
+		break;
+	case ItemType::OLIS:
+		playerInventory->GetItem(itemType, itemGrade, weaponType);
 		break;
 	}
 	return false;

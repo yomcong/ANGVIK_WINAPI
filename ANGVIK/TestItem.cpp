@@ -128,6 +128,24 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 			break;
 		}
 		break;
+	case ItemType::OLIS:
+		switch (itemGrade)
+		{
+		case ItemGrade::IDLE:
+			break;
+		case ItemGrade::BASIC:
+			break;
+		case ItemGrade::GOLD:
+			itemName += "°ñµå¿ÀÀÏ.bmp";
+			bodySize.x = 5;
+			bodySize.y = 5;
+			break;
+		case ItemGrade::SILVER:
+			break;
+		default:
+			break;
+		}
+		break;
 	}
 
 	itemImage = ImageManager::GetSingleton()->FindImage(itemName.c_str());

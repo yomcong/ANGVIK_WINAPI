@@ -7,6 +7,7 @@ enum class Action { IDLE, LEFTMOVE, RIGHTMOVE, BACKATTACK, FRONTATTACK};
 
 //class PixelCollider;
 class Imgae;
+class Inventory;
 class Player : public GameObject
 {
 public:
@@ -26,11 +27,11 @@ public:
 	void ToBeHit();
 	bool CheckCollision(SubjectTag subject, RECT shape);
 	bool FindImage();
-	bool GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType);
+	bool EquipItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType, bool ChangeItem = false, int dir = 0);
 	//bool ChangeItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType, Image* equip = nullptr);
 
 	inline bool SetIsPlatform(bool b_platform) { return this->b_platform = b_platform; }
-
+	inline bool SetInventoryClose(bool b_inventoryOpen) { return this->b_inventoryOpen = b_inventoryOpen; }
 
 private:
 	Image* backArm = nullptr;	// 왼팔
@@ -115,8 +116,9 @@ private:
 	bool b_invisible = false;
 	bool b_platform = false;
 
-
-
+	// 인벤토리
+	bool b_inventoryOpen = false;
+	Inventory* playerInventory = nullptr;
 
 	// 캐릭터 상태관리
 	Action action = Action::IDLE;
