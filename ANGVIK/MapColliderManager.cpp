@@ -2,7 +2,7 @@
 #include "Image.h"
 
 HRESULT MapColliderManager::Init()
-{
+{												
 	pixelMap = ImageManager::GetSingleton()->FindImage("image/Stage/Stage1-test.bmp");
 	if (pixelMap == nullptr)
 	{
@@ -24,10 +24,10 @@ bool MapColliderManager::IsFalling(POINTFLOAT pos, RECT shape, float moveSpeed, 
 	//float tempPosY = y + moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 
 
-	for (int i = 0; i < (bodySize.x / 2) ; i++)
+	for (int i = (int)(bodySize.x * 0.2); i <= (int)(bodySize.x * 0.7); i++)
 	{
 		color = GetPixel(pixelMap->GetMemDC(),
-			shape.left + i + bodySize.x / 4, shape.bottom + 1)/*+ (int)pixelPos.y)*/;
+			shape.left + i, shape.bottom + 1);
 
 		r = GetRValue(color);
 		g = GetGValue(color);
@@ -49,7 +49,7 @@ POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed,
 {
 	float height = 0.0f;
 
-	for (int i = 1; i < bodySize.y; ++i)
+	for (int i = 0; i <= bodySize.y; ++i)
 	{
 		// laft = -1,0  right = +1
 		if (dir > 0)
@@ -94,10 +94,10 @@ POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed,
 
 bool MapColliderManager::Jump(POINTFLOAT pos, RECT shape, float moveSpeed,  POINT bodySize)
 {
-	for (int i = 0; i < bodySize.x/2; i++)
+	for (int i = 0; i <= (int)(bodySize.x*2); i++)
 	{
 		color = GetPixel(pixelMap->GetMemDC(),
-			shape.left + i + bodySize.x/4 , shape.top - 3);
+			shape.left + i, shape.top - 1);
 
 		r = GetRValue(color);
 		g = GetGValue(color);
@@ -108,8 +108,6 @@ bool MapColliderManager::Jump(POINTFLOAT pos, RECT shape, float moveSpeed,  POIN
 		{
 			return false;
 		}
-		//cout << (y + (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime())) << "\n";
-		//cout << pos.y << "\n";
 	}
 
 	return true;

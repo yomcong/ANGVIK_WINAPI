@@ -223,11 +223,14 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					if (vecKongs[i]->GetSubject() == subject)
 					{
 						kongWindow[i] = true;
-						cout << i << " 몽키 인 " << "\n";
+						//cout << i << " 몽키 인 " << "\n";
 						break;
 					}
 					if (i == vecKongs.size() - 1)
-						cout << "콩를 못찾았다." << "\n";
+					{
+
+					}
+						//cout << "콩를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::OUTWINDOW:
@@ -236,11 +239,14 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					if (vecKongs[i]->GetSubject() == subject)
 					{
 						kongWindow[i] = false;
-						cout << i << " 몽키 아웃 " << "\n";
+						//cout << i << " 몽키 아웃 " << "\n";
 						break;
 					}
 					if (i == vecKongs.size() - 1)
-						cout << "콩를 못찾았다." << "\n";
+					{
+
+					}
+						//cout << "콩를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::RELEASE:
@@ -256,11 +262,14 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					if (vecMonkeys[i]->GetSubject() == subject)
 					{
 						monkeyWindow[i] = true;
-						cout << i << " 몽키 인 " << "\n";
+						//cout << i << " 몽키 인 " << "\n";
 						break;
 					}
 					if (i == vecMonkeys.size() - 1)
-						cout << "몽키를 못찾았다." << "\n";
+					{
+
+					}
+						//cout << "몽키를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::OUTWINDOW:
@@ -269,11 +278,14 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					if (vecMonkeys[i]->GetSubject() == subject)
 					{
 						monkeyWindow[i] = false;
-						cout << i << " 몽키 아웃 " << "\n";
+						//cout << i << " 몽키 아웃 " << "\n";
 						break;
 					}
 					if (i == vecMonkeys.size() - 1)
-						cout << "몽키를 못찾았다." << "\n";
+					{
+
+					}
+						//cout << "몽키를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::RELEASE:
@@ -289,11 +301,14 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					if (vecEnts[i]->GetSubject() == subject)
 					{
 						entWindow[i] = true;
-						cout << i << " 나무 인 " << "\n";
+						//cout << i << " 나무 인 " << "\n";
 						break;
 					}
 					if (i == vecEnts.size() - 1)
-						cout << "나무를 못찾았다." << "\n";
+					{
+
+					}
+						//cout << "나무를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::OUTWINDOW:
@@ -302,11 +317,14 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					if (vecEnts[i]->GetSubject() == subject)
 					{
 						entWindow[i] = false;
-						cout <<i << " 나무 아웃 " << "\n";
+						//cout <<i << " 나무 아웃 " << "\n";
 						break;
 					}
 					if (i == vecEnts.size() - 1)
-						cout << "나무를 못찾았다." << "\n";
+					{
+
+					}
+						//cout << "나무를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::RELEASE:

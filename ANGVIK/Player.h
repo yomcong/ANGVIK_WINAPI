@@ -121,7 +121,7 @@ private:
 	Inventory* playerInventory = nullptr;
 
 	// 캐릭터 상태관리
-	Action action = Action::IDLE;
+	Action action = Action::RIGHTMOVE;
 	State state = State::IDLE;
 	SubjectTag subTag = SubjectTag::PLAYER;
 
