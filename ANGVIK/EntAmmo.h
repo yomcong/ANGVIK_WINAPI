@@ -32,7 +32,7 @@ private:
 	// °¢µµ
 	float moveAngle = 0.0f;
 
-	SubjectTag subTag = SubjectTag::Ammo;
+	SubjectTag subTag = SubjectTag::AMMO;
 
 };
 

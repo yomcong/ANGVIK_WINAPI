@@ -28,8 +28,8 @@ HRESULT ItemManager::Init()
 	Titem[6]->Init({ 540, 350 }, ItemType::OLIS, ItemGrade::GOLD, WeaponType::IDLE);
 	Titem[7]->Init({ 560, 350 }, ItemType::OLIS, ItemGrade::GOLD, WeaponType::IDLE);
 	Titem[8]->Init({ 580, 350 }, ItemType::ARMOR, ItemGrade::GOLD);
-	Titem[9]->Init({ 600, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::LANCE);
-	Titem[10]->Init({ 620, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::SWORD);
+	Titem[9]->Init({ 250, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::LANCE);
+	Titem[10]->Init({ 200, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::SWORD);
 
 	for (int i = 0; i < 11; ++i)
 	{

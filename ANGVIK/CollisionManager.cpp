@@ -48,7 +48,7 @@ bool CollisionManager::CheckCollision(SubjectTag subject, RECT shape, EventTag e
 		break;
 	case SubjectTag::PLAYER:
 	{
-		if (monsterManager->CheckCollision(shape, b_temp))
+		if (monsterManager->CheckCollision(SubjectTag::PLAYER, shape, b_temp))
 		{
 			if (b_temp)
 			{
@@ -95,10 +95,16 @@ bool CollisionManager::CheckCollision(SubjectTag subject, RECT shape, EventTag e
 		}
 	
 		break;
-	case SubjectTag::Ammo:
+	case SubjectTag::AMMO:
 		if (player->CheckCollision(subject, shape))
 		{
 			return true;
+		}
+		break;
+	case SubjectTag::WEAPON:
+		if (monsterManager->CheckCollision(SubjectTag::WEAPON, shape, b_temp))
+		{
+			player->AttackHit();
 		}
 		break;
 	}

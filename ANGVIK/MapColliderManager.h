@@ -14,7 +14,7 @@ public:
 	bool IsFalling(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize);
 	POINTFLOAT Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir, POINT bodySize);
 	bool Jump(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize);
-	bool checkCollision(RECT shape, int dir, POINT bodySize);
+	bool checkCollision(SubjectTag _subTag, RECT shape, int dir, POINT bodySize);
 	//bool AutoMove(POINTFLOAT pos, RECT shape, float moveSpeed, int dir, POINT bodySize);
 
 private:

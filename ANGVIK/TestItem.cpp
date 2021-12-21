@@ -68,7 +68,7 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 				break;
 			case ItemGrade::GOLD:
 				itemName += "°ñµåÄ®.bmp";
-				bodySize.x = 10;
+				bodySize.x = 25;
 				bodySize.y = 10;
 				break;
 			case ItemGrade::SILVER:

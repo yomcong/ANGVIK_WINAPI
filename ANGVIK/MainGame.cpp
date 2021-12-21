@@ -57,10 +57,10 @@ void MainGame::Render(HDC hdc)
 #ifdef _DEBUG
 	TimerManager::GetSingleton()->Render(hBackBufferDC);
 
-	wsprintf(mxText, "Mouse x : %d", g_ptMouse.x);
-	TextOut(hBackBufferDC, WIN_SIZE_X - 150, 50, mxText, strlen(mxText));
-	wsprintf(myText, "Mouse y : %d", g_ptMouse.y);
-	TextOut(hBackBufferDC, WIN_SIZE_X - 150, 70, myText, strlen(myText));
+	//wsprintf(mxText, "Mouse x : %d", g_ptMouse.x);
+	//TextOut(hBackBufferDC, WIN_SIZE_X - 150, 50, mxText, strlen(mxText));
+	//wsprintf(myText, "Mouse y : %d", g_ptMouse.y);
+	//TextOut(hBackBufferDC, WIN_SIZE_X - 150, 70, myText, strlen(myText));
 #endif
 
 	backBuffer->Render(hdc);

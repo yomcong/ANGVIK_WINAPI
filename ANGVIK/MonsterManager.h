@@ -21,9 +21,9 @@ public:
 	void MonkeySpawn();
 	void EntSpawn();
 
-	bool CheckCollision(RECT shape, bool &toStepOn);
+	bool CheckCollision(SubjectTag _subTage, RECT _shape, bool &_toStepOn);
 
-	virtual void OnNotify(Subject* subject, MonsterType monsterType, SubjectTag subjectTag, EventTag eventTag);
+	virtual void OnNotify(Subject* _subject, MonsterType _monsterType, SubjectTag _subjectTag, EventTag _eventTag);
 
 private:
 	int kongMaxCount = 4;

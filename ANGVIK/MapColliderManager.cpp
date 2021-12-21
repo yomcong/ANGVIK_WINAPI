@@ -22,9 +22,8 @@ void MapColliderManager::Update()
 bool MapColliderManager::IsFalling(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize)
 {
 	//float tempPosY = y + moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-
-
-	for (int i = (int)(bodySize.x * 0.2); i <= (int)(bodySize.x * 0.7); i++)
+	
+	for (int i = (int)(bodySize.x * 0.2); i <= (int)(bodySize.x * 0.8); i++)
 	{
 		color = GetPixel(pixelMap->GetMemDC(),
 			shape.left + i, shape.bottom + 1);
@@ -94,7 +93,7 @@ POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed,
 
 bool MapColliderManager::Jump(POINTFLOAT pos, RECT shape, float moveSpeed,  POINT bodySize)
 {
-	for (int i = 0; i <= (int)(bodySize.x*2); i++)
+	for (int i = (int)(bodySize.x*0.2); i < (int)(bodySize.x*0.8); i++)
 	{
 		color = GetPixel(pixelMap->GetMemDC(),
 			shape.left + i, shape.top - 1);
@@ -113,7 +112,7 @@ bool MapColliderManager::Jump(POINTFLOAT pos, RECT shape, float moveSpeed,  POIN
 	return true;
 }
 
-bool MapColliderManager::checkCollision(RECT shape, int dir, POINT bodySize)
+bool MapColliderManager::checkCollision(SubjectTag _subTag, RECT shape, int dir, POINT bodySize)
 {
 	if (dir > 0)
 	{
@@ -129,6 +128,7 @@ bool MapColliderManager::checkCollision(RECT shape, int dir, POINT bodySize)
 
 			if (false == (r == 255 && g == 0 && b == 255))
 			{
+				ParticleManager::GetSingleton()->CallParticle(_subTag, { (float)shape.right, (float)shape.bottom - i });
 				return true;
 			}
 		}
@@ -147,6 +147,7 @@ bool MapColliderManager::checkCollision(RECT shape, int dir, POINT bodySize)
 
 			if (false == (r == 255 && g == 0 && b == 255))
 			{
+				ParticleManager::GetSingleton()->CallParticle(_subTag, { (float)shape.left, (float)shape.bottom - i });
 				return true;
 			}
 		}
@@ -164,6 +165,23 @@ bool MapColliderManager::checkCollision(RECT shape, int dir, POINT bodySize)
 
 		if (false == (r == 255 && g == 0 && b == 255))
 		{
+			ParticleManager::GetSingleton()->CallParticle(_subTag, { (float)shape.left+i, (float)shape.bottom});
+			return true;
+		}
+	}
+	for (int i = 0; i < bodySize.x; i++)
+	{
+		color = GetPixel(pixelMap->GetMemDC(),
+			shape.left + i, shape.top);
+
+		r = GetRValue(color);
+		g = GetGValue(color);
+		b = GetBValue(color);
+
+
+		if (false == (r == 255 && g == 0 && b == 255))
+		{
+			ParticleManager::GetSingleton()->CallParticle(_subTag, { (float)shape.left + i, (float)shape.top });
 			return true;
 		}
 	}
@@ -171,26 +189,3 @@ bool MapColliderManager::checkCollision(RECT shape, int dir, POINT bodySize)
 	return false;
 }
 
-//bool MapColliderManager::AutoMove(POINTFLOAT pos, RECT shape, float moveSpeed,int dir, POINT bodySize)
-//{
-//	for (int i = 0; i < (bodySize.x / 2); i++)
-//	{
-//		color = GetPixel(pixelMap->GetMemDC(),
-//			shape.left + i + bodySize.x / 4, shape.bottom + 1)/*+ (int)pixelPos.y)*/;
-//
-//		r = GetRValue(color);
-//		g = GetGValue(color);
-//		b = GetBValue(color);
-//
-//
-//		if (false == (r == 255 && g == 0 && b == 255))
-//		{
-//			return false;
-//		}
-//		//cout << (y + (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime())) << "\n";
-//		//cout << pos.y << "\n";
-//	}
-//
-//	return true;
-//
-//}

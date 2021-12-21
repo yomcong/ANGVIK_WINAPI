@@ -28,7 +28,7 @@ public:
 	bool CheckCollision(SubjectTag subject, RECT shape);
 	bool FindImage();
 	bool EquipItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType, bool ChangeItem = false, int dir = 0);
-	//bool ChangeItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType, Image* equip = nullptr);
+	void AttackHit();
 
 	inline bool SetIsPlatform(bool b_platform) { return this->b_platform = b_platform; }
 	inline bool SetInventoryClose(bool b_inventoryOpen) { return this->b_inventoryOpen = b_inventoryOpen; }
@@ -75,14 +75,14 @@ private:
 	POINT frontAttackArmFrame = { 0,0 };
 
 	// 공격중
-	bool backAttack = false;
-	bool frontAttack = false;
+	bool b_backAttack = false;
+	bool b_frontAttack = false;
 
 	float attackCount = false;
 
 
 	// 앉아있을때 카메라 내리기
-	bool sitDownCamera = false;
+	bool b_sitDownCamera = false;
 
 	// 팔 흔들기 변수
 	bool b_frontArmMove = true;
@@ -140,6 +140,6 @@ private:
 	POINT DBarmPos = { 0, 0 };
 	POINT DBbodyPos = { 0, 0 };
 
-
+	RECT DBattackShape = {};
 };
 

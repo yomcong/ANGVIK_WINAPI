@@ -4,9 +4,10 @@
 
 struct Particle
 {
-	Image* deathEffect = nullptr;
+	Image* effect = nullptr;
 	POINTFLOAT pos = { 0,0 };
-	POINT deathEffectFrame = { 0,0 };
+	POINT EffectFrame = { 0,0 };
+	int EffectMaxFrame = 0;
 };
 
 class Image;
@@ -20,13 +21,17 @@ public:
 	void Render(HDC hdc);
 	void Release();
 
-	void CallParticle(POINTFLOAT pos);
+	void CallParticle(POINTFLOAT _pos);
+	void CallParticle(SubjectTag _subTag, POINTFLOAT _pos, MonsterType _monsterType = MonsterType::IDLE);
 private:
-	Image* deathEffect = nullptr;
+	//Image* deathEffect = nullptr;
+	//Image* WeaponMapEffect = nullptr;
 
 	float frameCount = 0.0f;
-	const POINT deathEffectMaxFrame = { 5,0 };
+	const int deathEffectMaxFrame = 5;
+	const int WeaponMapEffectMaxFrame =3;
+	//const int kongAmmoEffectMaxFrame = ;
 
-	vector<Particle> vecDeathEffects = {};
+	vector<Particle> vecEffects = {};
 };
 

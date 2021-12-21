@@ -29,7 +29,7 @@ void MonsterManager::Update()
 
 	for (int i = 0; i < vecMonkeys.size(); ++i)
 	{
-		
+
 		vecMonkeys[i]->Update();
 	}
 
@@ -115,8 +115,8 @@ void MonsterManager::MonkeySpawn()
 	vecMonkeys.resize(MonkeyMaxCount);
 
 	// 5,6번째 옵저버 활용해서 트리거로 이닛해주기
-	float spawnPosX[] = { 500.0f, 850.0f, 1100.0f, 1400.0f, 2000.0f, 2100.0f};
-	float spawnPosY[] = { 350.0f, 382.0f, 390.0f, 390.0f, 250.0f, 250.0f};
+	float spawnPosX[] = { 500.0f, 850.0f, 1100.0f, 1400.0f, 2000.0f, 2100.0f };
+	float spawnPosY[] = { 350.0f, 382.0f, 390.0f, 390.0f, 250.0f, 250.0f };
 
 	for (int i = 0; i < vecMonkeys.size(); ++i)
 	{
@@ -143,67 +143,117 @@ void MonsterManager::EntSpawn()
 	}
 }
 
-bool MonsterManager::CheckCollision(RECT shape, bool &toStepOn)
+bool MonsterManager::CheckCollision(SubjectTag _subTag, RECT _shape, bool& _toStepOn)
 {
 	RECT tempRect = {};
 
-	for (int i = 0; i < vecKongs.size(); ++i)
+	switch (_subTag)
 	{
-		if (false == kongWindow[i] || false == vecKongs[i]->GetIsAlive())
+	case SubjectTag::PLAYER:
+		for (int i = 0; i < vecKongs.size(); ++i)
 		{
-			continue;
-		}
-
-		if (IntersectRect(&tempRect, &shape, vecKongs[i]->GetShapeAddress()))
-		{
-			if (tempRect.left >= vecKongs[i]->GetShapeAddress()->left &&
-				tempRect.right <= vecKongs[i]->GetShapeAddress()->right &&
-				(((vecKongs[i]->GetShapeAddress()->top + vecKongs[i]->GetShapeAddress()->bottom) / 2) + vecKongs[i]->GetShapeAddress()->top) /2 > tempRect.bottom)
+			if (false == kongWindow[i] || false == vecKongs[i]->GetIsAlive())
 			{
-				toStepOn = true;
+				continue;
+			}
+
+			if (IntersectRect(&tempRect, &_shape, vecKongs[i]->GetShapeAddress()))
+			{
+				if (tempRect.left >= vecKongs[i]->GetShapeAddress()->left &&
+					tempRect.right <= vecKongs[i]->GetShapeAddress()->right &&
+					(((vecKongs[i]->GetShapeAddress()->top + vecKongs[i]->GetShapeAddress()->bottom) / 2) + vecKongs[i]->GetShapeAddress()->top) / 2 > tempRect.bottom)
+				{
+					_toStepOn = true;
+					vecKongs[i]->ToBeHit();
+				}
+
+				return true;
+			}
+		}
+		for (int i = 0; i < vecMonkeys.size(); ++i)
+		{
+			if (false == monkeyWindow[i] || false == vecMonkeys[i]->GetIsAlive())
+			{
+				continue;
+			}
+			if (IntersectRect(&tempRect, &_shape, vecMonkeys[i]->GetShapeAddress()))
+			{
+				if (tempRect.left >= vecMonkeys[i]->GetShapeAddress()->left &&
+					tempRect.right <= vecMonkeys[i]->GetShapeAddress()->right &&
+					(((vecMonkeys[i]->GetShapeAddress()->top + vecMonkeys[i]->GetShapeAddress()->bottom) / 2) + vecMonkeys[i]->GetShapeAddress()->top) / 2 > tempRect.bottom)
+				{
+					_toStepOn = true;
+					vecMonkeys[i]->ToBeHit();
+				}
+
+				return true;
+			}
+		}
+		for (int i = 0; i < vecEnts.size(); ++i)
+		{
+			if (false == entWindow[i] || false == vecEnts[i]->GetIsAlive())
+			{
+				continue;
+			}
+			if (IntersectRect(&tempRect, &_shape, vecEnts[i]->GetShapeAddress()))
+			{
+				if (tempRect.left >= vecEnts[i]->GetShapeAddress()->left &&
+					tempRect.right <= vecEnts[i]->GetShapeAddress()->right &&
+					(((vecEnts[i]->GetShapeAddress()->top + vecEnts[i]->GetShapeAddress()->bottom) / 2) + vecEnts[i]->GetShapeAddress()->top) / 2 > tempRect.bottom)
+				{
+					_toStepOn = true;
+					vecEnts[i]->ToBeHit();
+				}
+				return true;
+			}
+		}
+		break;
+	case SubjectTag::AMMO:
+		break;
+	case SubjectTag::WEAPON:
+		for (int i = 0; i < vecKongs.size(); ++i)
+		{
+			if (false == kongWindow[i] || false == vecKongs[i]->GetIsAlive())
+			{
+				continue;
+			}
+
+			if (IntersectRect(&tempRect, &_shape, vecKongs[i]->GetShapeAddress()))
+			{
 				vecKongs[i]->ToBeHit();
-			}
 
-			return true;
+				return true;
+			}
 		}
-	}
-	for (int i = 0; i < vecMonkeys.size(); ++i)
-	{
-		if (false == monkeyWindow[i] || false == vecMonkeys[i]->GetIsAlive())
+		for (int i = 0; i < vecMonkeys.size(); ++i)
 		{
-			continue;
-		}
-		if (IntersectRect(&tempRect, &shape, vecMonkeys[i]->GetShapeAddress()))
-		{
-			if (tempRect.left >= vecMonkeys[i]->GetShapeAddress()->left &&
-				tempRect.right <= vecMonkeys[i]->GetShapeAddress()->right &&
-				(((vecMonkeys[i]->GetShapeAddress()->top + vecMonkeys[i]->GetShapeAddress()->bottom) / 2) + vecMonkeys[i]->GetShapeAddress()->top) / 2 > tempRect.bottom)
+			if (false == monkeyWindow[i] || false == vecMonkeys[i]->GetIsAlive())
 			{
-				toStepOn = true;
+				continue;
+			}
+			if (IntersectRect(&tempRect, &_shape, vecMonkeys[i]->GetShapeAddress()))
+			{
 				vecMonkeys[i]->ToBeHit();
-			}
 
-			return true;
-		}
-	}
-	for (int i = 0; i < vecEnts.size(); ++i)
-	{
-		if (false == entWindow[i] || false == vecEnts[i]->GetIsAlive())
-		{
-			continue;
-		}
-		if (IntersectRect(&tempRect, &shape, vecEnts[i]->GetShapeAddress()))
-		{
-			if (tempRect.left >= vecEnts[i]->GetShapeAddress()->left &&
-				tempRect.right <= vecEnts[i]->GetShapeAddress()->right &&
-				(((vecEnts[i]->GetShapeAddress()->top + vecEnts[i]->GetShapeAddress()->bottom) / 2) + vecEnts[i]->GetShapeAddress()->top) / 2 > tempRect.bottom)
-			{
-				toStepOn = true;
-				vecEnts[i]->ToBeHit();
+				return true;
 			}
-			return true;
 		}
+		for (int i = 0; i < vecEnts.size(); ++i)
+		{
+			if (false == entWindow[i] || false == vecEnts[i]->GetIsAlive())
+			{
+				continue;
+			}
+			if (IntersectRect(&tempRect, &_shape, vecEnts[i]->GetShapeAddress()))
+			{
+				vecEnts[i]->ToBeHit();
+
+				return true;
+			}
+		}
+		break;
 	}
+
 	return false;
 }
 
@@ -230,7 +280,7 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					{
 
 					}
-						//cout << "콩를 못찾았다." << "\n";
+					//cout << "콩를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::OUTWINDOW:
@@ -246,7 +296,7 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					{
 
 					}
-						//cout << "콩를 못찾았다." << "\n";
+					//cout << "콩를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::RELEASE:
@@ -269,7 +319,7 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					{
 
 					}
-						//cout << "몽키를 못찾았다." << "\n";
+					//cout << "몽키를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::OUTWINDOW:
@@ -285,7 +335,7 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					{
 
 					}
-						//cout << "몽키를 못찾았다." << "\n";
+					//cout << "몽키를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::RELEASE:
@@ -308,7 +358,7 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					{
 
 					}
-						//cout << "나무를 못찾았다." << "\n";
+					//cout << "나무를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::OUTWINDOW:
@@ -324,7 +374,7 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 					{
 
 					}
-						//cout << "나무를 못찾았다." << "\n";
+					//cout << "나무를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::RELEASE:

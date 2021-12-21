@@ -83,7 +83,7 @@ void KongAmmo::Update()
 			pos.x += cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 			pos.y -= sin(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 
-			if (MapColliderManager::GetSingleton()->checkCollision(shape, (int)dir, bodySize) || 
+			if (MapColliderManager::GetSingleton()->checkCollision(subTag, shape, (int)dir, bodySize) || 
 				CollisionManager::GetSingleton()->CheckCollision(subTag, shape))
 			{
 				b_ISHit = true;

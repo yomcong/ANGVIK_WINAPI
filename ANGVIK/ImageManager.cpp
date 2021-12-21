@@ -51,12 +51,12 @@ void ImageManager::Init()
 	AddImage("image/player/gold/R_body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 갑옷(Reverse)
 	AddImage("image/player/gold/R_foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 신발(Reverse)
 
-	AddImage("image/item/골드칼_SP.bmp", 756, 108, 7, 1, true, RGB(255, 255, 255));			// 황금 칼 스프라이트
+	AddImage("image/item/골드칼_SP.bmp", 1188, 108, 11, 1, true, RGB(255, 255, 255));			// 황금 칼 스프라이트
 	AddImage("image/item/골드랜스_SP.bmp", 812, 116, 7, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트
 	AddImage("image/item/골드부메랑_SP.bmp", 1296, 54, 24, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트
 
-	AddImage("image/item/R_골드칼_SP.bmp", 756, 108, 7, 1, true, RGB(255, 255, 255));		// 황금 칼 스프라이트
-	AddImage("image/item/R_골드랜스_SP.bmp", 812, 116, 7, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트
+	AddImage("image/item/R_골드칼_SP.bmp", 1188, 108, 11, 1, true, RGB(255, 255, 255));		// 황금 칼 스프라이트
+	AddImage("image/item/R_골드랜스_SP.bmp", 812, 116, 9, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트
 	AddImage("image/item/R_골드부메랑_SP.bmp", 1296, 54, 24, 1, true, RGB(255, 255, 255));	// 황금 부메랑 스프라이트
 
 	// 인벤토리
@@ -86,11 +86,11 @@ void ImageManager::Init()
 
 	AddImage("image/item/골드오일.bmp", 15, 22, true, RGB(255, 255, 255));	// 황금 부메랑
 
+	// 데스 이펙트
+	AddImage("image/effect.bmp", 600, 100, 6, 1, true, RGB(255, 255, 255));		// 데스 이펙트
+	AddImage("image/weaponEffect.bmp", 108, 21, 4, 1, true, RGB(255, 255, 255));// 무기 -> 맵 이펙트
 
 	// 몬스터
-	// 데스 이펙트
-	AddImage("image/effect.bmp", 600, 100, 6, 1, true, RGB(255, 255, 255));	// 데스 이펙트
-
 	// --콩--
 	AddImage("image/monster/kong_atk_8f.bmp", 272, 40, 8, 1, true, RGB(255, 255, 255));	// 공격모션 
 	AddImage("image/monster/kong_idle_6f.bmp", 192, 54, 6, 1, true, RGB(255, 255, 255));// 기본자세
