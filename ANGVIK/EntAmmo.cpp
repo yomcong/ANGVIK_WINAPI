@@ -77,11 +77,11 @@ void EntAmmo::Update()
 		renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
 		renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
 
+		// µð¹ö±ë
+		if (Input::GetButtonDown(VK_NUMPAD1))
+			DBrect == false ? DBrect = true : DBrect = false;
 	}
 
-	// µð¹ö±ë
-	if (Input::GetButtonDown(VK_NUMPAD1))
-		DBrect == false ? DBrect = true : DBrect = false;
 }
 
 void EntAmmo::Render(HDC hdc)
@@ -113,7 +113,6 @@ void EntAmmo::Release()
 void EntAmmo::IsFire(POINTFLOAT pos, float angle, int dir, float moveSpeed)
 {
 	b_IsAlive = true;
-	//b_ISHit = false;
 
 	this->moveAngle = angle;
 	if (dir > 0)

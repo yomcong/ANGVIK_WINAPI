@@ -106,11 +106,11 @@ void KongAmmo::Update()
 		renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
 		renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
 
+		// µð¹ö±ë
+		if (Input::GetButtonDown(VK_NUMPAD1))
+			DBrect == false ? DBrect = true : DBrect = false;
 	}
 
-	// µð¹ö±ë
-	if (Input::GetButtonDown(VK_NUMPAD1))
-		DBrect == false ? DBrect = true : DBrect = false;
 }
 
 void KongAmmo::Render(HDC hdc)

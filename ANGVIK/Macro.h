@@ -1,7 +1,7 @@
 #pragma once
 
 enum class SubjectTag { IDLE, PLAYER, MONSTER, ITEM, TRAP };
-enum class EventTag { IDLE, ADD, COLLISION, RELEASE, };
+enum class EventTag { IDLE, ADD, RANGECOLLISION, RELEASE, };
 enum class direction { LEFT = -1, RIGHT = 1 };
 
 // 창 시작위치

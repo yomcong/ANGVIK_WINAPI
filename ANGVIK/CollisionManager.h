@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include "Config.h"
 #include "Singleton.h"
 
@@ -18,9 +19,9 @@ public:
 	void AddTrapManager(TrapManager* trapManager);
 	void AddItem(ItemManager* itemManager);
 	void AddObject(SubjectTag subject, EventTag object, RECT* shape);
-	bool CheckCollision(SubjectTag subject, RECT shape, EventTag eventTag = EventTag::IDLE);
+	bool CheckCollision(SubjectTag _subject, RECT _shape, EventTag _eventTag = EventTag::IDLE);
+	POINTFLOAT RangeCheckCollision(SubjectTag _subject, RECT _shape, EventTag _eventTag);
 	void CheckItem(RECT shape);
-	SubjectTag testCheck(SubjectTag subjectTag, RECT shape);
 						
 private:
 	vector<RECT*> vecRects = {};

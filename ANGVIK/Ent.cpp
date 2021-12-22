@@ -1,10 +1,9 @@
 #include "Ent.h"
-#include "Player.h"
 #include "Image.h"
-#include "EntAmmoManager.h"
 #include "Subject.h"
+#include "AmmoManager.h"
 
-HRESULT Ent::Init(Player* target, POINTFLOAT pos)
+HRESULT Ent::Init(POINTFLOAT _pos, AmmoManager* _ammoManager )
 {
 	basicEnt = ImageManager::GetSingleton()->FindImage("image/monster/Ent_move_6f.bmp");
 	if (basicEnt == nullptr)
@@ -36,16 +35,9 @@ HRESULT Ent::Init(Player* target, POINTFLOAT pos)
 	{
 		return E_FAIL;
 	}
-	/*deathEffect = ImageManager::GetSingleton()->FindImage("image/effect.bmp");
-	if (deathEffect == nullptr)
-	{
-		return E_FAIL;
-	}*/
-	ammoManager = new EntAmmoManager;
-	ammoManager->Init(target);
+	ammoManager = _ammoManager;
 
-	this->target = target;
-	this->pos = pos;
+	pos =_pos;
 
 	b_isAlive = true;
 
@@ -70,20 +62,14 @@ HRESULT Ent::Init(Player* target, POINTFLOAT pos)
 
 void Ent::Update()
 {
-	ammoManager->Update();
-	
-
 	// 행동(이동,공격)
 	if (b_isAlive)
 	{
 		DoAction();
 		PlayAnimation();
 	}
-	// 윈도우 영역에 있는지 확인
 	PosUpdate();
 	CheckWindow();
-	// 애니메이션 
-	// pos 업데이트
 	
 	// 디버깅
 	if (Input::GetButtonDown(VK_NUMPAD9))
@@ -95,8 +81,6 @@ void Ent::Update()
 
 void Ent::Render(HDC hdc)
 {
-	ammoManager->Render(hdc);
-
 	if (b_isAlive)
 	{
 		// 공격 또는 공격준비 상태일경우
@@ -149,16 +133,11 @@ void Ent::Render(HDC hdc)
 				shape.right - (int)CameraManager::GetSingleton()->GetPos().x,
 				shape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
 	}
-	/*else
-	{
-		deathEffect->Render(hdc, (int)renderPos.x, (int)renderPos.y, deathEffectFrame.x, deathEffectFrame.y);
-	}*/
 
 }
 
 void Ent::Release()
 {
-	SAFE_RELEASE(ammoManager);
 	SAFE_DELETE(subject);
 }
 
@@ -182,7 +161,7 @@ void Ent::PlayAnimation()
 					b_attack = true;
 					b_attackReady = false;
 					attackEffectFrame.x = attackEffectMaxFrame.x;
-					ammoManager->Fire(pos, (int)dir);
+					ammoManager->EntFire(pos, (int)dir);
 
 				}
 				else
@@ -219,21 +198,6 @@ void Ent::PlayAnimation()
 			frameCount = 0.0f;
 		}
 	}
-	/*else
-	{
-		if (frameCount > 0.0625)
-		{
-			if (deathEffectFrame.x == deathEffectMaxFrame.x)
-			{
-				deathEffectFrame.x = 0;
-			}
-			else
-			{
-				++deathEffectFrame.x;
-			}
-			frameCount = 0.0f;
-		}
-	}*/
 }
 
 void Ent::PosUpdate()
@@ -261,18 +225,18 @@ void Ent::CheckWindow()
 	if (renderPos.x > 0 && renderPos.x < WIN_SIZE_X &&
 		renderPos.y > 0 && renderPos.y < WIN_SIZE_Y)
 	{
-		if (false == windowIn)
+		if (false == b_windowIn)
 		{
 			subject->Notify(subject, myType, subTag, EventTag::INWINDOW);
-			windowIn = true;
+			b_windowIn = true;
 		}
 	}
 	else
 	{
-		if (windowIn)
+		if (b_windowIn)
 		{
 			subject->Notify(subject, myType, subTag, EventTag::OUTWINDOW);
-			windowIn = false;
+			b_windowIn = false;
 		}
 	}
 }
@@ -284,7 +248,7 @@ void Ent::DoAction()
 	{
 		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize))
 		{
-			pos.y += 3.0f;
+			pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
 		}
 		else
 		{

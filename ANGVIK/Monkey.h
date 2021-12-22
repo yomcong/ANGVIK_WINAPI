@@ -1,16 +1,16 @@
 #pragma once
+#include "stdafx.h"
 #include "Config.h"
 #include "GameObject.h"
 
 class Image;
-class Player;
 class Subject;
 class Monkey : public GameObject
 {
 public:
 	virtual ~Monkey() = default;
 
-	virtual HRESULT Init(Player * target, POINTFLOAT pos);
+	virtual HRESULT Init(POINTFLOAT pos);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
@@ -28,8 +28,6 @@ private:
 	Image* R_monkey = nullptr;
 	Image* deathEffect = nullptr;
 
-	Player* target = nullptr;
-
 	Subject* subject = nullptr;
 
 	POINT deathEffectFrame = { 7,0 };
@@ -40,7 +38,7 @@ private:
 	SubjectTag subTag = SubjectTag::MONSTER;
 	MonsterType myType = MonsterType::MONKEY;
 
-	bool windowIn = false;
+	bool b_windowIn = false;
 
 };
 

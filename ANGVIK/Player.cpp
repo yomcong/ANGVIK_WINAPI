@@ -3,21 +3,7 @@
 #include "TrapManager.h"
 #include "MonsterManager.h"
 #include "Inventory.h"
-
-// 캐릭터 이동
-// 팔 자연스럽게 해주기
-// 갑옷 신발 위치 조정
-// 캐릭터 랙트 세분화 해주기(몸통 머리 발)
-// 렉트 세분화 후 발 부분으로 픽셀충돌다시
-
-// 캐릭터가 왼쪽을볼떄는 랜더 순서 바꿔주기 ( 왼팔이 먼저보이게) 및 이미지 가로회전  -- O
-
-// 카메라가 한쪽의 끝에 있을때 예외조건해주기	-- O 
-// -> 델타타임으로 캐릭터를 이동시키면 소수점이 달라져서 동기화 방법찾기
-
-// 델타타임 고정시키기....
-
-// 보정으로 y축이 감소되면 카메라가 화면끝에있어도 올라감 -- O
+#include "AmmoManager.h"
 
 #define JumpPower 90.0f
 
@@ -27,7 +13,7 @@
 #define StartPointY 350.0f
 
 // 테스트용 매개변수
-HRESULT Player::Init()
+HRESULT Player::Init(AmmoManager* _ammoManager)
 {
 	if (false == FindImage())
 	{
@@ -52,12 +38,13 @@ HRESULT Player::Init()
 	playerInventory = new Inventory;
 	playerInventory->Init(this);
 
+	ammoManager = _ammoManager;
+
 	return S_OK;
 }
 
 void Player::Update()
 {
-	//바디사이즈 *2 <<충돌체크해
 	// 점프상태가 아닐경우
 	if (state != State::JUMP)
 	{
@@ -250,25 +237,35 @@ void Player::Update()
 	// 함수화 하기
 	if (b_frontAttack)
 	{
-		//RECT tempRect = {};
-		DBattackShape.left;
-		DBattackShape.top;
-		DBattackShape.right;
-		DBattackShape.bottom;
+		if (frontWeaponType == WeaponType::SWORD)
+		{
+			POINT tempBodySize = { 25, 15 };
+			DBattackShape.left = frontWeaponPos.x - tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
+			DBattackShape.top = frontWeaponPos.y - tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
+			DBattackShape.right = frontWeaponPos.x + tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
+			DBattackShape.bottom = frontWeaponPos.y + tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
+			CollisionManager::GetSingleton()->CheckCollision(SubjectTag::WEAPON, DBattackShape);
+			if (MapColliderManager::GetSingleton()->checkCollision(SubjectTag::WEAPON, DBattackShape, (int)dir, tempBodySize))
+			{
+				AttackHit();
+			}
+		}
 	}
 	else if (b_backAttack)
 	{
-		POINT tempBodySize = { 25, 15 };
-		DBattackShape.left = backWeaponPos.x - tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
-		DBattackShape.top = backWeaponPos.y - tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
-		DBattackShape.right = backWeaponPos.x + tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
-		DBattackShape.bottom =backWeaponPos.y + tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
-		CollisionManager::GetSingleton()->CheckCollision(SubjectTag::WEAPON, DBattackShape);
-		if (MapColliderManager::GetSingleton()->checkCollision(SubjectTag::WEAPON, DBattackShape, (int)dir, tempBodySize))
+		if (backWeaponType == WeaponType::SWORD)
 		{
-			AttackHit();
+			POINT tempBodySize = { 25, 15 };
+			DBattackShape.left = backWeaponPos.x - tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
+			DBattackShape.top = backWeaponPos.y - tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
+			DBattackShape.right = backWeaponPos.x + tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
+			DBattackShape.bottom = backWeaponPos.y + tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
+			CollisionManager::GetSingleton()->CheckCollision(SubjectTag::WEAPON, DBattackShape);
+			if (MapColliderManager::GetSingleton()->checkCollision(SubjectTag::WEAPON, DBattackShape, (int)dir, tempBodySize))
+			{
+				AttackHit();
+			}
 		}
-
 	}
 
 
@@ -659,39 +656,38 @@ void Player::ChangeAction(Action action)
 
 		if (action == Action::FRONTATTACK)
 		{
-			if (b_equipFrontWeapon)
+			//if (b_equipFrontWeapon)
+			//{
+			if (frontWeaponType == WeaponType::BOOMERANG ||
+				frontWeaponType == WeaponType::LANCE)
 			{
-				b_frontAttack = true;
-				attackCount = 0.0f;
-				frontAttackArmFrame.x = 4;
-				frontAttackArmFrame.y = 0;
-				frontWeaponFrame.x = 0;
+				ammoManager->WeaponAttack(SubjectTag::WEAPON, frontWeaponType, { pos.x , pos.y }, (int)dir);
+				b_equipFrontWeapon = false;
+				frontWeaponType = WeaponType::IDLE;
+				frontWeaponGrade = ItemGrade::IDLE;
 			}
-			else
-			{
-				b_frontAttack = true;
-				frontAttackArmFrame.x = 9;
-				frontAttackArmFrame.y = 2;
-				attackCount = 0.0f;
-			}
+			b_frontAttack = true;
+			attackCount = 0.0f;
+			frontAttackArmFrame.x = 4;
+			frontAttackArmFrame.y = 0;
+			frontWeaponFrame.x = 0;
 		}
 		if (action == Action::BACKATTACK)
 		{
-			if (b_equipBackWeapon)
+			if (backWeaponType == WeaponType::BOOMERANG ||
+				backWeaponType == WeaponType::LANCE)
 			{
-				b_backAttack = true;
-				attackCount = 0.0f;
-				backAttackArmFrame.x = 4;
-				backAttackArmFrame.y = 0;
-				backWeaponFrame.x = 0;
+				ammoManager->WeaponAttack(SubjectTag::WEAPON, backWeaponType, { pos.x , pos.y }, (int)dir);
+				b_equipBackWeapon = false;
+				backWeaponType = WeaponType::IDLE;
+				backWeaponGrade = ItemGrade::IDLE;
 			}
-			else
-			{
-				b_backAttack = true;
-				backAttackArmFrame.x = 9;
-				backAttackArmFrame.y = 2;
-				attackCount = 0.0f;
-			}
+			b_backAttack = true;
+			attackCount = 0.0f;
+			backAttackArmFrame.x = 4;
+			backAttackArmFrame.y = 0;
+			backWeaponFrame.x = 0;
+
 
 		}
 
@@ -776,10 +772,7 @@ void Player::ChangeState(State state)
 			frontArmFrame.y = 0;
 			backArmFrame.y = 0;
 		}
-
-
 	}
-
 }
 
 
@@ -927,38 +920,21 @@ void Player::PlayAnimation()
 			frameCount = 0.0f;
 		}
 	}
-	/*else if (state == State::ATTACK)
-	{
-		if (b_frontAttack || b_backAttack)
-		{
-			if (frameCount > 0.0625)
-			{
-				if (frontAttackArmFrame.x == 0)
-				{
-					b_frontAttack = false;
-				}
-				--frontAttackArmFrame.x;
-
-				if (backAttackArmFrame.x == 0)
-				{
-					b_backAttack = false;
-				}
-				--backAttackArmFrame.x;
-
-			}
-			frameCount = 0.0f;
-		}
-	}*/
 
 	attackCount += TimerManager::GetSingleton()->GetDeltaTime();
 
 	if (b_frontAttack)
 	{
-		if (b_equipFrontWeapon)
+		if (attackCount > 0.0412)
 		{
-			if (attackCount > 0.0625)
+			if (frontAttackArmFrame.x == 0)
 			{
-				if (frontAttackArmFrame.x == 0)
+				frontAttackArmFrame.x = 15;
+				++frontWeaponFrame.x;
+			}
+			else
+			{
+				if (frontAttackArmFrame.x == 12)
 				{
 					b_frontAttack = false;
 					ChangeAction(Action::IDLE);
@@ -966,22 +942,10 @@ void Player::PlayAnimation()
 				else
 				{
 					--frontAttackArmFrame.x;
-					attackCount = 0.0f;
+					++frontWeaponFrame.x;
 				}
 			}
-		}
-		else
-		{
-			if (attackCount > 0.0625)
-			{
-				if (frontAttackArmFrame.x >= 11)
-				{
-					b_frontAttack = false;
-					action = Action::IDLE;
-				}
-				++frontAttackArmFrame.x;
-				attackCount = 0.0f;
-			}
+			attackCount = 0.0f;
 		}
 	}
 	else
@@ -1014,44 +978,29 @@ void Player::PlayAnimation()
 
 	if (b_backAttack)
 	{
-		if (b_equipBackWeapon)
+		if (attackCount > 0.0412)
 		{
-			if (attackCount > 0.0412)
+			if (backAttackArmFrame.x == 0)
 			{
-				if (backAttackArmFrame.x == 0)
+				backAttackArmFrame.x = 15;
+				++backWeaponFrame.x;
+			}
+			else
+			{
+				if (backAttackArmFrame.x == 12)
 				{
-					backAttackArmFrame.x = 15;
-					++backWeaponFrame.x;
+					b_backAttack = false;
+					ChangeAction(Action::IDLE);
 				}
 				else
 				{
-					if (backAttackArmFrame.x == 12)
-					{
-						b_backAttack = false;
-						ChangeAction(Action::IDLE);
-					}
-					else
-					{
-						--backAttackArmFrame.x;
-						++backWeaponFrame.x;
-					}
+					--backAttackArmFrame.x;
+					++backWeaponFrame.x;
 				}
-				attackCount = 0.0f;
 			}
+			attackCount = 0.0f;
 		}
-		else
-		{
-			if (attackCount > 0.0625)
-			{
-				if (backAttackArmFrame.x >= 11)
-				{
-					b_backAttack = false;
-					action = Action::IDLE;
-				}
-				++backAttackArmFrame.x;
-				attackCount = 0.0f;
-			}
-		}
+
 	}
 	else
 	{
@@ -1136,7 +1085,6 @@ void Player::PlayAnimation()
 				{
 					backWeaponPos.x = (int)renderPos.x + 10 - (backWeaponFrame.x * 10) + 15 * (backWeaponFrame.x % 6);
 				}
-
 			}
 
 			if (backWeaponFrame.x < 6)
@@ -1192,15 +1140,52 @@ void Player::PlayAnimation()
 	switch (frontWeaponType)
 	{
 	case WeaponType::SWORD:
-		if (dir == direction::RIGHT)
+		if (b_frontAttack)
 		{
-			frontWeaponPos.x = (int)renderPos.x + 18;
+			if (dir == direction::RIGHT)
+			{
+				if (frontWeaponFrame.x < 6)
+				{
+					frontWeaponPos.x = (int)renderPos.x - 10 + (frontWeaponFrame.x * 10);
+				}
+				else
+				{
+					frontWeaponPos.x = (int)renderPos.x - 10 + (frontWeaponFrame.x * 10) - 15 * (frontWeaponFrame.x % 6);
+				}
+			}
+			else
+			{
+				if (frontWeaponFrame.x < 6)
+				{
+					frontWeaponPos.x = (int)renderPos.x + 10 - (frontWeaponFrame.x * 10);
+				}
+				else
+				{
+					frontWeaponPos.x = (int)renderPos.x + 10 - (frontWeaponFrame.x * 10) + 15 * (frontWeaponFrame.x % 6);
+				}
+			}
+
+			if (frontWeaponFrame.x < 6)
+			{
+				frontWeaponPos.y = (int)renderPos.y - 55 + (frontWeaponFrame.x * 8);
+			}
+			else
+			{
+				frontWeaponPos.y = (int)renderPos.y - 55 + (frontWeaponFrame.x * 8) + 5 * (frontWeaponFrame.x % 6);
+			}
 		}
 		else
 		{
-			frontWeaponPos.x = (int)renderPos.x - 20;
+			if (dir == direction::RIGHT)
+			{
+				frontWeaponPos.x = (int)renderPos.x + 18;
+			}
+			else
+			{
+				frontWeaponPos.x = (int)renderPos.x - 20;
+			}
+			frontWeaponPos.y = (int)renderPos.y - 30 + (frontWeaponFrame.x * 5);
 		}
-		frontWeaponPos.y = (int)renderPos.y - 20 + (frontWeaponFrame.x * 5);
 		break;
 	case WeaponType::BOOMERANG:
 		if (dir == direction::RIGHT)
@@ -1231,16 +1216,16 @@ void Player::PlayAnimation()
 	}
 }
 
-bool Player::CheckCollision(SubjectTag subject, RECT shape)
+bool Player::CheckCollision(SubjectTag _subject, RECT _shape, EventTag _eventTag)
 {
 	RECT tempRect;
 	bool temp = false;
 
-	if (IntersectRect(&tempRect, &shape, &this->shape))
+	if (IntersectRect(&tempRect, &_shape, &this->shape))
 	{
-		if (tempRect.left >= shape.left &&
-			tempRect.right <= shape.right &&
-			(((shape.top + shape.bottom) / 2) + shape.top) / 2 > tempRect.bottom)
+		if (tempRect.left >= _shape.left &&
+			tempRect.right <= _shape.right &&
+			(((_shape.top + _shape.bottom) / 2) + _shape.top) / 2 > tempRect.bottom)
 		{
 			temp = true;
 		}
@@ -1249,14 +1234,19 @@ bool Player::CheckCollision(SubjectTag subject, RECT shape)
 			temp = false;
 		}
 
-		switch (subject)
+		switch (_subject)
 		{
 		case SubjectTag::IDLE:
 			break;
 		case SubjectTag::MONSTER:
+			if (_eventTag == EventTag::RANGECOLLISION)
+			{
+				return true;
+			}
 			if (temp == false)
 			{
 				ToBeHit();
+				return true;
 			}
 			break;
 		case SubjectTag::ITEM:
@@ -1651,17 +1641,6 @@ void Player::AttackHit()
 {
 	b_backAttack = false;
 	b_frontAttack = false;
-	/*if (dir == direction::RIGHT)
-	{
-		ParticleManager::GetSingleton()->CallParticle(SubjectTag::WEAPON,
-			{ (float)DBattackShape.right, (float)DBattackShape.bottom });
-	}
-	else
-	{
-		ParticleManager::GetSingleton()->CallParticle(SubjectTag::WEAPON,
-			{ (float)DBattackShape.left, (float)DBattackShape.top });
-	}*/
-
 }
 
 

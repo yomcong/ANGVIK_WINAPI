@@ -1,9 +1,10 @@
 #pragma once
+#include "stdafx.h"
 #include "Config.h"
 #include "GameEntity.h"
 #include "Observer.h"
 
-class Player;
+class AmmoManager;
 class Kong;
 class Monkey;
 class Ent;
@@ -12,7 +13,7 @@ class MonsterManager : public GameEntity, public Observer
 public:
 	virtual ~MonsterManager() = default;
 
-	virtual HRESULT Init(Player* target);
+	virtual HRESULT Init(AmmoManager* _ammoManager);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
@@ -38,8 +39,7 @@ private:
 	vector<Monkey*> vecMonkeys = {};
 	vector<Ent*> vecEnts = {};
 
-	Player* target = nullptr;
-
+	AmmoManager* ammoManager = nullptr;
 
 };
 

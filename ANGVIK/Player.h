@@ -1,11 +1,12 @@
 #pragma once
+#include "stdafx.h"
 #include "Config.h"
 #include "GameObject.h"
 
 enum class State { IDLE, JUMP, Fall, SITDOWN, HIT, ATTACK};
 enum class Action { IDLE, LEFTMOVE, RIGHTMOVE, BACKATTACK, FRONTATTACK};
 
-//class PixelCollider;
+class AmmoManager;
 class Imgae;
 class Inventory;
 class Player : public GameObject
@@ -14,7 +15,7 @@ public:
 	//static enum class Action { IDLE, LeftMove, RightMove, Jump, SitDown, Attack, Hit };
 	virtual ~Player() = default;
 
-	virtual HRESULT Init();
+	virtual HRESULT Init(AmmoManager* _ammoManager);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
@@ -25,7 +26,7 @@ public:
 	void PosUpdate();
 	void ToStepOn();
 	void ToBeHit();
-	bool CheckCollision(SubjectTag subject, RECT shape);
+	bool CheckCollision(SubjectTag _subject, RECT _shape, EventTag _eventTag = EventTag::IDLE);
 	bool FindImage();
 	bool EquipItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType, bool ChangeItem = false, int dir = 0);
 	void AttackHit();
@@ -119,6 +120,9 @@ private:
 	// 인벤토리
 	bool b_inventoryOpen = false;
 	Inventory* playerInventory = nullptr;
+
+	// 아모매니저 (투사체관리)
+	AmmoManager* ammoManager = nullptr;
 
 	// 캐릭터 상태관리
 	Action action = Action::RIGHTMOVE;

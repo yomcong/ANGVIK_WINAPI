@@ -1,9 +1,8 @@
 #include "Monkey.h"
 #include "Image.h"
-#include "Player.h"
 #include "Subject.h"
 
-HRESULT Monkey::Init(Player* target, POINTFLOAT pos)
+HRESULT Monkey::Init(POINTFLOAT pos)
 {
 	monkey = ImageManager::GetSingleton()->FindImage("image/monster/¿ø¼þÀÌ.bmp");
 	if (monkey == nullptr)
@@ -17,8 +16,6 @@ HRESULT Monkey::Init(Player* target, POINTFLOAT pos)
 	}
 
 	subject = new Subject;
-
-	this->target = target;
 
 	this->pos = pos;
 	renderPos = pos;
@@ -54,7 +51,7 @@ void Monkey::Update()
 
 	if (Input::GetButtonDown(VK_NUMPAD9))
 	{
-		DBrect == false ? DBrect = true : DBrect = false;
+		DBrect = !DBrect;
 	}
 }
 
@@ -128,18 +125,18 @@ void Monkey::CheckWindow()
 	if (renderPos.x > 0 && renderPos.x < WIN_SIZE_X &&
 		renderPos.y > 0 && renderPos.y < WIN_SIZE_Y)
 	{
-		if (false == windowIn)
+		if (false == b_windowIn)
 		{
 			subject->Notify(subject, myType, subTag, EventTag::INWINDOW);
-			windowIn = true;
+			b_windowIn = true;
 		}
 	}
 	else
 	{
-		if (windowIn)
+		if (b_windowIn)
 		{
 			subject->Notify(subject, myType, subTag, EventTag::OUTWINDOW);
-			windowIn = false;
+			b_windowIn = false;
 		}
 	}
 }

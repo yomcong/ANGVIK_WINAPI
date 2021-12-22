@@ -1,23 +1,23 @@
 #pragma once
+#include "stdafx.h"
 #include "Config.h"
 #include "GameObject.h"
 
 class Image;
-class Player;
-class KongAmmoManager;
+class AmmoManager;
 class Subject;
 class Kong : public GameObject
 {
 public:
 	virtual ~Kong() = default;
 
-	virtual HRESULT Init(Player* target, POINTFLOAT pos);
+	virtual HRESULT Init(POINTFLOAT pos, AmmoManager* _ammoManager);
 	virtual void Update();
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
 	void ToBeHit();
-	void DoAction();
+	void PlayAnimation();
 	void CheckWindow();
 	void CheckAttackRange();
 
@@ -38,7 +38,7 @@ private:
 	Subject* subject = nullptr;
 
 	// ÃÑ¾Ë
-	KongAmmoManager* ammoManager = nullptr;
+	AmmoManager* ammoManager = nullptr;
 	// Å¸°ÙÁÂÇ¥
 	Player* target = nullptr;
 
@@ -55,8 +55,9 @@ private:
 	// »çÁ¤°Å¸® µð¹ö±ë
 	bool DBRangeRect = false;
 
-	float testElpsedCount = 0.0f;
+	float AttackDeleyCount = 0.0f;
 	
-	bool windowIn = false;
+	bool b_windowIn = false;
+	bool b_rangeInTarget = false;
 };
 

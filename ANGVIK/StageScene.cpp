@@ -8,6 +8,7 @@
 #include "TrapManager.h"
 #include "CollisionManager.h"
 #include "ItemManager.h"
+#include "AmmoManager.h"
 
 #define stage1Width 6709
 #define stage1Height 1290
@@ -50,16 +51,18 @@ HRESULT StageScene::Init()
 	monsterManager = new MonsterManager;
 	trapManager = new TrapManager;
 	itemManager = new ItemManager;
+	ammoManager = new AmmoManager;
 
 	CollisionManager::GetSingleton()->AddPlayer(player);
 	CollisionManager::GetSingleton()->AddMonsterManager(monsterManager);
 	CollisionManager::GetSingleton()->AddTrapManager(trapManager);
 	CollisionManager::GetSingleton()->AddItem(itemManager);
 
-	player->Init();
-	monsterManager->Init(player);
+	player->Init(ammoManager);
+	monsterManager->Init(ammoManager);
 	trapManager->Init();
 	itemManager->Init();
+	ammoManager->Init(itemManager);
 
 	return S_OK;
 }
@@ -72,13 +75,14 @@ void StageScene::Update()
 		monsterManager->Update();
 		trapManager->Update();
 		itemManager->Update();
+		ammoManager->Update();
 	}
 
 	// È÷µç¸Ê µð¹ö±ë ÀÌÈÄ ¿ÉÀú¹ö·Î ¾Ë¸²º¸³»ÁÖ±â
 	if (CameraManager::GetSingleton()->GetPos().x > 5060)
 	{
 		if (CameraManager::GetSingleton()->GetPos().y > 590 &&
-			CameraManager::GetSingleton()->GetPos().y < 610)
+			CameraManager::GetSingleton()->GetPos().y < 620)
 		{
 			b_hiddenMapDiscovery = true;
 		}
@@ -125,7 +129,7 @@ void StageScene::Render(HDC hdc)
 	monsterManager->Render(hdc);
 	trapManager->Render(hdc);
 	player->Render(hdc);
-
+	ammoManager->Render(hdc);
 
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë
 	if (debugPixelMap)
@@ -141,4 +145,5 @@ void StageScene::Release()
 	SAFE_RELEASE(monsterManager);
 	SAFE_RELEASE(trapManager);
 	SAFE_RELEASE(itemManager);
+	SAFE_RELEASE(ammoManager);
 }

@@ -1,21 +1,21 @@
 #include "MonsterManager.h"
-#include "Player.h"
 #include "Kong.h"
 #include "Monkey.h"
 #include "Ent.h"
 #include "Subject.h"
 #include "CollisionManager.h"
+#include "AmmoManager.h"
 
 // 몬스터 스폰위치는 정해져있는 좌표 안에서 랜덤으로 구현예정 
 //  
 
-HRESULT MonsterManager::Init(Player* target)
+HRESULT MonsterManager::Init(AmmoManager* _ammoManager)
 {
-	this->target = target;
+	ammoManager = _ammoManager;
+
 	KongSpawn();
 	MonkeySpawn();
 	EntSpawn();
-
 
 	return S_OK;
 }
@@ -104,7 +104,7 @@ void MonsterManager::KongSpawn()
 	for (int i = 0; i < vecKongs.size(); ++i)
 	{
 		vecKongs[i] = new Kong;
-		vecKongs[i]->Init(target, { spawnPosX[i],spawnPosY[i] });
+		vecKongs[i]->Init({ spawnPosX[i],spawnPosY[i] }, ammoManager);
 		vecKongs[i]->GetSubject()->AddObserver(this);
 	}
 }
@@ -121,7 +121,7 @@ void MonsterManager::MonkeySpawn()
 	for (int i = 0; i < vecMonkeys.size(); ++i)
 	{
 		vecMonkeys[i] = new Monkey;
-		vecMonkeys[i]->Init(target, { spawnPosX[i],spawnPosY[i] });
+		vecMonkeys[i]->Init({ spawnPosX[i],spawnPosY[i] });
 		vecMonkeys[i]->GetSubject()->AddObserver(this);
 	}
 }
@@ -138,7 +138,7 @@ void MonsterManager::EntSpawn()
 	for (int i = 0; i < vecEnts.size(); ++i)
 	{
 		vecEnts[i] = new Ent;
-		vecEnts[i]->Init(target, { spawnPosX[i],spawnPosY[i] });
+		vecEnts[i]->Init({ spawnPosX[i],spawnPosY[i] }, ammoManager);
 		vecEnts[i]->GetSubject()->AddObserver(this);
 	}
 }

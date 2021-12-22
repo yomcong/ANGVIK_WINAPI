@@ -39,16 +39,18 @@ void CollisionManager::AddObject(SubjectTag subject, EventTag object, RECT* shap
 	}
 }
 
-bool CollisionManager::CheckCollision(SubjectTag subject, RECT shape, EventTag eventTag)
+bool CollisionManager::CheckCollision(SubjectTag _subject, RECT _shape, EventTag _eventTag)
 {
 	bool b_temp = false;
-	switch (subject)
+
+
+	switch (_subject)
 	{
 	case SubjectTag::IDLE:
 		break;
 	case SubjectTag::PLAYER:
 	{
-		if (monsterManager->CheckCollision(SubjectTag::PLAYER, shape, b_temp))
+		if (monsterManager->CheckCollision(SubjectTag::PLAYER, _shape, b_temp))
 		{
 			if (b_temp)
 			{
@@ -59,7 +61,7 @@ bool CollisionManager::CheckCollision(SubjectTag subject, RECT shape, EventTag e
 				player->ToBeHit();
 			}
 		}
-		if (trapManager->CheckCollision(shape, b_temp))
+		if (trapManager->CheckCollision(_shape, b_temp))
 		{
 			if (b_temp)
 			{
@@ -77,9 +79,10 @@ bool CollisionManager::CheckCollision(SubjectTag subject, RECT shape, EventTag e
 		break;
 	}
 	case SubjectTag::MONSTER:
-		player->CheckCollision(subject, shape);
+		player->CheckCollision(_subject, _shape, _eventTag);
+		
 
-		if (trapManager->CheckCollision(shape, b_temp))
+		if (trapManager->CheckCollision(_shape, b_temp))
 		{
 			//return true;
 		}
@@ -89,26 +92,48 @@ bool CollisionManager::CheckCollision(SubjectTag subject, RECT shape, EventTag e
 	case SubjectTag::TRAP:
 		break;
 	case SubjectTag::PLATFORM:
-		if (player->CheckCollision(subject, shape))
+		if (player->CheckCollision(_subject, _shape))
 		{
 			return true;
 		}
 	
 		break;
 	case SubjectTag::AMMO:
-		if (player->CheckCollision(subject, shape))
+		if (player->CheckCollision(_subject, _shape))
 		{
 			return true;
 		}
 		break;
 	case SubjectTag::WEAPON:
-		if (monsterManager->CheckCollision(SubjectTag::WEAPON, shape, b_temp))
+		if (monsterManager->CheckCollision(SubjectTag::WEAPON, _shape, b_temp))
 		{
 			player->AttackHit();
+			return true;
 		}
 		break;
 	}
 	return false;
+}
+
+POINTFLOAT CollisionManager::RangeCheckCollision(SubjectTag _subject, RECT _shape, EventTag _eventTag)
+{
+	switch (_subject)
+	{
+	case SubjectTag::PLAYER:
+		break;
+	case SubjectTag::MONSTER:
+		if (player->CheckCollision(_subject, _shape, _eventTag))
+		{
+			if (_eventTag == EventTag::RANGECOLLISION)
+			{
+				return player->GetPos();
+			}
+		}
+		break;
+	case SubjectTag::WEAPON:
+		break;
+	}
+	return POINTFLOAT({ 0,0 });
 }
 
 void CollisionManager::CheckItem(RECT shape)
@@ -122,25 +147,3 @@ void CollisionManager::CheckItem(RECT shape)
 	}
 }
 
-SubjectTag CollisionManager::testCheck(SubjectTag subjectTag, RECT shape)
-{
-	switch (subjectTag)
-	{
-	case SubjectTag::PLAYER:
-		/*if (monsterManager->CheckCollision(shape))
-		{
-			return SubjectTag::MONSTER;
-		}
-		if (trapManager->CheckCollision(shape))
-		{
-			return SubjectTag::TRAP;
-		}*/
-		break;
-	case SubjectTag::MONSTER:
-		break;
-	default:
-		break;
-	}
-
-	return SubjectTag::IDLE;
-}

@@ -171,6 +171,7 @@
     <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="playerWeapon.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="StageScene.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -218,6 +219,7 @@
     <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="playerWeapon.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="StageScene.h" />

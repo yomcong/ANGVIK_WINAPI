@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include "Config.h"
 #include "GameEntity.h"
  
@@ -17,7 +18,7 @@ public:
 	void Render(HDC hdc);
 	void Release();
 
-	void CreateItem(MonsterType monsterType);
+	void CreateItem(SubjectTag _subTag, POINTFLOAT _pos, WeaponType _weaponType = WeaponType::IDLE, ItemGrade _itemGrade = ItemGrade::IDLE, MonsterType _monsterType = MonsterType::IDLE);
 	bool CheckCollision(RECT shape, ItemType& itemType, ItemGrade& itemGrade, WeaponType& weaponType);
 	//void UseItem();
 

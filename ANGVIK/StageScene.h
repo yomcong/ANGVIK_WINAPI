@@ -1,4 +1,5 @@
 #pragma once
+#include "stdafx.h"
 #include "GameEntity.h"
 #include "Config.h"
 
@@ -21,6 +22,7 @@ class Image;
 class TrapManager;
 class CollisionManager;
 class ItemManager;
+class AmmoManager;
 class StageScene : public GameEntity	
 {
 public:
@@ -48,6 +50,7 @@ private:
 	TrapManager* trapManager = nullptr;
 	CollisionManager* collisionManager = nullptr;
 	ItemManager* itemManager = nullptr;
+	AmmoManager* ammoManager = nullptr;
 	//Kong* kong = nullptr;
 
 	// ÇÈ¼¿ Ãæµ¹

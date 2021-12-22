@@ -56,7 +56,7 @@ void ImageManager::Init()
 	AddImage("image/item/골드부메랑_SP.bmp", 1296, 54, 24, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트
 
 	AddImage("image/item/R_골드칼_SP.bmp", 1188, 108, 11, 1, true, RGB(255, 255, 255));		// 황금 칼 스프라이트
-	AddImage("image/item/R_골드랜스_SP.bmp", 812, 116, 9, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트
+	AddImage("image/item/R_골드랜스_SP.bmp", 812, 116, 7, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트
 	AddImage("image/item/R_골드부메랑_SP.bmp", 1296, 54, 24, 1, true, RGB(255, 255, 255));	// 황금 부메랑 스프라이트
 
 	// 인벤토리

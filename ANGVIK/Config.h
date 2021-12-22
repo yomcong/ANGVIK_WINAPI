@@ -1,18 +1,10 @@
 #pragma once
-#include <Windows.h>
-#include <stdlib.h>
-#include <math.h>
-#include <vector>
-#include <map>
-#include <iostream>
-#include <string>
-
 using namespace std;
 
 #pragma comment(lib, "winmm.lib")
 
 enum class SubjectTag { IDLE, PLAYER, MONSTER, ITEM	, TRAP, PLATFORM , AMMO, WEAPON };
-enum class EventTag { IDLE, ADD, INWINDOW, OUTWINDOW, COLLISION, RELEASE, };
+enum class EventTag { IDLE, ADD, INWINDOW, OUTWINDOW, RANGECOLLISION, RELEASE, };
 enum class direction { LEFT = -1, RIGHT = 1};
 
 enum class MonsterType {IDLE, KONG, MONKEY, ENT};
