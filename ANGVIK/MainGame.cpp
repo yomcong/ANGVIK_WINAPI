@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "MainGame.h"
 #include "Image.h"
 #include "GameManager.h"
@@ -6,7 +7,7 @@ HRESULT MainGame::Init()
 {
 	//KeyManager::GetSingleton()->Init();
 	ImageManager::GetSingleton()->Init();
-	TimerManager::GetSingleton()->Init();
+	//TimerManager::GetSingleton()->Init();
 	SceneManager::GetSingleton()->Init();
 	//GameManager::GetSingleton()->Init();
 	MapColliderManager::GetSingleton()->Init();
@@ -14,6 +15,7 @@ HRESULT MainGame::Init()
 	ParticleManager::GetSingleton()->Init();
 
 	Input::Init(g_hWnd);
+	Timer::Init();
 
 	SceneManager::GetSingleton()->ChangeScene("TitleScene");
 
@@ -29,7 +31,7 @@ HRESULT MainGame::Init()
 
 void MainGame::Update()
 {
-	TimerManager::GetSingleton()->Update();
+	//TimerManager::GetSingleton()->Update();
 
 	Input::Update();
 
@@ -55,7 +57,7 @@ void MainGame::Render(HDC hdc)
 	ParticleManager::GetSingleton()->Render(hBackBufferDC);
 	//fps Ç¥½Ã.
 #ifdef _DEBUG
-	TimerManager::GetSingleton()->Render(hBackBufferDC);
+	//TimerManager::GetSingleton()->Render(hBackBufferDC);
 
 	//wsprintf(mxText, "Mouse x : %d", g_ptMouse.x);
 	//TextOut(hBackBufferDC, WIN_SIZE_X - 150, 50, mxText, strlen(mxText));
@@ -70,7 +72,7 @@ void MainGame::Release()
 {
 	SAFE_RELEASE(backBuffer);
 
-	TimerManager::GetSingleton()->Release();
+	//TimerManager::GetSingleton()->Release();
 
 	ImageManager::GetSingleton()->Release();
 

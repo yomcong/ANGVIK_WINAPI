@@ -1,4 +1,4 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "Config.h"
 #include "Subject.h"
 #include "Observer.h"

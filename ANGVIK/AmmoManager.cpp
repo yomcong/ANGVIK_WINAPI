@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "AmmoManager.h"
 #include "Player.h"
 #include "KongAmmo.h"
@@ -26,8 +27,18 @@ HRESULT AmmoManager::Init(ItemManager* _itemManager)
 	{
 		vecPlayerWeapons[i] = new playerWeapon;
 	}
-	vecPlayerWeapons[(int)WeaponType::LANCE]->Init(SubjectTag::WEAPON, ItemGrade::GOLD, WeaponType::LANCE, _itemManager);
-	vecPlayerWeapons[(int)WeaponType::BOOMERANG]->Init(SubjectTag::WEAPON, ItemGrade::GOLD, WeaponType::BOOMERANG, _itemManager);
+
+	// 유연하게 할 방법 생각
+	vecPlayerWeapons[0]->Init(SubjectTag::WEAPON, ItemGrade::GOLD, WeaponType::LANCE, _itemManager);
+	vecPlayerWeapons[1]->Init(SubjectTag::WEAPON, ItemGrade::GOLD, WeaponType::LANCE, _itemManager);
+	vecPlayerWeapons[2]->Init(SubjectTag::WEAPON, ItemGrade::SILVER, WeaponType::LANCE, _itemManager);
+	vecPlayerWeapons[3]->Init(SubjectTag::WEAPON, ItemGrade::SILVER, WeaponType::LANCE, _itemManager);
+	vecPlayerWeapons[4]->Init(SubjectTag::WEAPON, ItemGrade::GOLD, WeaponType::BOOMERANG, _itemManager);
+	vecPlayerWeapons[5]->Init(SubjectTag::WEAPON, ItemGrade::GOLD, WeaponType::BOOMERANG, _itemManager);
+	vecPlayerWeapons[6]->Init(SubjectTag::WEAPON, ItemGrade::SILVER, WeaponType::BOOMERANG, _itemManager);
+	vecPlayerWeapons[7]->Init(SubjectTag::WEAPON, ItemGrade::SILVER, WeaponType::BOOMERANG, _itemManager);
+	/*vecPlayerWeapons[(int)WeaponType::LANCE]->Init(SubjectTag::WEAPON, ItemGrade::GOLD, WeaponType::LANCE, _itemManager);
+	vecPlayerWeapons[(int)WeaponType::BOOMERANG]->Init(SubjectTag::WEAPON, ItemGrade::GOLD, WeaponType::BOOMERANG, _itemManager);*/
 
 	return S_OK;
 }
@@ -91,7 +102,9 @@ void AmmoManager::Release()
 
 void AmmoManager::EntFire(POINTFLOAT pos, int dir)
 {
-	for (int i = 0; i < entAmmoMaxCount; ++i)
+	// 20발만 쏘게해야함
+	int ammoCount = 0;
+	for (int i = 0; i < 100; ++i)
 	{
 		// 리사이클 
 		if (vecEntAmmos[i]->GetIsAlive())
@@ -119,6 +132,12 @@ void AmmoManager::EntFire(POINTFLOAT pos, int dir)
 		float moveSpeed = (float)RANDOM(50, 150);
 
 		vecEntAmmos[i]->IsFire(pos, angle, dir, moveSpeed);
+
+		++ammoCount;
+		if (ammoCount >= 20)
+		{
+			break;
+		}
 	}
 }
 
@@ -137,11 +156,63 @@ void AmmoManager::KongFire(POINTFLOAT pos, float angle, int dir)
 	}
 }
 
-void AmmoManager::WeaponAttack(SubjectTag _subTag, WeaponType _weaponType, POINTFLOAT _pos, int _dir)
+void AmmoManager::WeaponAttack(SubjectTag _subTag, ItemGrade _itemGrade, WeaponType _weaponType, POINTFLOAT _pos, int _dir)
 {
-	if (vecPlayerWeapons[(int)_weaponType]->GetIsAlive() == false)
+	if (_weaponType == WeaponType::LANCE)
 	{
-		vecPlayerWeapons[(int)_weaponType]->WeaponFire(_pos, _dir);
+		if (_itemGrade == ItemGrade::GOLD)
+		{
+			for (int i = 0; i < 2; ++i)
+			{
+				if (vecPlayerWeapons[i]->GetIsAlive())
+				{
+					continue;
+				}
+				vecPlayerWeapons[i]->WeaponFire(_pos, _dir);
+				break;
+			}
+		}
+		else
+		{
+			for (int i = 2; i < 4; ++i)
+			{
+				if (vecPlayerWeapons[i]->GetIsAlive())
+				{
+					continue;
+				}
+				vecPlayerWeapons[i]->WeaponFire(_pos, _dir);
+				break;
+			}
+		}
+	}
+	else if (_weaponType == WeaponType::BOOMERANG)
+	{
+		if (_itemGrade == ItemGrade::GOLD)
+		{
+			for (int i = 4; i < 6; ++i)
+			{
+				if (vecPlayerWeapons[i]->GetIsAlive())
+				{
+					continue;
+				}
+				vecPlayerWeapons[i]->WeaponFire(_pos, _dir);
+				break;
+			}
+		}
+		else
+		{
+			for (int i = 6; i < 8; ++i)
+			{
+				if (vecPlayerWeapons[i]->GetIsAlive())
+				{
+					continue;
+				}
+				vecPlayerWeapons[i]->WeaponFire(_pos, _dir);
+				break;
+			}
+		}
+		
+
 	}
 
 }

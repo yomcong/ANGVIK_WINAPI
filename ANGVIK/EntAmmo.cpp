@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "EntAmmo.h"
 #include "Image.h"
 
@@ -49,10 +50,10 @@ void EntAmmo::Update()
 {
 	if (b_IsAlive)
 	{
-		frameCount += TimerManager().GetSingleton()->GetDeltaTime();
+		frameCount += Timer::GetDeltaTime();
 
-		pos.x += cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-		pos.y -= sin(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+		pos.x += cos(moveAngle) * moveSpeed * Timer::GetDeltaTime();
+		pos.y -= sin(moveAngle) * moveSpeed * Timer::GetDeltaTime();
 
 		if (renderPos.x <0 || renderPos.x >WIN_SIZE_X ||
 			renderPos.y <0 || renderPos.y > WIN_SIZE_Y ||

@@ -1,65 +1,98 @@
 #pragma once
-using namespace std;
+#include "Common.h"
+#include "Extern.h"
+#include "Macro.h"
 
-#pragma comment(lib, "winmm.lib")
+//enum class SubjectTag { IDLE, PLAYER, MONSTER, ITEM, TRAP, PLATFORM, AMMO, WEAPON };
+//enum class EventTag { IDLE, ADD, INWINDOW, OUTWINDOW, RANGECOLLISION, RELEASE, };
+//enum class direction { LEFT = -1, RIGHT = 1 };
+//
+//enum class MonsterType { IDLE, KONG, MONKEY, ENT };
+//
+//enum class ItemType { IDLE, HELMET, ARMOR, WEAPON, SHOES, OLIS };
+//enum class WeaponType { IDLE, SWORD, BOOMERANG, LANCE, STAFF };
+//enum class ItemGrade { IDLE, BASIC, GOLD, SILVER };
+//
+//struct ItemInfo
+//{
+//	ItemType itemType = ItemType::IDLE;
+//	ItemGrade itemgrade = ItemGrade::IDLE;
+//	WeaponType weaponType = WeaponType::IDLE;
+//};
 
-enum class SubjectTag { IDLE, PLAYER, MONSTER, ITEM	, TRAP, PLATFORM , AMMO, WEAPON };
-enum class EventTag { IDLE, ADD, INWINDOW, OUTWINDOW, RANGECOLLISION, RELEASE, };
-enum class direction { LEFT = -1, RIGHT = 1};
 
-enum class MonsterType {IDLE, KONG, MONKEY, ENT};
 
-enum class ItemType {IDLE, HELMET, ARMOR, WEAPON, SHOES, OLIS};
-enum class WeaponType {IDLE, SWORD, BOOMERANG, LANCE, STAFF};
-enum class ItemGrade {IDLE, BASIC, GOLD, SILVER};
-
-struct ItemInfo
-{
-	ItemType itemType = ItemType::IDLE;
-	ItemGrade itemgrade= ItemGrade::IDLE;
-	WeaponType weaponType = WeaponType::IDLE;
-};
-
-// 창 시작위치
-#define WIN_START_POS_X	200
-#define WIN_START_POS_Y	100
-
-// 창 크기
-#define WIN_SIZE_X	960
-#define WIN_SIZE_Y	540
-
-#define PI 3.14159265357989
-#define PI2 (3.14159265357989 * 2)
-
-#define DEGREE_TO_RADIAN(x)		(x * PI / 180.0f)
-
-#define SAFE_RELEASE(p)	{ if (p) { p->Release(); delete p; p = nullptr; } }
-#define SAFE_DELETE(p)	{ if (p) { delete p; p = nullptr; } }
-
-#ifdef _DEBUG
-#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
-// Replace _NORMAL_BLOCK with _CLIENT_BLOCK if you want the
-// allocations to be of _CLIENT_BLOCK type
-#else
-#define DBG_NEW new
-#endif
-
-#include "TimerManager.h"
-#include "ImageManager.h"
-#include "KeyManager.h"
-#include "SceneManager.h"
-#include "GameManager.h"
-#include "MapColliderManager.h"
-#include "CameraManager.h"
-#include "InputManager.h"
-#include "CollisionManager.h"
-#include "ParticleManager.h"
-
-extern HWND g_hWnd;
-extern HINSTANCE g_hInstance;
-extern POINT g_ptMouse;
-
-#define RANDOM(minNum, maxNum) (rand() % (maxNum - minNum+1)) + minNum
+//#pragma comment(lib, "winmm.lib")
+//using namespace std;
+//
+//
+//enum class SubjectTag { IDLE, PLAYER, MONSTER, ITEM	, TRAP, PLATFORM , AMMO, WEAPON };
+//enum class EventTag { IDLE, ADD, INWINDOW, OUTWINDOW, RANGECOLLISION, RELEASE, };
+//enum class direction { LEFT = -1, RIGHT = 1};
+//
+//enum class MonsterType {IDLE, KONG, MONKEY, ENT};
+//
+//enum class ItemType {IDLE, HELMET, ARMOR, WEAPON, SHOES, OLIS};
+//enum class WeaponType {IDLE, SWORD, BOOMERANG, LANCE, STAFF};
+//enum class ItemGrade {IDLE, BASIC, GOLD, SILVER};
+//
+//struct ItemInfo
+//{
+//	ItemType itemType = ItemType::IDLE;
+//	ItemGrade itemgrade= ItemGrade::IDLE;
+//	WeaponType weaponType = WeaponType::IDLE;
+//};
+//
+//// 창 시작위치
+//#define WIN_START_POS_X	200
+//#define WIN_START_POS_Y	100
+//
+//// 창 크기
+//#define WIN_SIZE_X	960
+//#define WIN_SIZE_Y	540
+//
+//#define PI 3.14159265357989
+//#define PI2 (3.14159265357989 * 2)
+//
+//#define DEGREE_TO_RADIAN(x)		(x * PI / 180.0f)
+//
+//#define SAFE_RELEASE(p)	{ if (p) { p->Release(); delete p; p = nullptr; } }
+//#define SAFE_DELETE(p)	{ if (p) { delete p; p = nullptr; } }
+//
+//#ifdef _DEBUG
+//#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+//// Replace _NORMAL_BLOCK with _CLIENT_BLOCK if you want the
+//// allocations to be of _CLIENT_BLOCK type
+//#else
+//#define DBG_NEW new
+//#endif
+//
+//#include <Windows.h>
+//#include <stdlib.h>
+//#include <math.h>
+//#include <vector>
+//#include <map>
+//#include <iostream>
+//#include <string>
+//
+////#include "TimerManager.h"
+//#include "ImageManager.h"
+//#include "KeyManager.h"
+//#include "SceneManager.h"
+//#include "GameManager.h"
+//#include "MapColliderManager.h"
+//#include "CameraManager.h"
+//#include "InputManager.h"
+//#include "CollisionManager.h"
+//#include "ParticleManager.h"
+//#include "Timer.h"
+//
+//
+//extern HWND g_hWnd;
+//extern HINSTANCE g_hInstance;
+//extern POINT g_ptMouse;
+//
+//#define RANDOM(minNum, maxNum) (rand() % (maxNum - minNum+1)) + minNum
 
 /*
 
@@ -131,7 +164,6 @@ enemyManager 는 그 함수가 호출됬을때
 그러면 조건문을써서 고양이인지 개인지 구분, 후 
 */
 
-
 /*
 콜리전 매니저가
 플레이어, 몬스터매니저, 트랩매니저의 주소를 알고잇는다.
@@ -186,5 +218,28 @@ enemyManager 는 그 함수가 호출됬을때
 ex) 몹 스폰, 히든맵
 
 물 픽셀 지워주기
+
+*/
+
+
+/*
+
+경사진곳 애니메이션
+
+옵저버 상속으로 바꾸기
+
+트리거 추가해주기(히든맵, 스포너)
+
+몹 배치해주기 
+
+-- 아이템 추가(물약인챈트추가), 몬스터 추가--
+->테스트씬 추가
+->테스트씬에 플랫폼 등등 추가해보기(엘리베이터, 무브워크?)
+
+
+-- 캐릭터 상태패턴으로 리팩토링 -- 
+->애니메이션 작업
+->아이템 추가
+
 
 */

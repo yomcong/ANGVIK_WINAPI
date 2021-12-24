@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "Trap.h"
 
 HRESULT Trap::Init(POINTFLOAT pos, POINT bodySize)

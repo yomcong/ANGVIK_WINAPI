@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include "Config.h"
 #include "GameEntity.h"
 
@@ -22,7 +21,7 @@ public:
 
 
 private:
-	int trapMaxCount = 9;
+	int trapMaxCount = 15;
 	int PlatformMaxCount = 10;
 
 	vector<Trap*> vecTraps = {};

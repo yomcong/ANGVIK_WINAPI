@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "Platform.h"
 #include "Image.h"
 
@@ -46,7 +47,7 @@ void Platform::Update()
 {
 	if (false == b_isAlive)
 	{
-		respawnCount += TimerManager().GetSingleton()->GetDeltaTime();
+		respawnCount += Timer::GetDeltaTime();
 
 		if (respawnCount > 1.5)
 		{
@@ -61,7 +62,7 @@ void Platform::Update()
 		{
 			if (CollisionManager::GetSingleton()->CheckCollision(subTag, shape))
 			{
-				frameCount += TimerManager().GetSingleton()->GetDeltaTime();
+				frameCount += Timer::GetDeltaTime();
 				if (frameCount > 0.125)
 				{
 					if (framePos.y == 5)

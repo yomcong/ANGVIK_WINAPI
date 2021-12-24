@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "StageScene.h"
 #include "ImageManager.h"
 #include "Image.h"

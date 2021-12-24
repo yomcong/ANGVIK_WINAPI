@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "ImageManager.h"
 #include "Image.h"
 
@@ -46,18 +47,33 @@ void ImageManager::Init()
 	AddImage("image/player/unarmed/head_2.bmp", 40, 40, true, RGB(255, 255, 255));	// 머리 3 
 	AddImage("image/player/unarmed/head_3.bmp", 40, 40, true, RGB(255, 255, 255));	// 머리 4
 
-	AddImage("image/player/gold/body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 갑옷
-	AddImage("image/player/gold/foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 신발
+	AddImage("image/player/gold/body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 갑옷 스프라이트
+	AddImage("image/player/gold/foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 신발 스프라이트
+
+	AddImage("image/player/white/body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 흰색 갑옷 스프라이트
+	AddImage("image/player/white/foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 흰색 신발 스프라이트
+
 	AddImage("image/player/gold/R_body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 갑옷(Reverse)
 	AddImage("image/player/gold/R_foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 신발(Reverse)
 
-	AddImage("image/item/골드칼_SP.bmp", 1188, 108, 11, 1, true, RGB(255, 255, 255));			// 황금 칼 스프라이트
+	AddImage("image/player/white/R_body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 흰색 갑옷(Reverse)
+	AddImage("image/player/white/R_foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 흰색 신발(Reverse)
+
+	AddImage("image/item/골드칼_SP.bmp", 1188, 108, 11, 1, true, RGB(255, 255, 255));		// 황금 칼 스프라이트
 	AddImage("image/item/골드랜스_SP.bmp", 812, 116, 7, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트
 	AddImage("image/item/골드부메랑_SP.bmp", 1296, 54, 24, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트
 
-	AddImage("image/item/R_골드칼_SP.bmp", 1188, 108, 11, 1, true, RGB(255, 255, 255));		// 황금 칼 스프라이트
-	AddImage("image/item/R_골드랜스_SP.bmp", 812, 116, 7, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트
-	AddImage("image/item/R_골드부메랑_SP.bmp", 1296, 54, 24, 1, true, RGB(255, 255, 255));	// 황금 부메랑 스프라이트
+	AddImage("image/item/R_골드칼_SP.bmp", 1188, 108, 11, 1, true, RGB(255, 255, 255));		// 황금 칼 스프라이트		(Reverse)
+	AddImage("image/item/R_골드랜스_SP.bmp", 812, 116, 7, 1, true, RGB(255, 255, 255));		// 황금 창 스프라이트		(Reverse)
+	AddImage("image/item/R_골드부메랑_SP.bmp", 1296, 54, 24, 1, true, RGB(255, 255, 255));	// 황금 부메랑 스프라이트	(Reverse)
+
+	AddImage("image/item/흰색칼_SP.bmp", 946, 86, 11, 1, true, RGB(255, 255, 255))	;		// 흰색 칼 스프라이트
+	AddImage("image/item/흰색랜스_SP.bmp", 728, 104, 7, 1, true, RGB(255, 255, 255));		// 흰색 창 스프라이트
+	AddImage("image/item/흰색부메랑_SP.bmp", 1704, 71, 24, 1, true, RGB(255, 255, 255));		// 흰색 부메랑 스프라이트
+
+	AddImage("image/item/R_흰색칼_SP.bmp", 946, 86, 11, 1, true, RGB(255, 255, 255));		// 흰색 칼 스프라이트		(Reverse)
+	AddImage("image/item/R_흰색랜스_SP.bmp", 728, 104, 7, 1, true, RGB(255, 255, 255));		// 흰색 창 스프라이트		(Reverse)
+	AddImage("image/item/R_흰색부메랑_SP.bmp", 1704, 71, 24, 1, true, RGB(255, 255, 255));	// 흰색 부메랑 스프라이트	(Reverse)
 
 	// 인벤토리
 	AddImage("image/etc/inventory.bmp", 132, 161);	// 인벤토리 ui
@@ -76,15 +92,24 @@ void ImageManager::Init()
 	
 
 	// 아이템 
-	AddImage("image/item/황투.bmp", 28, 15, true, RGB(255, 255, 255));	// 황금 갑옷
+	AddImage("image/item/황투.bmp", 28, 15, true, RGB(255, 255, 255));	// 황금 투구
 	AddImage("image/item/황갑.bmp", 24, 28, true, RGB(255, 255, 255));	// 황금 갑옷
-	AddImage("image/item/황신.bmp", 10, 11, true, RGB(255, 255, 255));	// 황금 갑옷
+	AddImage("image/item/황신.bmp", 10, 11, true, RGB(255, 255, 255));	// 황금 신발
 
-	AddImage("image/item/골드칼.bmp", 88, 20, true, RGB(255, 255, 255));	// 황금 갑옷
+	AddImage("image/item/백투.bmp", 28, 15, true, RGB(255, 255, 255));	// 흰색 투구
+	AddImage("image/item/백갑.bmp", 24, 28, true, RGB(255, 255, 255));	// 흰색 갑옷
+	AddImage("image/item/백신.bmp", 10, 11, true, RGB(255, 255, 255));	// 흰색 신발
+
+	AddImage("image/item/골드칼.bmp", 88, 20, true, RGB(255, 255, 255));	// 황금 칼
+	AddImage("image/item/흰색칼.bmp", 66, 17, true, RGB(255, 255, 255));	// 흰색 칼
+
 	AddImage("image/item/골드랜스.bmp", 96, 18, true, RGB(255, 255, 255));	// 황금 창 
-	AddImage("image/item/골드부메랑.bmp", 34, 24, true, RGB(255, 255, 255));	// 황금 부메랑
+	AddImage("image/item/흰색랜스.bmp", 84, 16, true, RGB(255, 255, 255));	// 흰색 창 
 
-	AddImage("image/item/골드오일.bmp", 15, 22, true, RGB(255, 255, 255));	// 황금 부메랑
+	AddImage("image/item/골드부메랑.bmp", 34, 24, true, RGB(255, 255, 255));	// 황금 부메랑
+	AddImage("image/item/흰색부메랑.bmp", 41, 34, true, RGB(255, 255, 255));	// 흰색 부메랑
+
+	AddImage("image/item/골드오일.bmp", 15, 22, true, RGB(255, 255, 255));	// 황금 오일
 
 	// 데스 이펙트
 	AddImage("image/effect.bmp", 600, 100, 6, 1, true, RGB(255, 255, 255));		// 데스 이펙트

@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "TrapManager.h"
 #include "Trap.h"
 #include "Platform.h"
@@ -52,11 +53,11 @@ void TrapManager::TrapSpawn()
 {
 	vecTraps.resize(trapMaxCount);
 
-	float spawnPosX[] = { 990.0f, 1593.0f, 2260.0f, 2282.0f, 2378.0f, 2412.0f, 2755.0f, 3240.0f, 3412.0f };
-	float spawnPosY[] = { 445.0f, 714.0f , 444.0f, 462.0f, 512.0f, 530.0f, 787.0f, 752.0f, 750.0f};
+	float spawnPosX[] = { 990.0f, 1593.0f, 2260.0f, 2282.0f, 2378.0f, 2412.0f, 2755.0f, 3240.0f, 3412.0f , 3915.0f, 4690.0f , 5202.0f, 5230.0f, 5320.0f, 5940.0f};
+	float spawnPosY[] = { 445.0f, 714.0f , 444.0f, 462.0f, 512.0f, 530.0f, 787.0f, 752.0f, 750.0f,343.0f,   895.0f, 808.0f, 800.0f, 750.0f, 380.0f};
 
-	int bodySizeX[] = { 30,80, 24, 24, 30, 31, 110, 55, 155 };
-	int bodySizeY[] = { 30,30, 46, 26, 30, 30, 40, 40, 40 };
+	int bodySizeX[] = { 30,80, 24, 24, 30, 31, 110, 55, 155,70,  40, 30, 45, 30, 100};
+	int bodySizeY[] = { 30,30, 46, 26, 30, 30, 40, 40, 40, 30,  30, 30, 30, 30, 30};
 
 	for (int i = 0; i < trapMaxCount; ++i)
 	{

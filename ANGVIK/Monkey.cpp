@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "Monkey.h"
 #include "Image.h"
 #include "Subject.h"
@@ -25,7 +26,7 @@ HRESULT Monkey::Init(POINTFLOAT pos)
 	bodySize.x = 20;
 	bodySize.y = 20;
 
-	moveSpeed = 100.0f;
+	moveSpeed = 150.0f;
 
 	shape.left = (int)pos.x - bodySize.x;
 	shape.top = (int)pos.y - bodySize.y;
@@ -92,7 +93,7 @@ void Monkey::ToBeHit()
 
 void Monkey::PlayAnimation()
 {
-	frameCount += TimerManager().GetSingleton()->GetDeltaTime();
+	frameCount += Timer::GetDeltaTime();
 
 	if (frameCount > 0.125)
 	{
@@ -145,7 +146,7 @@ void Monkey::DoAction()
 {
 	if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize))
 	{
-		pos.y += 3.0f;
+		pos.y += moveSpeed * Timer::GetDeltaTime();
 	}
 
 	POINTFLOAT tempPos = MapColliderManager::GetSingleton()->

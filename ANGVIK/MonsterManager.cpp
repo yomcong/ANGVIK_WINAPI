@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "MonsterManager.h"
 #include "Kong.h"
 #include "Monkey.h"
@@ -115,8 +116,8 @@ void MonsterManager::MonkeySpawn()
 	vecMonkeys.resize(MonkeyMaxCount);
 
 	// 5,6번째 옵저버 활용해서 트리거로 이닛해주기
-	float spawnPosX[] = { 500.0f, 850.0f, 1100.0f, 1400.0f, 2000.0f, 2100.0f };
-	float spawnPosY[] = { 350.0f, 382.0f, 390.0f, 390.0f, 250.0f, 250.0f };
+	float spawnPosX[] = { 500.0f, 850.0f, 1100.0f, 1400.0f, 2200.0f, 2300.0f };
+	float spawnPosY[] = { 350.0f, 382.0f, 390.0f, 390.0f, 300.0f, 300.0f };
 
 	for (int i = 0; i < vecMonkeys.size(); ++i)
 	{

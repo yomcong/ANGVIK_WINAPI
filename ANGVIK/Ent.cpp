@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "Ent.h"
 #include "Image.h"
 #include "Subject.h"
@@ -44,7 +45,7 @@ HRESULT Ent::Init(POINTFLOAT _pos, AmmoManager* _ammoManager )
 	bodySize.x = 50;
 	bodySize.y = 85;
 
-	moveSpeed = 100.0f;
+	moveSpeed = 150.0f;
 
 	shape.left = (int)pos.x - bodySize.x / 2;
 	shape.top = (int)pos.y - bodySize.y / 2;
@@ -143,7 +144,7 @@ void Ent::Release()
 
 void Ent::PlayAnimation()
 {
-	frameCount += TimerManager().GetSingleton()->GetDeltaTime();
+	frameCount += Timer::GetDeltaTime();
 
 	if (b_isAlive)
 	{
@@ -248,11 +249,11 @@ void Ent::DoAction()
 	{
 		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize))
 		{
-			pos.y += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+			pos.y += moveSpeed * Timer::GetDeltaTime();
 		}
 		else
 		{
-			attackDeley += TimerManager().GetSingleton()->GetDeltaTime();
+			attackDeley += Timer::GetDeltaTime();
 			if (attackDeley > 1.0)
 			{
 				b_attackReady = true;

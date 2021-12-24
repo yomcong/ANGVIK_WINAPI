@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "InputManager.h"
 
 bool Input::_currentKeyStates[256] = { false };

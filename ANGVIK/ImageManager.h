@@ -1,7 +1,9 @@
 #pragma once
-#include "stdafx.h"
 #include "Config.h"
 #include "Singleton.h"
+#include <string>
+
+using namespace std;
 
 class Image;
 class ImageManager : public Singleton<ImageManager>

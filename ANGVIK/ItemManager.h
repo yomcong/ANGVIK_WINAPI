@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include "Config.h"
 #include "GameEntity.h"
  
@@ -29,7 +28,7 @@ private:
 
 	ItemFactory* itemFactory[6] = {};*/
 
-	TestItem* Titem[11] = {};
+	TestItem* Titem[13] = {};
 	vector<TestItem*> vecItems = {};
 
 };

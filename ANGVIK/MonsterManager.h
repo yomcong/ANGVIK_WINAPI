@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include "Config.h"
 #include "GameEntity.h"
 #include "Observer.h"

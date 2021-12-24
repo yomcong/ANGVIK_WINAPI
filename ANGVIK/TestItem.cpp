@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "TestItem.h"
 #include "Image.h"
 
@@ -36,12 +37,13 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 			break;
 		case ItemGrade::GOLD:
 			itemName += "È²°©.bmp";
-			bodySize.x = 10;
-			bodySize.y = 10;
 			break;
 		case ItemGrade::SILVER:
+			itemName += "¹é°©.bmp";
 			break;
 		}
+			bodySize.x = 10;
+			bodySize.y = 10;
 		break;
 	case ItemType::WEAPON:
 		switch (weaponType)
@@ -68,12 +70,13 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 				break;
 			case ItemGrade::GOLD:
 				itemName += "°ñµåÄ®.bmp";
-				bodySize.x = 25;
-				bodySize.y = 10;
 				break;
 			case ItemGrade::SILVER:
+				itemName += "Èò»öÄ®.bmp";
 				break;
 			}
+			bodySize.x = 25;
+			bodySize.y = 10;
 			break;
 		case WeaponType::BOOMERANG:
 			switch (itemGrade)
@@ -84,12 +87,13 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 				break;
 			case ItemGrade::GOLD:
 				itemName += "°ñµåºÎ¸Þ¶û.bmp";
-				bodySize.x = 10;
-				bodySize.y = 10;
 				break;
 			case ItemGrade::SILVER:
+				itemName += "Èò»öºÎ¸Þ¶û.bmp";
 				break;
 			}
+			bodySize.x = 10;
+			bodySize.y = 10;
 			break;
 		case WeaponType::LANCE:
 			switch (itemGrade)
@@ -100,12 +104,14 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 				break;
 			case ItemGrade::GOLD:
 				itemName += "°ñµå·£½º.bmp";
-				bodySize.x = 30;
-				bodySize.y = 10;
+				
 				break;
 			case ItemGrade::SILVER:
+				itemName += "Èò»ö·£½º.bmp";
 				break;
 			}
+			bodySize.x = 30;
+			bodySize.y = 10;
 			break;
 		}
 
@@ -123,10 +129,11 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 			bodySize.y = 5;
 			break;
 		case ItemGrade::SILVER:
-			break;
-		default:
+			itemName += "¹é½Å.bmp";
 			break;
 		}
+		bodySize.x = 5;
+		bodySize.y = 5;
 		break;
 	case ItemType::OLIS:
 		switch (itemGrade)
@@ -156,6 +163,8 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 
 	renderPos = pos;
 
+	moveSpeed = 200;
+
 	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
 	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
 
@@ -171,7 +180,7 @@ void TestItem::Update()
 {
 	if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, 100, bodySize))
 	{
-		pos.y += 3.0f;
+		pos.y += moveSpeed * Timer::GetDeltaTime();
 	}
 
 	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;

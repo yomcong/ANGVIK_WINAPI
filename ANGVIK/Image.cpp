@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "Image.h"
 
 HRESULT Image::Init(int width, int height)

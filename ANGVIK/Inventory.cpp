@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "Inventory.h"
 #include "Image.h"
 #include "Player.h"
@@ -470,6 +471,11 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 				vecItemInfos.push_back(tempInfo);
 				break;
 			case ItemGrade::SILVER:
+				itemName += "Èò»öÄ®.bmp";
+				tempInfo.itemgrade = ItemGrade::SILVER;
+				tempInfo.itemType = ItemType::WEAPON;
+				tempInfo.weaponType = WeaponType::SWORD;
+				vecItemInfos.push_back(tempInfo);
 				break;
 			}
 			break;
@@ -488,6 +494,11 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 				vecItemInfos.push_back(tempInfo);
 				break;
 			case ItemGrade::SILVER:
+				itemName += "Èò»öºÎ¸Þ¶û.bmp";
+				tempInfo.itemgrade = ItemGrade::SILVER;
+				tempInfo.itemType = ItemType::WEAPON;
+				tempInfo.weaponType = WeaponType::BOOMERANG;
+				vecItemInfos.push_back(tempInfo);
 				break;
 			}
 			break;
@@ -506,6 +517,11 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 				vecItemInfos.push_back(tempInfo);
 				break;
 			case ItemGrade::SILVER:
+				itemName += "Èò»ö·£½º.bmp";
+				tempInfo.itemgrade = ItemGrade::GOLD;
+				tempInfo.itemType = ItemType::WEAPON;
+				tempInfo.weaponType = WeaponType::LANCE;
+				vecItemInfos.push_back(tempInfo);
 				break;
 			}
 			break;

@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "MapColliderManager.h"
 #include "Image.h"
 
@@ -21,7 +22,7 @@ void MapColliderManager::Update()
 
 bool MapColliderManager::IsFalling(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize)
 {
-	//float tempPosY = y + moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+	//float tempPosY = y + moveSpeed * Timer::GetDeltaTime();
 	
 	for (int i = (int)(bodySize.x * 0.2); i <= (int)(bodySize.x * 0.8); i++)
 	{
@@ -37,7 +38,7 @@ bool MapColliderManager::IsFalling(POINTFLOAT pos, RECT shape, float moveSpeed, 
 		{
 			return false;
 		}
-		//cout << (y + (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime())) << "\n";
+		//cout << (y + (moveSpeed * Timer::GetDeltaTime())) << "\n";
 		//cout << pos.y << "\n";
 	}
 	return true;
@@ -86,7 +87,7 @@ POINTFLOAT MapColliderManager::Move(POINTFLOAT pos, RECT shape, float moveSpeed,
 
 	}
 
-	pos.x = (moveSpeed * TimerManager::GetSingleton()->GetDeltaTime()) * dir;
+	pos.x = (moveSpeed * Timer::GetDeltaTime()) * dir;
 	pos.y = -height;
 	return pos;
 }

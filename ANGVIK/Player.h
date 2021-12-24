@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include "Config.h"
 #include "GameObject.h"
 
@@ -30,6 +29,7 @@ public:
 	bool FindImage();
 	bool EquipItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType, bool ChangeItem = false, int dir = 0);
 	void AttackHit();
+	void Attacking();
 
 	inline bool SetIsPlatform(bool b_platform) { return this->b_platform = b_platform; }
 	inline bool SetInventoryClose(bool b_inventoryOpen) { return this->b_inventoryOpen = b_inventoryOpen; }
@@ -81,6 +81,8 @@ private:
 
 	float attackCount = false;
 
+	// 중력가속도
+	float gAccele = 98.0f;
 
 	// 앉아있을때 카메라 내리기
 	bool b_sitDownCamera = false;

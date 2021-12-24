@@ -1,5 +1,6 @@
 // main.cpp
 
+//#include "stdafx.h"
 #include <Windows.h>
 #include "CommonFunction.h"
 #include "MainGame.h"
@@ -15,11 +16,11 @@
 #endif
 
 // 전역변수
-POINT		g_ptMouse;
-HINSTANCE	g_hInstance;
-HWND		g_hWnd;
-LPSTR		g_lpszClass = (LPSTR)TEXT("ANGVIK");
-MainGame	g_mainGame;
+//POINT		g_ptMouse;
+//HINSTANCE	g_hInstance;
+//HWND		g_hWnd;
+//LPSTR		g_lpszClass = (LPSTR)TEXT("ANGVIK");
+//MainGame	g_mainGame;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage,
 	WPARAM wParam, LPARAM lParam);
@@ -64,15 +65,50 @@ int APIENTRY WinMain(_In_ HINSTANCE _hInstance, _In_opt_ HINSTANCE _hPrevInstanc
 	// 메인게임 초기화
 	g_mainGame.Init();
 
+
 	// 윈도우 출력
 	ShowWindow(g_hWnd, nCmdShow);
 
 	// 메시지 큐에 있는 메시지 처리
-	MSG message;
-	while (GetMessage(&message, 0, 0, 0))
+	MSG message = {};
+	/*while (GetMessage(&message, 0, 0, 0))
 	{
 		TranslateMessage(&message);
 		DispatchMessage(&message);
+	}*/
+	HDC hdc;
+	PAINTSTRUCT ps;
+	while (true)
+	{
+		if (PeekMessage(&message, nullptr, NULL, NULL, PM_REMOVE))
+		{
+			if (message.message == WM_QUIT)
+			{
+				break;
+			}
+
+			TranslateMessage(&message);
+			DispatchMessage(&message);
+		}
+		else
+		{
+			if (Timer::CanUpdate())
+			{
+				g_mainGame.Update();
+
+				hdc = BeginPaint(g_hWnd, &ps);
+
+				RECT rect;
+				SetMapMode(hdc, MM_ANISOTROPIC);
+				SetWindowExtEx(hdc, WIN_SIZE_X, WIN_SIZE_Y, NULL);	//창 크기
+				GetClientRect(g_hWnd, &rect);
+				SetViewportExtEx(hdc, rect.right, rect.bottom, NULL);
+
+				g_mainGame.Render(hdc);
+
+				EndPaint(g_hWnd, &ps);
+			}
+		}
 	}
 
 	// 메인게임 해제
@@ -100,21 +136,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 		//g_ptMouse.y = HIWORD(lParam);
 		break;
 	case WM_TIMER:
-		g_mainGame.Update();
-
+		//g_mainGame.Update();
 		break;
 	case WM_PAINT:		// 윈도우 화면이 다시 그려지는 경우 발생하는 메시지
-		hdc = BeginPaint(g_hWnd, &ps);
+		//hdc = BeginPaint(g_hWnd, &ps);
 
-		RECT rect;
-		SetMapMode(hdc, MM_ANISOTROPIC);
-		SetWindowExtEx(hdc, WIN_SIZE_X, WIN_SIZE_Y, NULL);	//창 크기
-		GetClientRect(g_hWnd, &rect);
-		SetViewportExtEx(hdc, rect.right, rect.bottom, NULL);
+		//RECT rect;
+		//SetMapMode(hdc, MM_ANISOTROPIC);
+		//SetWindowExtEx(hdc, WIN_SIZE_X, WIN_SIZE_Y, NULL);	//창 크기
+		//GetClientRect(g_hWnd, &rect);
+		//SetViewportExtEx(hdc, rect.right, rect.bottom, NULL);
 
-		g_mainGame.Render(hdc);
+		//g_mainGame.Render(hdc);
 
-		EndPaint(g_hWnd, &ps);
+		//EndPaint(g_hWnd, &ps);
 		break;
 	case WM_DESTROY:	// 닫기 버튼 메시지처리 (프로그램 종료)
 		PostQuitMessage(0);

@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "playerWeapon.h"
 #include "Image.h"
 #include "ItemManager.h"
@@ -9,36 +10,6 @@ HRESULT playerWeapon::Init(SubjectTag _subTag, ItemGrade _itemGrade, WeaponType 
 
 	switch (_weaponType)
 	{
-	case WeaponType::IDLE:
-		switch (_itemGrade)
-		{
-		case ItemGrade::IDLE:
-			break;
-		case ItemGrade::BASIC:
-			break;
-		case ItemGrade::GOLD:
-			break;
-		case ItemGrade::SILVER:
-			break;
-		}
-		break;
-	case WeaponType::SWORD:
-		switch (_itemGrade)
-		{
-		case ItemGrade::IDLE:
-			break;
-		case ItemGrade::BASIC:
-			break;
-		case ItemGrade::GOLD:
-			itemName += "°ñµåÄ®.bmp";
-			R_itemName += "R_°ñµåÄ®.bmp";
-			bodySize.x = 25;
-			bodySize.y = 10;
-			break;
-		case ItemGrade::SILVER:
-			break;
-		}
-		break;
 	case WeaponType::BOOMERANG:
 		switch (_itemGrade)
 		{
@@ -49,12 +20,14 @@ HRESULT playerWeapon::Init(SubjectTag _subTag, ItemGrade _itemGrade, WeaponType 
 		case ItemGrade::GOLD:
 			itemName += "°ñµåºÎ¸Þ¶û_SP.bmp";
 			R_itemName += "R_°ñµåºÎ¸Þ¶û_SP.bmp";
-			bodySize.x = 30;
-			bodySize.y = 30;
 			break;
 		case ItemGrade::SILVER:
+			itemName += "Èò»öºÎ¸Þ¶û_SP.bmp";
+			R_itemName += "R_Èò»öºÎ¸Þ¶û_SP.bmp";
 			break;
 		}
+		bodySize.x = 30;
+		bodySize.y = 30;
 		break;
 	case WeaponType::LANCE:
 		switch (_itemGrade)
@@ -66,12 +39,14 @@ HRESULT playerWeapon::Init(SubjectTag _subTag, ItemGrade _itemGrade, WeaponType 
 		case ItemGrade::GOLD:
 			itemName += "°ñµå·£½º_SP.bmp";
 			R_itemName += "R_°ñµå·£½º_SP.bmp";
-			bodySize.x = 70;
-			bodySize.y = 15;
 			break;
 		case ItemGrade::SILVER:
+			itemName += "Èò»ö·£½º_SP.bmp";
+			R_itemName += "R_Èò»ö·£½º_SP.bmp";
 			break;
 		}
+		bodySize.x = 70;
+		bodySize.y = 15;
 		break;
 	}
 
@@ -105,13 +80,13 @@ void playerWeapon::Update()
 	{
 		if (dir == direction::RIGHT)
 		{
-			pos.x += moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+			pos.x += moveSpeed * Timer::GetDeltaTime();
 		}
 		else
 		{
-			pos.x -= moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+			pos.x -= moveSpeed * Timer::GetDeltaTime();
 		}
-		
+
 		if (MapColliderManager::GetSingleton()->checkCollision(subTag, shape, (int)dir, bodySize) ||
 			CollisionManager::GetSingleton()->CheckCollision(subTag, shape))
 		{
@@ -162,7 +137,7 @@ void playerWeapon::Release()
 
 void playerWeapon::PlayAnimation()
 {
-	frameCount += TimerManager().GetSingleton()->GetDeltaTime();
+	frameCount += Timer::GetDeltaTime();
 
 	switch (myType)
 	{

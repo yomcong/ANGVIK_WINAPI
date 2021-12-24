@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #include "Config.h"
 #include "GameEntity.h"
 
@@ -20,7 +19,7 @@ public:
 
 	void EntFire(POINTFLOAT pos, int dir);
 	void KongFire(POINTFLOAT pos, float angle, int dir);
-	void WeaponAttack(SubjectTag _subTag, WeaponType _weaponType, POINTFLOAT _pos, int _dir);
+	void WeaponAttack(SubjectTag _subTag,ItemGrade _itemGrade, WeaponType _weaponType, POINTFLOAT _pos, int _dir);
 
 private:
 	int kongAmmoMaxCount = 20;

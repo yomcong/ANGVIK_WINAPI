@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "Kong.h"
 #include "Image.h"
 #include "Subject.h"
@@ -39,7 +40,7 @@ HRESULT Kong::Init(POINTFLOAT pos, AmmoManager* _ammoManager)
 	bodySize.y = 35;
 
 	subject = new Subject;
-
+	
 	shape.left = (int)pos.x - bodySize.x / 2;
 	shape.top = (int)pos.y - bodySize.y / 2;
 	shape.right = (int)pos.x + bodySize.x / 2;
@@ -139,8 +140,8 @@ void Kong::ToBeHit()
 
 void Kong::PlayAnimation()
 {
-	frameCount += TimerManager().GetSingleton()->GetDeltaTime();
-	if (frameCount > 0.125)
+	frameCount += Timer::GetDeltaTime();
+	if (frameCount > 0.100)
 	{
 		if (b_rangeInTarget)
 		{
@@ -197,7 +198,7 @@ void Kong::CheckAttackRange()
 	if (tempPos.x > 0 ||
 		tempPos.y > 0)
 	{
-		AttackDeleyCount += TimerManager::GetSingleton()->GetDeltaTime();
+		AttackDeleyCount += Timer::GetDeltaTime();
 
 		if (b_rangeInTarget == false)
 		{
@@ -205,7 +206,7 @@ void Kong::CheckAttackRange()
 			attackFrame.x = 0;
 		}
 
-		if (AttackDeleyCount > 0.875f)
+		if (AttackDeleyCount > 0.700f)
 		{
 
 			float targetAngle = atan2f(

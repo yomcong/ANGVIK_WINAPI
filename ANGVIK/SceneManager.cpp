@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "SceneManager.h"
 #include "GameEntity.h"
 #include "TitleScene.h"

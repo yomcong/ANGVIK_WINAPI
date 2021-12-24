@@ -13,7 +13,7 @@
 	클래스 추상화 : 클래스 간 공통되는 내용들을 추려낸 것.
 */
 
-#include "stdafx.h"
+#include "Config.h"
 #include "GameEntity.h"
 
 class Image;

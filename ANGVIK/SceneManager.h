@@ -1,8 +1,8 @@
 #pragma once
-#include "stdafx.h"
 #include "Config.h"
 #include "Singleton.h"
 #include <unordered_map>
+//#include <string>
 
 class GameEntity;
 class SceneManager : public Singleton<SceneManager>

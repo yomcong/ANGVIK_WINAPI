@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "KongAmmo.h"
 #include "Image.h"
 
@@ -24,7 +25,7 @@ HRESULT KongAmmo::Init()
 		return E_FAIL;
 	}
 
-	moveSpeed = 150.0f;
+	moveSpeed = 200.0f;
 
 	bodySize.x = 8;
 	bodySize.y = 8;
@@ -44,7 +45,7 @@ void KongAmmo::Update()
 	if (b_IsAlive)
 	{
 		// 애니메이션
-		frameCount += TimerManager().GetSingleton()->GetDeltaTime();
+		frameCount += Timer::GetDeltaTime();
 
 		if (frameCount > 0.0625)
 		{
@@ -80,8 +81,8 @@ void KongAmmo::Update()
 		// 히트하게되면 이동 X
 		if (false == b_ISHit)
 		{
-			pos.x += cos(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
-			pos.y -= sin(moveAngle) * moveSpeed * TimerManager::GetSingleton()->GetDeltaTime();
+			pos.x += cos(moveAngle) * moveSpeed * Timer::GetDeltaTime();
+			pos.y -= sin(moveAngle) * moveSpeed * Timer::GetDeltaTime();
 
 			if (MapColliderManager::GetSingleton()->checkCollision(subTag, shape, (int)dir, bodySize) || 
 				CollisionManager::GetSingleton()->CheckCollision(subTag, shape))

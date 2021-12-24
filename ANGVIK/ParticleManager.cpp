@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "ParticleManager.h"
 #include "Image.h"
 
@@ -20,7 +21,7 @@ HRESULT ParticleManager::Init()
 
 void ParticleManager::Update()
 {
-	frameCount += TimerManager().GetSingleton()->GetDeltaTime();
+	frameCount += Timer::GetDeltaTime();
 
 	if (frameCount > 0.0625)
 	{

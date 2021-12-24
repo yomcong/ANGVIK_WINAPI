@@ -1,3 +1,4 @@
+//#include "stdafx.h"
 #include "TitleScene.h"
 #include "Image.h"
 
@@ -75,8 +76,8 @@ HRESULT TitleScene::Init()
 
 void TitleScene::Update()
 {
-	elepsedCount += TimerManager::GetSingleton()->GetDeltaTime();
-	boxFramecount += TimerManager::GetSingleton()->GetDeltaTime();
+	elepsedCount += Timer::GetDeltaTime();
+	boxFramecount += Timer::GetDeltaTime();
 
 	if (Input::GetButtonDown(VK_SPACE))	// æ¿ ¿¸»Ø
 	{
@@ -174,7 +175,7 @@ void TitleScene::Release()
 void TitleScene::ChooseTitle()
 {
 	// ≈ÿΩ∫∆Æ »ÁµÈ»ÁµÈ æ÷¥œ∏ﬁ¿Ãº« ºˆƒ°
-	float animation = TimerManager::GetSingleton()->GetDeltaTime() * 5.0f;
+	float animation = Timer::GetDeltaTime() * 5.0f;
 
 	// º±≈√µ» æ¿ ≈ÿΩ∫∆Æ »ÁµÈ»ÁµÈ
 	switch (seletedTitle)

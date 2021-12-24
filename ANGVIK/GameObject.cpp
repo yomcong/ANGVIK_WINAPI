@@ -1,2 +1,2 @@
-#include "Config.h"
+//#include "stdafx.h"
 #include "GameObject.h"
