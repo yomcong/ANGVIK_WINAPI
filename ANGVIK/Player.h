@@ -113,7 +113,7 @@ private:
 	const POINT bodyMaxFrame = { 11, 1 };
 
 	// มกวมทย
-	float jumpPower = 0.0f;
+	float jumpingPower = 0.0f;
 	float invisibleTime = 0.0f;
 	float invisibleCount = 0.0f;
 	bool b_invisible = false;

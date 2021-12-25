@@ -46,10 +46,10 @@ HRESULT Kong::Init(POINTFLOAT pos, AmmoManager* _ammoManager)
 	shape.right = (int)pos.x + bodySize.x / 2;
 	shape.bottom = (int)pos.y + bodySize.y / 2;
 
-	rangeRect.left = (int)pos.x - bodySize.x * 5;
-	rangeRect.top = (int)pos.y - bodySize.y * 5;
-	rangeRect.right = (int)pos.x + bodySize.x * 5;
-	rangeRect.bottom = (int)pos.y + bodySize.y * 5;
+	rangeRect.left = (int)pos.x - bodySize.x * 6;
+	rangeRect.top = (int)pos.y - bodySize.y * 6;
+	rangeRect.right = (int)pos.x + bodySize.x * 6;
+	rangeRect.bottom = (int)pos.y + bodySize.y * 6;
 
 	renderPos = pos;
 

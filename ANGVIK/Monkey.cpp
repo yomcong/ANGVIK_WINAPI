@@ -144,7 +144,7 @@ void Monkey::CheckWindow()
 
 void Monkey::DoAction()
 {
-	if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize))
+	if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize, subTag))
 	{
 		pos.y += moveSpeed * Timer::GetDeltaTime();
 	}

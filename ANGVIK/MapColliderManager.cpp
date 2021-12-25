@@ -20,27 +20,48 @@ void MapColliderManager::Update()
 
 }
 
-bool MapColliderManager::IsFalling(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize)
+bool MapColliderManager::IsFalling(POINTFLOAT _pos, RECT _shape, float _moveSpeed, POINT _bodySize, SubjectTag _subTag)
 {
 	//float tempPosY = y + moveSpeed * Timer::GetDeltaTime();
 	
-	for (int i = (int)(bodySize.x * 0.2); i <= (int)(bodySize.x * 0.8); i++)
+	if (_subTag == SubjectTag::PLAYER)
 	{
-		color = GetPixel(pixelMap->GetMemDC(),
-			shape.left + i, shape.bottom + 1);
-
-		r = GetRValue(color);
-		g = GetGValue(color);
-		b = GetBValue(color);
-
-
-		if (false == (r == 255 && g == 0 && b == 255))
+		for (int i = (int)(_bodySize.x * 0.2); i <= (int)(_bodySize.x * 0.8); i++)
 		{
-			return false;
+			color = GetPixel(pixelMap->GetMemDC(),
+				_shape.left + i, _shape.bottom + 1);
+
+			r = GetRValue(color);
+			g = GetGValue(color);
+			b = GetBValue(color);
+
+
+			if (false == (r == 255 && g == 0 && b == 255))
+			{
+				return false;
+			}
 		}
-		//cout << (y + (moveSpeed * Timer::GetDeltaTime())) << "\n";
-		//cout << pos.y << "\n";
+
 	}
+	else
+	{
+		for (int i = 0; i <= _bodySize.x; i++)
+		{
+			color = GetPixel(pixelMap->GetMemDC(),
+				_shape.left + i, _shape.bottom + 1);
+
+			r = GetRValue(color);
+			g = GetGValue(color);
+			b = GetBValue(color);
+
+
+			if (false == (r == 255 && g == 0 && b == 255))
+			{
+				return false;
+			}
+		}
+	}
+
 	return true;
 
 }

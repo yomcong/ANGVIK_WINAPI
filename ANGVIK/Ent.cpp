@@ -4,7 +4,7 @@
 #include "Subject.h"
 #include "AmmoManager.h"
 
-HRESULT Ent::Init(POINTFLOAT _pos, AmmoManager* _ammoManager )
+HRESULT Ent::Init(POINTFLOAT _pos, AmmoManager* _ammoManager)
 {
 	basicEnt = ImageManager::GetSingleton()->FindImage("image/monster/Ent_move_6f.bmp");
 	if (basicEnt == nullptr)
@@ -38,7 +38,7 @@ HRESULT Ent::Init(POINTFLOAT _pos, AmmoManager* _ammoManager )
 	}
 	ammoManager = _ammoManager;
 
-	pos =_pos;
+	pos = _pos;
 
 	b_isAlive = true;
 
@@ -64,19 +64,17 @@ HRESULT Ent::Init(POINTFLOAT _pos, AmmoManager* _ammoManager )
 void Ent::Update()
 {
 	// 행동(이동,공격)
-	if (b_isAlive)
-	{
-		DoAction();
-		PlayAnimation();
-	}
+	DoAction();
+	PlayAnimation();
 	PosUpdate();
 	CheckWindow();
-	
+
 	// 디버깅
 	if (Input::GetButtonDown(VK_NUMPAD9))
 	{
 		DBrect == false ? DBrect = true : DBrect = false;
 	}
+
 
 }
 
@@ -247,7 +245,7 @@ void Ent::DoAction()
 	// 공격, 공격 준비 상태가 아닐경우 이동
 	if (false == (b_attackReady || b_attack))
 	{
-		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize))
+		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize, subTag))
 		{
 			pos.y += moveSpeed * Timer::GetDeltaTime();
 		}
@@ -266,18 +264,22 @@ void Ent::DoAction()
 		POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
 			Move(pos, shape, moveSpeed, (int)dir, bodySize);
 
-		if (tempPos.x == 0.0f)
+		if (tempPos.x == 0.0f )
 		{
 			dir == direction::RIGHT ? dir = direction::LEFT : dir = direction::RIGHT;
 		}
-
-		pos.x += tempPos.x;
-		pos.y += tempPos.y;
-
-		if (CollisionManager::GetSingleton()->CheckCollision(subTag, shape))
+		else
 		{
-			ToBeHit();
+			pos.x += tempPos.x;
+			pos.y += tempPos.y;
+
+			if (CollisionManager::GetSingleton()->CheckCollision(subTag, shape))
+			{
+				ToBeHit();
+			}
+
 		}
+
 
 	}
 }

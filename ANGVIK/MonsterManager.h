@@ -26,11 +26,11 @@ public:
 	virtual void OnNotify(Subject* _subject, MonsterType _monsterType, SubjectTag _subjectTag, EventTag _eventTag);
 
 private:
-	int kongMaxCount = 4;
+	int kongMaxCount = 9;
 	int MonkeyMaxCount = 6;
 	int EntMaxCount = 3;
 	
-	bool kongWindow[4] = { true };
+	bool kongWindow[9] = { true };
 	bool monkeyWindow[6] = { true };
 	bool entWindow[3] = { true };
 

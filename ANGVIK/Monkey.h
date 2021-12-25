@@ -1,10 +1,11 @@
 #pragma once
 #include "Config.h"
 #include "GameObject.h"
+//#include "Subject.h"
 
 class Image;
 class Subject;
-class Monkey : public GameObject
+class Monkey : public GameObject//, public Subject
 {
 public:
 	virtual ~Monkey() = default;
@@ -21,13 +22,20 @@ public:
 	void DoAction();
 
 	Subject* GetSubject() { return subject; }
+	//Subject* GetSubject() { return asdf; }
 
 private:
 	Image* monkey = nullptr;
 	Image* R_monkey = nullptr;
 	Image* deathEffect = nullptr;
+	
+	/*Subject* asdf = {};
+
+	Subject qwer = {};*/
 
 	Subject* subject = nullptr;
+
+	
 
 	POINT deathEffectFrame = { 7,0 };
 

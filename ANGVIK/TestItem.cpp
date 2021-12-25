@@ -178,7 +178,7 @@ HRESULT TestItem::Init(POINTFLOAT pos, ItemType itemType, ItemGrade itemGrade, W
 
 void TestItem::Update()
 {
-	if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, 100, bodySize))
+	if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, 100, bodySize, subTag))
 	{
 		pos.y += moveSpeed * Timer::GetDeltaTime();
 	}

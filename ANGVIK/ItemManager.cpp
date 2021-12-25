@@ -15,26 +15,19 @@ HRESULT ItemManager::Init()
 	itemFactory[5] = new TankLifeItemFactory;*/
 
 	// µð¹ö±ëÁß 
-	for (int i = 0; i < 13; ++i)
+	for (int i = 0; i < 6; ++i)
 	{
 		Titem[i] = new TestItem;
 	}
 
-	Titem[0]->Init({ 340, 350 }, ItemType::ARMOR, ItemGrade::GOLD);
-	Titem[1]->Init({ 350, 350 }, ItemType::SHOES, ItemGrade::GOLD);
-	Titem[2]->Init({ 400, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::LANCE);
-	Titem[3]->Init({ 450, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::SWORD);
-	Titem[4]->Init({ 500, 350 }, ItemType::WEAPON, ItemGrade::GOLD, WeaponType::BOOMERANG);
-	Titem[5]->Init({ 520, 350 }, ItemType::OLIS, ItemGrade::GOLD, WeaponType::IDLE);
-	Titem[6]->Init({ 540, 350 }, ItemType::OLIS, ItemGrade::GOLD, WeaponType::IDLE);
-	Titem[7]->Init({ 560, 350 }, ItemType::OLIS, ItemGrade::GOLD, WeaponType::IDLE);
-	Titem[8]->Init({ 580, 350 }, ItemType::WEAPON, ItemGrade::SILVER, WeaponType::BOOMERANG);
-	Titem[9]->Init({ 250, 350 }, ItemType::WEAPON, ItemGrade::SILVER, WeaponType::LANCE);
-	Titem[10]->Init({ 200, 350 }, ItemType::WEAPON, ItemGrade::SILVER, WeaponType::SWORD);
-	Titem[11]->Init({ 200, 350 }, ItemType::ARMOR, ItemGrade::SILVER);
-	Titem[12]->Init({ 220, 350 }, ItemType::SHOES, ItemGrade::SILVER);
+	Titem[0]->Init({ 800, 350 }, ItemType::ARMOR, ItemGrade::SILVER);
+	Titem[1]->Init({ 830, 350 }, ItemType::SHOES, ItemGrade::SILVER);
+	Titem[2]->Init({ 860, 350 }, ItemType::WEAPON, ItemGrade::SILVER, WeaponType::LANCE);
+	Titem[3]->Init({ 890, 350 }, ItemType::WEAPON, ItemGrade::SILVER, WeaponType::SWORD);
+	Titem[4]->Init({ 920, 350 }, ItemType::WEAPON, ItemGrade::SILVER, WeaponType::BOOMERANG);
+	Titem[5]->Init({ 950, 350 }, ItemType::OLIS, ItemGrade::GOLD, WeaponType::IDLE);
 
-	for (int i = 0; i < 13; ++i)
+	for (int i = 0; i < 6; ++i)
 	{
 		vecItems.push_back(Titem[i]);
 	}

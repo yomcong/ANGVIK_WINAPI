@@ -7,7 +7,7 @@
 #include "AmmoManager.h"
 
 #define JumpPower 85.0f
-#define gravityAcceleration (98*2)
+#define gravityAcceleration 98
  
 #define StartPosX 120.0f
 #define StartPosY 325.0f
@@ -47,18 +47,17 @@ HRESULT Player::Init(AmmoManager* _ammoManager)
 
 void Player::Update()
 {
-
 	// 점프상태가 아닐경우
 	if (state != State::JUMP)
 	{
 		// 내리막길(이동+낙하) 일경우 스테이트를 계속 바꿔주면서 애니메이션이 굉장히 부자연스러워짐. 고쳐야함
 		// 중력속도 추가해주기? 
-		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize)
+		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize, subTag)
 			&& b_platform == false)
 		{
 			gAccele += gAccele * Timer::GetDeltaTime();
 
-			if (gAccele >= 200)
+			if (gAccele >= 100)
 			{
 				ChangeState(State::Fall);
 			}
@@ -90,25 +89,28 @@ void Player::Update()
 		if (MapColliderManager::GetSingleton()->Jump(pos, shape, moveSpeed, bodySize))
 		{
 			// 카메라 예외조건
-			if (CameraManager::GetSingleton()->GetPos().y <= 100)
+			if (CameraManager::GetSingleton()->GetPos().y <= 50)
 			{
-				renderPos.y -= (moveSpeed + 50) * Timer::GetDeltaTime();
+				renderPos.y -= (moveSpeed + 30) * Timer::GetDeltaTime();
 			}
 			else
 			{
-				CameraManager::GetSingleton()->SetPosY(-(moveSpeed + 30) *Timer::GetDeltaTime());
+				CameraManager::GetSingleton()->SetPosY(-(moveSpeed+ 30) *Timer::GetDeltaTime());
 			}
 
-			jumpPower -= (moveSpeed ) * Timer::GetDeltaTime();
 
-			if (jumpPower <= 0)
+			if (jumpingPower <= 0)
 			{
 				ChangeState(State::Fall);
+			}
+			else
+			{
+				jumpingPower -= (moveSpeed ) * Timer::GetDeltaTime();
 			}
 		}
 		else
 		{
-			jumpPower = 0;
+			jumpingPower = 0;
 			ChangeState(State::Fall);
 		}
 	}
@@ -122,43 +124,49 @@ void Player::Update()
 		{
 			if (Input::GetButton(VK_LEFT))
 			{
-				// 카메라 예외조건(화면끝에 있을 때)
-				if (CameraManager::GetSingleton()->GetPos().x <= 0)
-				{
-					renderPos.x += MapColliderManager::GetSingleton()->
-						Move(pos, shape, moveSpeed, -1, bodySize).x;
-					renderPos.y += MapColliderManager::GetSingleton()->
-						Move(pos, shape, moveSpeed, -1, bodySize).y;
-				}
-				else
-				{
-					POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
-						Move(pos, shape, moveSpeed, -1, bodySize);
-					CameraManager::GetSingleton()->SetPosX(tempPos.x);
-					renderPos.y += tempPos.y;
-				}
 				// 상태 변경
 				ChangeAction(Action::LEFTMOVE);
 				dir = direction::LEFT;
-			}
-			if (Input::GetButton(VK_RIGHT))
-			{
-				// 오른쪽 끝 예외처리 해야함
-				if (renderPos.x < StartPointX)
+
+				// 카메라 예외조건(화면끝에 있을 때)
+				if (renderPos.x > StartPointX ||CameraManager::GetSingleton()->GetPos().x <= 0)
 				{
-					renderPos.x += moveSpeed * Timer::GetDeltaTime();
+					renderPos.x += MapColliderManager::GetSingleton()->
+						Move(pos, shape, moveSpeed, (int)dir, bodySize).x;
+					renderPos.y += MapColliderManager::GetSingleton()->
+						Move(pos, shape, moveSpeed, (int)dir, bodySize).y;
 				}
 				else
 				{
 					POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
-						Move(pos, shape, moveSpeed, 1, bodySize);
+						Move(pos, shape, moveSpeed, (int)dir, bodySize);
+					CameraManager::GetSingleton()->SetPosX(tempPos.x);
+					renderPos.y += tempPos.y;
+				}
+			}
+			if (Input::GetButton(VK_RIGHT))
+			{
+				// 상태 변경
+				ChangeAction(Action::RIGHTMOVE);
+				dir = direction::RIGHT;
+
+				// 카메라 예외조건(화면끝에 있을 때)
+				if (renderPos.x < StartPointX || CameraManager::GetSingleton()->GetPos().x >= 5700)
+				{
+					renderPos.x += MapColliderManager::GetSingleton()->
+						Move(pos, shape, moveSpeed, (int)dir, bodySize).x;
+					renderPos.y += MapColliderManager::GetSingleton()->
+						Move(pos, shape, moveSpeed, (int)dir, bodySize).y;
+				}
+				else
+				{
+					POINTFLOAT tempPos = MapColliderManager::GetSingleton()->
+						Move(pos, shape, moveSpeed, (int)dir, bodySize);
 
 					CameraManager::GetSingleton()->SetPosX(tempPos.x);
 					renderPos.y += tempPos.y;
 				}
-				// 상태 변경
-				ChangeAction(Action::RIGHTMOVE);
-				dir = direction::RIGHT;
+				
 			}
 			if (Input::GetButtonDown('S'))
 			{
@@ -167,29 +175,32 @@ void Player::Update()
 					false == (state == State::Fall))
 				{
 					ChangeState(State::JUMP);
-					jumpPower = JumpPower;
+					jumpingPower = JumpPower;
 				}
 			}
-			// 시점 부드럽게 + 캐릭터 랜더 좀더 수정
 			if (Input::GetButton(VK_DOWN))
 			{
 				// 점프중이거나 낙하상태가 아닐경우
-				if (false == (state == State::JUMP) &&
-					false == (state == State::Fall))
+				if (state != State::JUMP &&
+					state != State::Fall)
 				{
 					CollisionManager::GetSingleton()->CheckItem(shape);
 					ChangeState(State::SITDOWN);
 				}
 			}
-
-			if (Input::GetButtonDown(VK_SPACE) &&
-				state != State::Fall &&
-				state != State::JUMP &&
-				state != State::SITDOWN)
+			if (Input::GetButtonDown(VK_SPACE))
 			{
-				b_inventoryOpen = true;
-				playerInventory->SetInventoryOpen(true);
-				playerInventory->InventoryOpen(renderPos);
+				// 점프, 낙하, 앉아있는 상태가 아닐 때
+				if (state != State::Fall &&
+					state != State::JUMP &&
+					state != State::SITDOWN)
+				{
+					b_inventoryOpen = true;
+					playerInventory->SetInventoryOpen(true);
+					playerInventory->InventoryOpen(renderPos);
+
+				}
+
 			}
 			// 공격중이 아닐때 공격
 			if (b_frontAttack == false && b_backAttack == false)
@@ -431,7 +442,10 @@ void Player::Update()
 		cout << renderPos.x << ", " << renderPos.y << "\n";
 		cout << shape.left << ", " << shape.top << ", " << shape.right << ", " << shape.bottom << "\n";
 	}
-
+	if (Input::GetButtonDown(VK_NUMPAD1))
+	{
+		cout << CameraManager::GetSingleton()->GetPos().x << ", " << CameraManager::GetSingleton()->GetPos().y << "\n";
+	}
 	
 }
 
@@ -931,26 +945,61 @@ void Player::PlayAnimation()
 		if (frontArmFrame.x > 4 &&
 			frontArmFrame.x < 7)
 		{
-			frontWeaponFrame.x = 8;
+			if (frontWeaponType == WeaponType::LANCE)
+			{
+				frontWeaponFrame.x = 6;
+			}
+			else
+			{
+				frontWeaponFrame.x = 8;
+			}
 		}
 		else if (frontArmFrame.x > 6 &&
 			frontArmFrame.x < 9)
 		{
-			frontWeaponFrame.x = 7;
+			if (frontWeaponType == WeaponType::LANCE)
+			{
+				frontWeaponFrame.x = 5;
+			}
+			else
+			{
+				frontWeaponFrame.x = 7;
+			}
 		}
 		else if (frontArmFrame.x > 8 &&
 			frontArmFrame.x < 11)
 		{
-			frontWeaponFrame.x = 6;
+			if (frontWeaponType == WeaponType::LANCE)
+			{
+				frontWeaponFrame.x = 4;
+			}
+			else
+			{
+				frontWeaponFrame.x = 6;
+			}
 		}
 		else if (frontArmFrame.x > 10 &&
 			frontArmFrame.x < 13)
 		{
-			frontWeaponFrame.x = 5;
+			if (frontWeaponType == WeaponType::LANCE)
+			{
+				frontWeaponFrame.x = 3;
+			}
+			else
+			{
+				frontWeaponFrame.x = 5;
+			}
 		}
 		else
 		{
-			frontWeaponFrame.x = 4;
+			if (frontWeaponType == WeaponType::LANCE)
+			{
+				frontWeaponFrame.x = 2;
+			}
+			else
+			{
+				frontWeaponFrame.x = 4;
+			}
 		}
 	}
 
@@ -1034,7 +1083,6 @@ void Player::PlayAnimation()
 			backWeaponFrame.x = 4;
 		}
 	}
-
 	Attacking();
 
 	// 무적 시간
@@ -1277,7 +1325,7 @@ bool Player::CheckCollision(SubjectTag _subject, RECT _shape, EventTag _eventTag
 void Player::ToStepOn()
 {
 	ChangeState(State::JUMP);
-	jumpPower = 50;
+	jumpingPower = 50;
 }
 
 void Player::ToBeHit()

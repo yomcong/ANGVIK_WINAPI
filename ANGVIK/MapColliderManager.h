@@ -12,7 +12,7 @@ public:
 	HRESULT Init();
 	void Update();
 
-	bool IsFalling(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize);
+	bool IsFalling(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize, SubjectTag _subTag);
 	POINTFLOAT Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir, POINT bodySize);
 	bool Jump(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize);
 	bool checkCollision(SubjectTag _subTag, RECT shape, int dir, POINT bodySize);

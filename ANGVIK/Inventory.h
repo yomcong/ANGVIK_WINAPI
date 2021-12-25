@@ -65,6 +65,7 @@ private:
 	int oilsMaximum = 3;
 
 	bool b_inventoryOpen = false;
+	bool b_enchant = false;
 
 	InventoryType inventoryType = InventoryType::MAIN;
 

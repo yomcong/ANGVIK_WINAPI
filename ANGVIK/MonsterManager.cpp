@@ -25,17 +25,28 @@ void MonsterManager::Update()
 {
 	for (int i = 0; i < vecKongs.size(); ++i)
 	{
+		if (vecKongs[i]->GetIsAlive() == false)
+		{
+			continue;
+		}
 		vecKongs[i]->Update();
 	}
 
 	for (int i = 0; i < vecMonkeys.size(); ++i)
 	{
-
+		if (vecMonkeys[i]->GetIsAlive() == false)
+		{
+			continue;
+		}
 		vecMonkeys[i]->Update();
 	}
 
 	for (int i = 0; i < vecEnts.size(); ++i)
 	{
+		if (vecEnts[i]->GetIsAlive() == false)
+		{
+			continue;
+		}
 		vecEnts[i]->Update();
 	}
 
@@ -99,8 +110,8 @@ void MonsterManager::KongSpawn()
 {
 	//kongMaxCount = RANDOM(1, kongMaxCount);
 	vecKongs.resize(kongMaxCount);
-	float spawnPosX[] = { 880.0f, 1475.0f, 1910.0f, 2500.0f };
-	float spawnPosY[] = { 385.0, 265.0f, 388.0f, 508.0f };
+	float spawnPosX[] = { 880.0f, 1475.0f, 1910.0f, 2500.0f, 2970.0f, 3715.0f, 4340.0f, 5430.0f , 6315.0f };
+	float spawnPosY[] = { 385.0, 265.0f, 388.0f, 508.0f, 550.0f, 210.0f, 840.0f, 300.0f, 280.0f };
 
 	for (int i = 0; i < vecKongs.size(); ++i)
 	{
@@ -133,8 +144,8 @@ void MonsterManager::EntSpawn()
 	//EntMaxCount = RANDOM(1, EntMaxCount);
 	vecEnts.resize(EntMaxCount);
 
-	float spawnPosX[] = { 380.0f, 550.0f, 900.0f };
-	float spawnPosY[] = { 340.0f, 250.0f, 360.0f };
+	float spawnPosX[] = { 1200.0f, 2970.0f,  4060.0f };
+	float spawnPosY[] = { 450.0f, 747.0f,  886.0f };
 
 	for (int i = 0; i < vecEnts.size(); ++i)
 	{

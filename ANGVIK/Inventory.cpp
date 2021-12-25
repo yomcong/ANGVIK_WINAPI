@@ -147,6 +147,7 @@ void Inventory::Update()
 				{
 					player->SetInventoryClose(false);
 					b_inventoryOpen = false;
+					b_enchant = false;
 				}
 			}
 			else if (inventoryType == InventoryType::ITEMBOX)
@@ -155,15 +156,43 @@ void Inventory::Update()
 				{
 					inventoryType = InventoryType::MAIN;
 					selectedNum = 0;
+					b_enchant = false;
 				}
 				else
 				{
-					if (selectedNum < vecItems.size())
+					if (b_enchant)
 					{
-						inventoryType = InventoryType::SELECTITEM;
-						selectItemType = SelectItem::EQUIPMENT;
-						selectedItemNum = selectedNum;
-						selectedNum = 0;
+						if (selectedNum < vecItems.size())
+						{
+							selectedItemNum = selectedNum;
+							ItemType tempType = vecItemInfos[selectedItemNum].itemType;
+							// 원래라면 사용할 물약에 따라서. 지금은 골드만
+							ItemGrade tempGrade = ItemGrade::GOLD;
+							WeaponType tempWeaponType = vecItemInfos[selectedItemNum].weaponType;
+
+							vecItems.erase(vecItems.begin() + selectedItemNum);
+							vecItemInfos.erase(vecItemInfos.begin() + selectedItemNum);
+							vecOils.erase(vecOils.begin());
+
+							GetItem(tempType, ItemGrade::GOLD, tempWeaponType);
+							selectedNum = 0;
+
+
+							player->SetInventoryClose(false);
+							b_inventoryOpen = false;
+							b_enchant = false;
+						}
+					}
+					else
+					{
+						if (selectedNum < vecItems.size())
+						{
+							inventoryType = InventoryType::SELECTITEM;
+							selectItemType = SelectItem::EQUIPMENT;
+							selectedItemNum = selectedNum;
+							selectedNum = 0;
+
+						}
 					}
 				}
 			}
@@ -173,6 +202,7 @@ void Inventory::Update()
 				{
 					inventoryType = InventoryType::MAIN;
 					selectedNum = 0;
+					b_enchant = false;
 				}
 				else
 				{
@@ -195,6 +225,7 @@ void Inventory::Update()
 				else if (selectedNum == 0 ||
 					selectedNum == 1)
 				{
+
 					vecItems[selectedItemNum] = nullptr;
 					vecItems.erase(vecItems.begin() + selectedItemNum);
 					// 현재 아이템 정보 넘겨주기
@@ -207,6 +238,7 @@ void Inventory::Update()
 					// 이전 화면으로 
 					inventoryType = InventoryType::ITEMBOX;
 					selectedNum = 0;
+
 				}
 				else if (selectedNum == 2)
 				{
@@ -223,6 +255,8 @@ void Inventory::Update()
 				else if (selectedNum == 0)
 				{
 					// 인챈트
+					inventoryType = InventoryType::ITEMBOX;
+					b_enchant = true;
 				}
 				else if (selectedNum == 1)
 				{
@@ -232,6 +266,7 @@ void Inventory::Update()
 		}
 		if (Input::GetButtonDown(VK_ESCAPE))
 		{
+			b_enchant = false;
 			b_inventoryOpen = false;
 			player->SetInventoryClose(false);
 		}
@@ -437,6 +472,10 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 			vecItemInfos.push_back(tempInfo);
 			break;
 		case ItemGrade::SILVER:
+			itemName += "백갑.bmp";
+			tempInfo.itemgrade = ItemGrade::SILVER;
+			tempInfo.itemType = ItemType::ARMOR;
+			vecItemInfos.push_back(tempInfo);
 			break;
 		}
 		break;
@@ -542,6 +581,10 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 			vecItemInfos.push_back(tempInfo);
 			break;
 		case ItemGrade::SILVER:
+			itemName += "백신.bmp";
+			tempInfo.itemgrade = ItemGrade::SILVER;
+			tempInfo.itemType = ItemType::SHOES;
+			vecItemInfos.push_back(tempInfo);
 			break;
 		default:
 			break;
