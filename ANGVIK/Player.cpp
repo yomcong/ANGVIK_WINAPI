@@ -8,9 +8,11 @@
 
 #define JumpPower 85.0f
 #define gravityAcceleration 98
- 
+// 플레이어 시작 지점
 #define StartPosX 120.0f
 #define StartPosY 325.0f
+
+// 카메라 이동 시작 지점
 #define StartPointX 300.0f
 #define StartPointY 350.0f
 
@@ -47,29 +49,29 @@ HRESULT Player::Init(AmmoManager* _ammoManager)
 
 void Player::Update()
 {
-	// 점프상태가 아닐경우
+	// 점프 상태가 아닐경우
 	if (state != State::JUMP)
 	{
-		// 내리막길(이동+낙하) 일경우 스테이트를 계속 바꿔주면서 애니메이션이 굉장히 부자연스러워짐. 고쳐야함
-		// 중력속도 추가해주기? 
+		// 낙하
 		if (MapColliderManager::GetSingleton()->IsFalling(pos, shape, moveSpeed, bodySize, subTag)
 			&& b_platform == false)
 		{
 			gAccele += gAccele * Timer::GetDeltaTime();
 
+			// 일정 수준 이상 낙하할경우 상태변경
 			if (gAccele >= 100)
 			{
 				ChangeState(State::Fall);
 			}
-			
+
 			// 카메라 예외조건
 			if (renderPos.y < StartPointY)
 			{
-				renderPos.y += (moveSpeed+ gAccele)* Timer::GetDeltaTime();
+				renderPos.y += (moveSpeed + gAccele) * Timer::GetDeltaTime();
 			}
 			else
 			{
-				CameraManager::GetSingleton()->SetPosY((moveSpeed+ gAccele) * Timer::GetDeltaTime());
+				CameraManager::GetSingleton()->SetPosY((moveSpeed + gAccele) * Timer::GetDeltaTime());
 			}
 		}
 		else
@@ -95,19 +97,20 @@ void Player::Update()
 			}
 			else
 			{
-				CameraManager::GetSingleton()->SetPosY(-(moveSpeed+ 30) *Timer::GetDeltaTime());
+				CameraManager::GetSingleton()->SetPosY(-(moveSpeed + 30) * Timer::GetDeltaTime());
 			}
 
-
+			// 점프가 끝났는지 확인
 			if (jumpingPower <= 0)
 			{
 				ChangeState(State::Fall);
 			}
 			else
 			{
-				jumpingPower -= (moveSpeed ) * Timer::GetDeltaTime();
+				jumpingPower -= (moveSpeed)*Timer::GetDeltaTime();
 			}
 		}
+		// 충돌시 상태 변경
 		else
 		{
 			jumpingPower = 0;
@@ -120,7 +123,7 @@ void Player::Update()
 	if (b_inventoryOpen == false)
 	{
 		// 앉아있지 않을 때 플레이어 이동 
-		if (state != State::SITDOWN && b_inventoryOpen == false)
+		if (state != State::SITDOWN)
 		{
 			if (Input::GetButton(VK_LEFT))
 			{
@@ -129,7 +132,7 @@ void Player::Update()
 				dir = direction::LEFT;
 
 				// 카메라 예외조건(화면끝에 있을 때)
-				if (renderPos.x > StartPointX ||CameraManager::GetSingleton()->GetPos().x <= 0)
+				if (renderPos.x > StartPointX || CameraManager::GetSingleton()->GetPos().x <= 0)
 				{
 					renderPos.x += MapColliderManager::GetSingleton()->
 						Move(pos, shape, moveSpeed, (int)dir, bodySize).x;
@@ -166,7 +169,7 @@ void Player::Update()
 					CameraManager::GetSingleton()->SetPosX(tempPos.x);
 					renderPos.y += tempPos.y;
 				}
-				
+
 			}
 			if (Input::GetButtonDown('S'))
 			{
@@ -246,64 +249,15 @@ void Player::Update()
 		backArmFrame.y = 0;
 	}
 
-
 	// 애니메이션프레임 
 	PlayAnimation();
-	// 포스값 업데이트
 	PosUpdate();
 
 	playerInventory->Update();
 
 	CollisionManager::GetSingleton()->CheckCollision(subTag, shape);
 
-
-
-
-	//디버그용 인체실험
-#ifdef _DEBUG
-	// 디버깅용
-	/*if (KeyManager::GetSingleton()->IsOnceKeyDown('Y'))
-		if (DBarmPos.y == 2)
-			DBarmPos.y = 0;
-		else
-			++DBarmPos.y;
-	if (KeyManager::GetSingleton()->IsOnceKeyDown('H'))
-		if (DBarmPos.y == 0)
-			DBarmPos.y = 2;
-		else
-			--DBarmPos.y;
-	if (KeyManager::GetSingleton()->IsOnceKeyDown('U'))
-		if (DBarmPos.x == 15)
-			DBarmPos.x = 0;
-		else
-			++DBarmPos.x;
-	if (KeyManager::GetSingleton()->IsOnceKeyDown('J'))
-		if (DBarmPos.x == 0)
-			DBarmPos.x = 15;
-		else
-			--DBarmPos.x;
-	if (KeyManager::GetSingleton()->IsOnceKeyDown('I'))
-		if (DBbodyPos.x == 11)
-			DBbodyPos.x = 0;
-		else
-			++DBbodyPos.x;
-	if (KeyManager::GetSingleton()->IsOnceKeyDown('K'))
-		if (DBbodyPos.x == 0)
-			DBbodyPos.x = 11;
-		else
-			--DBbodyPos.x;
-	if (KeyManager::GetSingleton()->IsOnceKeyDown('O'))
-		if (DBbodyPos.y == 1)
-			DBbodyPos.y = 0;
-		else
-			++DBbodyPos.y;
-	if (KeyManager::GetSingleton()->IsOnceKeyDown('L'))
-		if (DBbodyPos.y == 0)
-			DBbodyPos.y = 1;
-		else
-			--DBbodyPos.y;*/
-#endif
-			// 디버그용 캐릭터 랙트표시
+	// 디버그용 캐릭터 랙트표시
 	if (Input::GetButtonDown(VK_NUMPAD9))
 	{
 		DBrect = !DBrect;
@@ -446,7 +400,7 @@ void Player::Update()
 	{
 		cout << CameraManager::GetSingleton()->GetPos().x << ", " << CameraManager::GetSingleton()->GetPos().y << "\n";
 	}
-	
+
 }
 
 void Player::Render(HDC hdc)
@@ -583,22 +537,13 @@ void Player::Render(HDC hdc)
 		Rectangle(hdc, 320, 90, 340, 115);	// 몸통 렉트
 		Rectangle(hdc, 325, 115, 335, 125);	// 신발 렉트
 
-		DBbackArm->Render(hdc, 100, 100, DBarmPos.x, DBarmPos.y);
-		DBfrontArm->Render(hdc, 200, 100, DBarmPos.x, DBarmPos.y);
-		DBbody->Render(hdc, 300, 100, DBbodyPos.x, DBbodyPos.y);
-		DBhead0->Render(hdc, 450, 100);
-		DBhead1->Render(hdc, 500, 100);
-		DBhead2->Render(hdc, 550, 100);
-		DBhead3->Render(hdc, 600, 100);
-
-		DBgoldBody->Render(hdc, 350, 100, DBbodyPos.x, DBbodyPos.y);
-		DBgoldFoot->Render(hdc, 350, 100, DBbodyPos.x, DBbodyPos.y);
+		
 		if (b_backAttack || b_frontAttack)
 		{
-			Rectangle(hdc, DBattackShape.left - (int)CameraManager::GetSingleton()->GetPos().x,
-				DBattackShape.top - (int)CameraManager::GetSingleton()->GetPos().y,
-				DBattackShape.right - (int)CameraManager::GetSingleton()->GetPos().x,
-				DBattackShape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
+			Rectangle(hdc, attackShape.left - (int)CameraManager::GetSingleton()->GetPos().x,
+				attackShape.top - (int)CameraManager::GetSingleton()->GetPos().y,
+				attackShape.right - (int)CameraManager::GetSingleton()->GetPos().x,
+				attackShape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
 		}
 	}
 
@@ -655,7 +600,7 @@ void Player::ChangeAction(Action action)
 			if (frontWeaponType == WeaponType::BOOMERANG ||
 				frontWeaponType == WeaponType::LANCE)
 			{
-				ammoManager->WeaponAttack(SubjectTag::WEAPON,frontWeaponGrade, frontWeaponType, { pos.x , pos.y }, (int)dir);
+				ammoManager->WeaponAttack(SubjectTag::WEAPON, frontWeaponGrade, frontWeaponType, { pos.x , pos.y }, (int)dir);
 				b_equipFrontWeapon = false;
 				frontWeaponType = WeaponType::IDLE;
 				frontWeaponGrade = ItemGrade::IDLE;
@@ -1241,11 +1186,11 @@ void Player::PlayAnimation()
 	case WeaponType::BOOMERANG:
 		if (dir == direction::RIGHT)
 		{
-			frontWeaponPos.x = (int)renderPos.x ;
+			frontWeaponPos.x = (int)renderPos.x;
 		}
 		else
 		{
-			frontWeaponPos.x = (int)renderPos.x ;
+			frontWeaponPos.x = (int)renderPos.x;
 		}
 		frontWeaponPos.y = (int)renderPos.y - 13 + (frontWeaponFrame.x * 5);
 		break;
@@ -1401,55 +1346,6 @@ bool Player::FindImage()
 	{
 		return false;
 	}*/
-
-
-	// 디버깅
-	DBbackArm = ImageManager::GetSingleton()->FindImage("image/player/unarmed/arm_back.bmp");
-	if (DBbackArm == nullptr)
-	{
-		return false;
-	}
-	DBfrontArm = ImageManager::GetSingleton()->FindImage("image/player/unarmed/arm_front.bmp");
-	if (DBfrontArm == nullptr)
-	{
-		return false;
-	}
-	DBbody = ImageManager::GetSingleton()->FindImage("image/player/unarmed/body.bmp");
-	if (DBbody == nullptr)
-	{
-		return false;
-	}
-	DBhead0 = ImageManager::GetSingleton()->FindImage("image/player/unarmed/head_0.bmp");
-	if (DBhead0 == nullptr)
-	{
-		return false;
-	}
-	DBhead1 = ImageManager::GetSingleton()->FindImage("image/player/unarmed/head_1.bmp");
-	if (DBhead1 == nullptr)
-	{
-		return false;
-	}
-	DBhead2 = ImageManager::GetSingleton()->FindImage("image/player/unarmed/head_2.bmp");
-	if (DBhead2 == nullptr)
-	{
-		return false;
-	}
-	DBhead3 = ImageManager::GetSingleton()->FindImage("image/player/unarmed/head_3.bmp");
-	if (DBhead3 == nullptr)
-	{
-		return false;
-	}
-	DBgoldBody = ImageManager::GetSingleton()->FindImage("image/player/gold/body.bmp");
-	if (DBgoldBody == nullptr)
-	{
-		return false;
-	}
-	DBgoldFoot = ImageManager::GetSingleton()->FindImage("image/player/gold/foot.bmp");
-	if (DBgoldFoot == nullptr)
-	{
-		return false;
-	}
-
 	return true;
 }
 
@@ -1706,35 +1602,44 @@ void Player::Attacking()
 	{
 		if (frontWeaponType == WeaponType::SWORD && frontWeaponFrame.x > 1)
 		{
-				POINT tempBodySize = { 25, 15 };
-				DBattackShape.left = frontWeaponPos.x - tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
-				DBattackShape.top = frontWeaponPos.y - tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
-				DBattackShape.right = frontWeaponPos.x + tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
-				DBattackShape.bottom = frontWeaponPos.y + tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
-				CollisionManager::GetSingleton()->CheckCollision(SubjectTag::WEAPON, DBattackShape);
-				if (MapColliderManager::GetSingleton()->checkCollision(SubjectTag::WEAPON, DBattackShape, (int)dir, tempBodySize))
-				{
-					AttackHit();
-				}
-			
+			POINT tempBodySize = { 25, 15 };
+			attackShape.left = frontWeaponPos.x - tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
+			attackShape.top = frontWeaponPos.y - tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
+			attackShape.right = frontWeaponPos.x + tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
+			attackShape.bottom = frontWeaponPos.y + tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
+			CollisionManager::GetSingleton()->CheckCollision(SubjectTag::WEAPON, attackShape);
+			if (MapColliderManager::GetSingleton()->checkCollision(SubjectTag::WEAPON, attackShape, (int)dir, tempBodySize))
+			{
+				AttackHit();
+			}
+
 		}
 	}
 	else if (b_backAttack)
 	{
-		if (backWeaponType == WeaponType::SWORD && backWeaponFrame.x >1)
+		if (backWeaponType == WeaponType::SWORD && backWeaponFrame.x > 1)
 		{
 			POINT tempBodySize = { 25, 15 };
-			DBattackShape.left = backWeaponPos.x - tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
-			DBattackShape.top = backWeaponPos.y - tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
-			DBattackShape.right = backWeaponPos.x + tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
-			DBattackShape.bottom = backWeaponPos.y + tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
-			CollisionManager::GetSingleton()->CheckCollision(SubjectTag::WEAPON, DBattackShape);
-			if (MapColliderManager::GetSingleton()->checkCollision(SubjectTag::WEAPON, DBattackShape, (int)dir, tempBodySize))
+			attackShape.left = backWeaponPos.x - tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
+			attackShape.top = backWeaponPos.y - tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
+			attackShape.right = backWeaponPos.x + tempBodySize.x + (int)CameraManager::GetSingleton()->GetPos().x + 10;
+			attackShape.bottom = backWeaponPos.y + tempBodySize.y + (int)CameraManager::GetSingleton()->GetPos().y - 10;
+			CollisionManager::GetSingleton()->CheckCollision(SubjectTag::WEAPON, attackShape);
+			if (MapColliderManager::GetSingleton()->checkCollision(SubjectTag::WEAPON, attackShape, (int)dir, tempBodySize))
 			{
 				AttackHit();
 			}
 		}
 	}
+}
+
+void Player::ItemDrop(ItemType _itemType, ItemGrade _itemGrade, WeaponType _weaponType)
+{
+	dropItemInfo.itemType = _itemType;
+	dropItemInfo.itemgrade = _itemGrade;
+	dropItemInfo.weaponType = _weaponType;
+
+	Notify(this, subTag, EventTag::ITEMDROP);
 }
 
 
@@ -1785,6 +1690,15 @@ void Player::PosUpdate()
 		shape.bottom = (int)pos.y + bodySize.y / 2;
 	}
 
+	// 히든맵 발견 알림
+	if (pos.x > 5330 && pos.y > 920 && pos.y < 960)
+	{
+		Notify(this, subTag, EventTag::FINDHIDDENMAP);
+	}
 
-
+	// 몬스터 트리거
+	if (pos.x > 1640 && pos.y > 650 )
+	{
+		Notify(this, subTag, EventTag::MONSTERTRIGGER);
+	}
 }

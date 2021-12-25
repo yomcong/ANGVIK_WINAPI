@@ -10,7 +10,6 @@ public:
 	virtual ~MapColliderManager() = default;
 
 	HRESULT Init();
-	void Update();
 
 	bool IsFalling(POINTFLOAT pos, RECT shape, float moveSpeed, POINT bodySize, SubjectTag _subTag);
 	POINTFLOAT Move(POINTFLOAT pos, RECT shape, float moveSpeed, int dir, POINT bodySize);

@@ -23,7 +23,7 @@ HRESULT MonsterManager::Init(AmmoManager* _ammoManager)
 
 void MonsterManager::Update()
 {
-	for (int i = 0; i < vecKongs.size(); ++i)
+	for (int i = 0; i < currKongSpawn; ++i)
 	{
 		if (vecKongs[i]->GetIsAlive() == false)
 		{
@@ -32,7 +32,7 @@ void MonsterManager::Update()
 		vecKongs[i]->Update();
 	}
 
-	for (int i = 0; i < vecMonkeys.size(); ++i)
+	for (int i = 0; i < currMonkeySpawn; ++i)
 	{
 		if (vecMonkeys[i]->GetIsAlive() == false)
 		{
@@ -41,7 +41,7 @@ void MonsterManager::Update()
 		vecMonkeys[i]->Update();
 	}
 
-	for (int i = 0; i < vecEnts.size(); ++i)
+	for (int i = 0; i < currEntSpawn; ++i)
 	{
 		if (vecEnts[i]->GetIsAlive() == false)
 		{
@@ -58,25 +58,25 @@ void MonsterManager::Render(HDC hdc)
 	// 윈도우 영역에 들어온 객체들은 true , 밖에있으면 false;
 	// 포문을 돌때 false인 객체는 continue;
 
-	for (int i = 0; i < vecKongs.size(); ++i)
+	for (int i = 0; i < currKongSpawn; ++i)
 	{
-		if (false == kongWindow[i])
+		if (false == kongInWindow[i])
 		{
 			continue;
 		}
 		vecKongs[i]->Render(hdc);
 	}
-	for (int i = 0; i < vecMonkeys.size(); ++i)
+	for (int i = 0; i < currMonkeySpawn; ++i)
 	{
-		if (false == monkeyWindow[i])
+		if (false == monkeyInWindow[i])
 		{
 			continue;
 		}
 		vecMonkeys[i]->Render(hdc);
 	}
-	for (int i = 0; i < vecEnts.size(); ++i)
+	for (int i = 0; i < currEntSpawn; ++i)
 	{
-		if (false == entWindow[i])
+		if (false == entInWindow[i])
 		{
 			continue;
 		}
@@ -87,19 +87,19 @@ void MonsterManager::Render(HDC hdc)
 
 void MonsterManager::Release()
 {
-	for (int i = 0; i < vecKongs.size(); ++i)
+	for (int i = 0; i < currKongSpawn; ++i)
 	{
 		SAFE_RELEASE(vecKongs[i]);
 	}
 	vecKongs.clear();
 
-	for (int i = 0; i < vecMonkeys.size(); ++i)
+	for (int i = 0; i < currMonkeySpawn; ++i)
 	{
 		SAFE_RELEASE(vecMonkeys[i]);
 	}
 	vecMonkeys.clear();
 
-	for (int i = 0; i < vecEnts.size(); ++i)
+	for (int i = 0; i < currEntSpawn; ++i)
 	{
 		SAFE_RELEASE(vecEnts[i]);
 	}
@@ -110,31 +110,27 @@ void MonsterManager::KongSpawn()
 {
 	//kongMaxCount = RANDOM(1, kongMaxCount);
 	vecKongs.resize(kongMaxCount);
-	float spawnPosX[] = { 880.0f, 1475.0f, 1910.0f, 2500.0f, 2970.0f, 3715.0f, 4340.0f, 5430.0f , 6315.0f };
-	float spawnPosY[] = { 385.0, 265.0f, 388.0f, 508.0f, 550.0f, 210.0f, 840.0f, 300.0f, 280.0f };
-
+	
 	for (int i = 0; i < vecKongs.size(); ++i)
 	{
 		vecKongs[i] = new Kong;
-		vecKongs[i]->Init({ spawnPosX[i],spawnPosY[i] }, ammoManager);
+		vecKongs[i]->Init({ spawnKongPosX[i],spawnKongPosY[i] }, ammoManager);
 		vecKongs[i]->GetSubject()->AddObserver(this);
+		++currKongSpawn;
 	}
 }
 
 void MonsterManager::MonkeySpawn()
 {
 	//MonkeyMaxCount = RANDOM(1, MonkeyMaxCount);
-	vecMonkeys.resize(MonkeyMaxCount);
+	vecMonkeys.resize(monkeyMaxCount);
 
-	// 5,6번째 옵저버 활용해서 트리거로 이닛해주기
-	float spawnPosX[] = { 500.0f, 850.0f, 1100.0f, 1400.0f, 2200.0f, 2300.0f };
-	float spawnPosY[] = { 350.0f, 382.0f, 390.0f, 390.0f, 300.0f, 300.0f };
-
-	for (int i = 0; i < vecMonkeys.size(); ++i)
+	for (int i = 0; i < 4; ++i)
 	{
 		vecMonkeys[i] = new Monkey;
-		vecMonkeys[i]->Init({ spawnPosX[i],spawnPosY[i] });
+		vecMonkeys[i]->Init({ spawnMonkeyPosX[i],spawnMonkeyPosY[i] });
 		vecMonkeys[i]->GetSubject()->AddObserver(this);
+		++currMonkeySpawn;
 	}
 }
 
@@ -142,16 +138,25 @@ void MonsterManager::MonkeySpawn()
 void MonsterManager::EntSpawn()
 {
 	//EntMaxCount = RANDOM(1, EntMaxCount);
-	vecEnts.resize(EntMaxCount);
-
-	float spawnPosX[] = { 1200.0f, 2970.0f,  4060.0f };
-	float spawnPosY[] = { 450.0f, 747.0f,  886.0f };
+	vecEnts.resize(entMaxCount);
 
 	for (int i = 0; i < vecEnts.size(); ++i)
 	{
 		vecEnts[i] = new Ent;
-		vecEnts[i]->Init({ spawnPosX[i],spawnPosY[i] }, ammoManager);
+		vecEnts[i]->Init({ spawnEntPosX[i],spawnEntPosY[i] }, ammoManager);
 		vecEnts[i]->GetSubject()->AddObserver(this);
+		++currEntSpawn;
+	}
+}
+
+void MonsterManager::MonkeyTriggerSpawn()
+{
+	for (int i = currMonkeySpawn; i < vecMonkeys.size(); ++i)
+	{
+		vecMonkeys[i] = new Monkey;
+		vecMonkeys[i]->Init({ spawnMonkeyPosX[i],spawnMonkeyPosY[i] });
+		vecMonkeys[i]->GetSubject()->AddObserver(this);
+		++currMonkeySpawn;
 	}
 }
 
@@ -164,7 +169,7 @@ bool MonsterManager::CheckCollision(SubjectTag _subTag, RECT _shape, bool& _toSt
 	case SubjectTag::PLAYER:
 		for (int i = 0; i < vecKongs.size(); ++i)
 		{
-			if (false == kongWindow[i] || false == vecKongs[i]->GetIsAlive())
+			if (false == kongInWindow[i] || false == vecKongs[i]->GetIsAlive())
 			{
 				continue;
 			}
@@ -184,7 +189,7 @@ bool MonsterManager::CheckCollision(SubjectTag _subTag, RECT _shape, bool& _toSt
 		}
 		for (int i = 0; i < vecMonkeys.size(); ++i)
 		{
-			if (false == monkeyWindow[i] || false == vecMonkeys[i]->GetIsAlive())
+			if (false == monkeyInWindow[i] || false == vecMonkeys[i]->GetIsAlive())
 			{
 				continue;
 			}
@@ -203,7 +208,7 @@ bool MonsterManager::CheckCollision(SubjectTag _subTag, RECT _shape, bool& _toSt
 		}
 		for (int i = 0; i < vecEnts.size(); ++i)
 		{
-			if (false == entWindow[i] || false == vecEnts[i]->GetIsAlive())
+			if (false == entInWindow[i] || false == vecEnts[i]->GetIsAlive())
 			{
 				continue;
 			}
@@ -225,7 +230,7 @@ bool MonsterManager::CheckCollision(SubjectTag _subTag, RECT _shape, bool& _toSt
 	case SubjectTag::WEAPON:
 		for (int i = 0; i < vecKongs.size(); ++i)
 		{
-			if (false == kongWindow[i] || false == vecKongs[i]->GetIsAlive())
+			if (false == kongInWindow[i] || false == vecKongs[i]->GetIsAlive())
 			{
 				continue;
 			}
@@ -239,7 +244,7 @@ bool MonsterManager::CheckCollision(SubjectTag _subTag, RECT _shape, bool& _toSt
 		}
 		for (int i = 0; i < vecMonkeys.size(); ++i)
 		{
-			if (false == monkeyWindow[i] || false == vecMonkeys[i]->GetIsAlive())
+			if (false == monkeyInWindow[i] || false == vecMonkeys[i]->GetIsAlive())
 			{
 				continue;
 			}
@@ -252,7 +257,7 @@ bool MonsterManager::CheckCollision(SubjectTag _subTag, RECT _shape, bool& _toSt
 		}
 		for (int i = 0; i < vecEnts.size(); ++i)
 		{
-			if (false == entWindow[i] || false == vecEnts[i]->GetIsAlive())
+			if (false == entInWindow[i] || false == vecEnts[i]->GetIsAlive())
 			{
 				continue;
 			}
@@ -269,46 +274,34 @@ bool MonsterManager::CheckCollision(SubjectTag _subTag, RECT _shape, bool& _toSt
 	return false;
 }
 
-void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, SubjectTag subjectTag, EventTag eventTag)
+void MonsterManager::OnNotify(Subject* _subject, MonsterType _monsterType, SubjectTag _subjectTag, EventTag _eventTag)
 {
-	switch (subjectTag)
+	switch (_subjectTag)
 	{
 	case SubjectTag::MONSTER:
-		switch (monsterType)
+		switch (_monsterType)
 		{
 		case MonsterType::KONG:
-			switch (eventTag)
+			switch (_eventTag)
 			{
 			case EventTag::INWINDOW:
 				for (int i = 0; i < vecKongs.size(); ++i)
 				{
-					if (vecKongs[i]->GetSubject() == subject)
+					if (vecKongs[i]->GetSubject() == _subject)
 					{
-						kongWindow[i] = true;
-						//cout << i << " 몽키 인 " << "\n";
+						kongInWindow[i] = true;
 						break;
 					}
-					if (i == vecKongs.size() - 1)
-					{
-
-					}
-					//cout << "콩를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::OUTWINDOW:
 				for (int i = 0; i < vecKongs.size(); ++i)
 				{
-					if (vecKongs[i]->GetSubject() == subject)
+					if (vecKongs[i]->GetSubject() == _subject)
 					{
-						kongWindow[i] = false;
-						//cout << i << " 몽키 아웃 " << "\n";
+						kongInWindow[i] = false;
 						break;
 					}
-					if (i == vecKongs.size() - 1)
-					{
-
-					}
-					//cout << "콩를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::RELEASE:
@@ -316,38 +309,26 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 			}
 			break;
 		case MonsterType::MONKEY:
-			switch (eventTag)
+			switch (_eventTag)
 			{
 			case EventTag::INWINDOW:
 				for (int i = 0; i < vecMonkeys.size(); ++i)
 				{
-					if (vecMonkeys[i]->GetSubject() == subject)
+					if (vecMonkeys[i]->GetSubject() == _subject)
 					{
-						monkeyWindow[i] = true;
-						//cout << i << " 몽키 인 " << "\n";
+						monkeyInWindow[i] = true;
 						break;
 					}
-					if (i == vecMonkeys.size() - 1)
-					{
-
-					}
-					//cout << "몽키를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::OUTWINDOW:
 				for (int i = 0; i < vecMonkeys.size(); ++i)
 				{
-					if (vecMonkeys[i]->GetSubject() == subject)
+					if (vecMonkeys[i]->GetSubject() == _subject)
 					{
-						monkeyWindow[i] = false;
-						//cout << i << " 몽키 아웃 " << "\n";
+						monkeyInWindow[i] = false;
 						break;
 					}
-					if (i == vecMonkeys.size() - 1)
-					{
-
-					}
-					//cout << "몽키를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::RELEASE:
@@ -355,38 +336,26 @@ void MonsterManager::OnNotify(Subject* subject, MonsterType monsterType, Subject
 			}
 			break;
 		case MonsterType::ENT:
-			switch (eventTag)
+			switch (_eventTag)
 			{
 			case EventTag::INWINDOW:
 				for (int i = 0; i < vecEnts.size(); ++i)
 				{
-					if (vecEnts[i]->GetSubject() == subject)
+					if (vecEnts[i]->GetSubject() == _subject)
 					{
-						entWindow[i] = true;
-						//cout << i << " 나무 인 " << "\n";
+						entInWindow[i] = true;
 						break;
 					}
-					if (i == vecEnts.size() - 1)
-					{
-
-					}
-					//cout << "나무를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::OUTWINDOW:
 				for (int i = 0; i < vecEnts.size(); ++i)
 				{
-					if (vecEnts[i]->GetSubject() == subject)
+					if (vecEnts[i]->GetSubject() == _subject)
 					{
-						entWindow[i] = false;
-						//cout <<i << " 나무 아웃 " << "\n";
+						entInWindow[i] = false;
 						break;
 					}
-					if (i == vecEnts.size() - 1)
-					{
-
-					}
-					//cout << "나무를 못찾았다." << "\n";
 				}
 				break;
 			case EventTag::RELEASE:

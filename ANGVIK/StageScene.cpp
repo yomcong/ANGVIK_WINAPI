@@ -4,18 +4,13 @@
 #include "Image.h"
 #include "CommonFunction.h"
 #include "Player.h"
-#include "Kong.h"
 #include "MonsterManager.h"
 #include "TrapManager.h"
-#include "CollisionManager.h"
 #include "ItemManager.h"
 #include "AmmoManager.h"
 
 #define stage1Width 6709
 #define stage1Height 1290
-
-// ¸Ê ÀÌµ¿ µð¹ö±ë¿ë
-
 
 HRESULT StageScene::Init()
 {
@@ -39,12 +34,8 @@ HRESULT StageScene::Init()
 	{
 		return E_FAIL;
 	}
-	DBlogo = ImageManager::GetSingleton()->FindImage("image/etc/·Î°í.bmp");	// ¾Óºò ·Î°í
-	if (DBlogo == nullptr)
-	{
-		return E_FAIL;
-	}
-	
+
+
 	mapPos.x = 6709 / 2;
 	mapPos.y = 1290 / 2;
 
@@ -60,6 +51,7 @@ HRESULT StageScene::Init()
 	CollisionManager::GetSingleton()->AddItem(itemManager);
 
 	player->Init(ammoManager);
+	player->GetSubject()->AddObserver(this);
 	monsterManager->Init(ammoManager);
 	trapManager->Init();
 	itemManager->Init();
@@ -70,72 +62,57 @@ HRESULT StageScene::Init()
 
 void StageScene::Update()
 {
-	if (DBstop == false)
-	{
-		player->Update();
-		monsterManager->Update();
-		trapManager->Update();
-		itemManager->Update();
-		ammoManager->Update();
-	}
+	player->Update();
+	monsterManager->Update();
+	trapManager->Update();
+	itemManager->Update();
+	ammoManager->Update();
 
 	// È÷µç¸Ê µð¹ö±ë ÀÌÈÄ ¿ÉÀú¹ö·Î ¾Ë¸²º¸³»ÁÖ±â
-	if (CameraManager::GetSingleton()->GetPos().x > 5060)
+	/*if (CameraManager::GetSingleton()->GetPos().x > 5060)
 	{
 		if (CameraManager::GetSingleton()->GetPos().y > 590 &&
 			CameraManager::GetSingleton()->GetPos().y < 620)
 		{
 			b_hiddenMapDiscovery = true;
 		}
-	}
-
+	}*/
 
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë ¿ë
 	if (Input::GetButtonDown(VK_NUMPAD7))
 	{
 		debugPixelMap == false ? debugPixelMap = true : debugPixelMap = false;
 	}
-
-	if (Input::GetButtonDown(VK_NUMPAD0))
-	{
-		DBstop = !DBstop;
-	}
-
 }
 
 void StageScene::Render(HDC hdc)
 {
+	// ¹è°æ
 	stageBackgruond2->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
-		mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);	// ¹è°æ
-	
-	// ¹è°æ ÀÓ½Ã·Î ·£´õ
-	stageBackgruond2->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x - 5,
-		mapPos.y/2 - (int)CameraManager::GetSingleton()->GetPos().y);
-	
-	stageBackgruond->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
-		mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);	// ¸Ê 
+		mapPos.y * 0.5 - (int)CameraManager::GetSingleton()->GetPos().y);
+	stageBackgruond2->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
+		mapPos.y * 1.5 - (int)CameraManager::GetSingleton()->GetPos().y);
 
+	//¸Ê
+	stageBackgruond->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
+		mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);
+
+	// ¼û°ÜÁø Áö¿ª 
 	if (b_hiddenMapDiscovery == false)
 	{
-		stageHiddenMap->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x, mapPos.y -(int)CameraManager::GetSingleton()->GetPos().y);
+		stageHiddenMap->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x, mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);
 	}
-
-	DBlogo->Render(hdc, 1000 - (int)CameraManager::GetSingleton()->GetPos().x, 200 - (int)CameraManager::GetSingleton()->GetPos().y);
-	DBlogo->Render(hdc, 2000 - (int)CameraManager::GetSingleton()->GetPos().x, 200 - (int)CameraManager::GetSingleton()->GetPos().y);
-	DBlogo->Render(hdc, 3000 - (int)CameraManager::GetSingleton()->GetPos().x, 200 - (int)CameraManager::GetSingleton()->GetPos().y);
-	DBlogo->Render(hdc, 4000 - (int)CameraManager::GetSingleton()->GetPos().x, 200 - (int)CameraManager::GetSingleton()->GetPos().y);
-	DBlogo->Render(hdc, 5000 - (int)CameraManager::GetSingleton()->GetPos().x, 200 - (int)CameraManager::GetSingleton()->GetPos().y);
 
 	itemManager->Render(hdc);
 	monsterManager->Render(hdc);
 	trapManager->Render(hdc);
-	player->Render(hdc);
 	ammoManager->Render(hdc);
+	player->Render(hdc);
 
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë
 	if (debugPixelMap)
 	{
-		stagePixelMap->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x, 
+		stagePixelMap->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
 			mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);
 	}
 }
@@ -147,4 +124,30 @@ void StageScene::Release()
 	SAFE_RELEASE(trapManager);
 	SAFE_RELEASE(itemManager);
 	SAFE_RELEASE(ammoManager);
+}
+
+void StageScene::OnNotify(Subject* _subject, MonsterType _monsterType, SubjectTag _subjectTag, EventTag _eventTag)
+{
+	switch (_subjectTag)
+	{
+	case SubjectTag::PLAYER:
+		switch (_eventTag)
+		{
+		case EventTag::ITEMDROP:
+		{
+			ItemInfo tempItemInfo = {};
+
+			tempItemInfo = player->GetItemInfo();
+			itemManager->CreateItem(player->GetPos(), tempItemInfo.itemType, tempItemInfo.weaponType, tempItemInfo.itemgrade);
+			break;
+		}
+		case EventTag::FINDHIDDENMAP:
+			b_hiddenMapDiscovery = true;
+			break;
+		case EventTag::MONSTERTRIGGER:
+			monsterManager->MonkeyTriggerSpawn();
+			break;
+		}
+		break;
+	}
 }

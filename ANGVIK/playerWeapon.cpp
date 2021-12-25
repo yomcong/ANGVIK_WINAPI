@@ -91,7 +91,7 @@ void playerWeapon::Update()
 			CollisionManager::GetSingleton()->CheckCollision(subTag, shape))
 		{
 			b_isAlive = false;
-			itemManager->CreateItem(subTag, pos, myType, myGrade);
+			itemManager->CreateItem(pos, ItemType::WEAPON, myType, myGrade);
 		}
 
 		if (renderPos.x <0 || renderPos.x >WIN_SIZE_X ||

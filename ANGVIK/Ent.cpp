@@ -1,7 +1,6 @@
 //#include "stdafx.h"
 #include "Ent.h"
 #include "Image.h"
-#include "Subject.h"
 #include "AmmoManager.h"
 
 HRESULT Ent::Init(POINTFLOAT _pos, AmmoManager* _ammoManager)
@@ -53,8 +52,6 @@ HRESULT Ent::Init(POINTFLOAT _pos, AmmoManager* _ammoManager)
 	shape.bottom = (int)pos.y + bodySize.y / 2;
 
 	dir = direction::RIGHT;
-
-	subject = new Subject;
 
 	renderPos = pos;
 
@@ -137,7 +134,6 @@ void Ent::Render(HDC hdc)
 
 void Ent::Release()
 {
-	SAFE_DELETE(subject);
 }
 
 void Ent::PlayAnimation()
@@ -226,7 +222,7 @@ void Ent::CheckWindow()
 	{
 		if (false == b_windowIn)
 		{
-			subject->Notify(subject, myType, subTag, EventTag::INWINDOW);
+			Notify(this, subTag, EventTag::INWINDOW, myType);
 			b_windowIn = true;
 		}
 	}
@@ -234,7 +230,7 @@ void Ent::CheckWindow()
 	{
 		if (b_windowIn)
 		{
-			subject->Notify(subject, myType, subTag, EventTag::OUTWINDOW);
+			Notify(this, subTag, EventTag::OUTWINDOW, myType);
 			b_windowIn = false;
 		}
 	}

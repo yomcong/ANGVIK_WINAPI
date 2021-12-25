@@ -1,11 +1,11 @@
 #pragma once
 #include "Config.h"
 #include "GameObject.h"
+#include "Subject.h"
 
 class Image;
-class Subject;
 class AmmoManager;
-class Ent : public GameObject
+class Ent : public GameObject, public Subject
 {
 public:
 	virtual ~Ent() = default;
@@ -21,8 +21,6 @@ public:
 	void CheckWindow();
 	void DoAction();
 
-	Subject* GetSubject() { return subject; }
-
 private:
 	Image* basicEnt = nullptr;
 	Image* entAttack = nullptr;
@@ -30,7 +28,6 @@ private:
 	Image* R_entAttack = nullptr;
 	Image* attackEffect = nullptr;
 	Image* R_attackEffect = nullptr;
-
 
 	// 애니메이션 프레임
 	POINT basicFrame = { 0,0 };
@@ -52,8 +49,6 @@ private:
 	
 	// 공격 딜레이
 	float attackDeley = 0.0f;
-
-	Subject* subject = nullptr;
 
 	SubjectTag subTag = SubjectTag::MONSTER;
 	MonsterType myType = MonsterType::ENT;

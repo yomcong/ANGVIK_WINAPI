@@ -1,15 +1,5 @@
-//#include "stdafx.h"
 #include "TitleScene.h"
 #include "Image.h"
-
-// 업데이트
-// 일렙시드 카운트로 텍스트 위아래 흔들거림 및 셀렉박스 애니매이션 같이 관리
-
-// 선택된 텍스트 위아래로 흔들거리는 모션
-// 일렙시트카운트를 델타타임으로 증가시키는데, 소수점으로 증가되다보니, 최소,최대치에 도달했을때 부자연스러움
-
-// 선택된 텍스트에 파란박스 일렁거리는 모션
-// 델타타임이 소수점이라 프레임 증감이 자연스럽지 못함
 
 HRESULT TitleScene::Init()
 {
@@ -48,7 +38,6 @@ HRESULT TitleScene::Init()
 	{
 		return E_FAIL;
 	}
-	
 
 	// 셀렉 박스
 	seletedBoxPos.x = WIN_SIZE_X * 0.25;
@@ -81,14 +70,17 @@ void TitleScene::Update()
 
 	if (Input::GetButtonDown(VK_SPACE))	// 씬 전환
 	{
+		// 게임시작
 		if (seletedTitle == SeletedTitle::START)
 		{
 			SceneManager::GetSingleton()->ChangeScene("StageScene");
 		}
+		// 옵션
 		else if (seletedTitle == SeletedTitle::OPTION)
 		{
 			SceneManager::GetSingleton()->ChangeScene("StageScene");
 		}
+		// 종료
 		else
 		{
 			SceneManager::GetSingleton()->ChangeScene("StageScene");
@@ -97,7 +89,6 @@ void TitleScene::Update()
 
 	if (Input::GetButtonDown(VK_LEFT))
 	{
-		//seletedtitle--;
 		ResetAnimation();	// 키입력이 들어왓을때 애니메이션 동작들 초기값으로 초기화.
 
 		if (seletedTitle == SeletedTitle::START)
@@ -115,7 +106,6 @@ void TitleScene::Update()
 	}
 	if (Input::GetButtonDown(VK_RIGHT))
 	{
-		//seletedtitle++;
 		ResetAnimation();
 
 		if (seletedTitle == SeletedTitle::START)
@@ -149,8 +139,6 @@ void TitleScene::Update()
 		boxFramecount = 0;
 	}
 
-	if (boxFramecount > 1000)
-		boxFramecount = 0.0f;
 }
 
 void TitleScene::Render(HDC hdc)

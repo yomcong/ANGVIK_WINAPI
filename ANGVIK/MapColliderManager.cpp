@@ -15,10 +15,6 @@ HRESULT MapColliderManager::Init()
 	return S_OK;
 }
 
-void MapColliderManager::Update()
-{
-
-}
 
 bool MapColliderManager::IsFalling(POINTFLOAT _pos, RECT _shape, float _moveSpeed, POINT _bodySize, SubjectTag _subTag)
 {

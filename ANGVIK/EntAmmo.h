@@ -13,6 +13,10 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
+	void PlayAnimation();
+	void PosUpdate();
+	void DoAction();
+
 	void IsFire(POINTFLOAT pos, float angle, int dir, float moveSpeed);
 	inline const bool GetIsAlive() { return this->b_IsAlive; }
 

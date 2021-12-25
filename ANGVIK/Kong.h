@@ -2,11 +2,11 @@
 //#include "stdafx.h"
 #include "Config.h"
 #include "GameObject.h"
+#include "Subject.h"
 
 class Image;
 class AmmoManager;
-class Subject;
-class Kong : public GameObject
+class Kong : public GameObject, public Subject
 {
 public:
 	virtual ~Kong() = default;
@@ -21,8 +21,6 @@ public:
 	void CheckWindow();
 	void CheckAttackRange();
 
-	Subject* GetSubject() { return subject; }
-
 private:
 	Image* attackMotion = nullptr;
 	Image* basicMotion = nullptr;
@@ -34,8 +32,6 @@ private:
 	POINT basicFrame = { 0,0 };
 	POINT attackFrame = { 0,0 };
 	POINT deathEffectFrame = { 7,0 };
-
-	Subject* subject = nullptr;
 
 	// ÃÑ¾Ë
 	AmmoManager* ammoManager = nullptr;

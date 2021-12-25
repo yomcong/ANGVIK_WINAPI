@@ -5,21 +5,17 @@
 
 HRESULT MainGame::Init()
 {
-	//KeyManager::GetSingleton()->Init();
 	ImageManager::GetSingleton()->Init();
-	//TimerManager::GetSingleton()->Init();
 	SceneManager::GetSingleton()->Init();
-	//GameManager::GetSingleton()->Init();
 	MapColliderManager::GetSingleton()->Init();
 	CameraManager::GetSingleton()->Init();
 	ParticleManager::GetSingleton()->Init();
-
 	Input::Init(g_hWnd);
 	Timer::Init();
 
 	SceneManager::GetSingleton()->ChangeScene("TitleScene");
 
-	srand((unsigned int)time(nullptr));
+	//srand((unsigned int)time(nullptr));
 
 	hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
 	
@@ -31,13 +27,9 @@ HRESULT MainGame::Init()
 
 void MainGame::Update()
 {
-	//TimerManager::GetSingleton()->Update();
-
 	Input::Update();
 
 	SceneManager::GetSingleton()->Update();
-
-	MapColliderManager::GetSingleton()->Update();
 
 	CameraManager::GetSingleton()->Update();
 
@@ -72,46 +64,9 @@ void MainGame::Release()
 {
 	SAFE_RELEASE(backBuffer);
 
-	//TimerManager::GetSingleton()->Release();
-
 	ImageManager::GetSingleton()->Release();
-
-	//KeyManager::GetSingleton()->Release();
 
 	SceneManager::GetSingleton()->Release();
 
 	KillTimer(g_hWnd, 0);
 }
-
-
-//LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
-//{
-//	switch (iMessage)
-//	{
-//	case WM_KEYDOWN:
-//		switch (wParam)
-//		{
-//		case VK_SPACE:
-//			break;
-//		case VK_UP:
-//			break;
-//		case VK_DOWN:
-//			break;
-//		case VK_LEFT:
-//			break;
-//		case VK_RIGHT:
-//			break;
-//		}
-//		break;
-//
-//	case WM_LBUTTONDOWN:
-//		break;
-//	case WM_LBUTTONUP:
-//		break;
-//	case WM_RBUTTONDOWN:
-//		break;
-//	case WM_MOUSEMOVE:
-//		break;
-//	}
-//	return DefWindowProc(hWnd, iMessage, wParam, lParam);
-//}

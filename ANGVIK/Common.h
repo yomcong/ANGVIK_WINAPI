@@ -1,6 +1,6 @@
 #pragma once
 enum class SubjectTag { IDLE, PLAYER, MONSTER, ITEM, TRAP, PLATFORM, AMMO, WEAPON };
-enum class EventTag { IDLE, ADD, INWINDOW, OUTWINDOW, RANGECOLLISION, RELEASE, };
+enum class EventTag { IDLE, ADD, INWINDOW, OUTWINDOW, RANGECOLLISION, MONSTERTRIGGER,ITEMDROP, FINDHIDDENMAP, RELEASE, };
 enum class direction { LEFT = -1, RIGHT = 1 };
 
 enum class MonsterType { IDLE, KONG, MONKEY, ENT };

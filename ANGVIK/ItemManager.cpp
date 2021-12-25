@@ -15,7 +15,7 @@ HRESULT ItemManager::Init()
 	itemFactory[5] = new TankLifeItemFactory;*/
 
 	// µð¹ö±ëÁß 
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < ItemInitCount; ++i)
 	{
 		Titem[i] = new TestItem;
 	}
@@ -27,7 +27,7 @@ HRESULT ItemManager::Init()
 	Titem[4]->Init({ 920, 350 }, ItemType::WEAPON, ItemGrade::SILVER, WeaponType::BOOMERANG);
 	Titem[5]->Init({ 950, 350 }, ItemType::OLIS, ItemGrade::GOLD, WeaponType::IDLE);
 
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < ItemInitCount; ++i)
 	{
 		vecItems.push_back(Titem[i]);
 	}
@@ -67,44 +67,11 @@ void ItemManager::Release()
 
 }
 
-void ItemManager::CreateItem(SubjectTag _subTag, POINTFLOAT _pos, WeaponType _weaponType, ItemGrade _itemGrade, MonsterType _monsterType)
+void ItemManager::CreateItem(POINTFLOAT _pos, ItemType _itemType, WeaponType _weaponType, ItemGrade _itemGrade, MonsterType _monsterType)
 {
-	switch (_subTag)
-	{
-	case SubjectTag::MONSTER:
-		switch (_monsterType)
-		{
-		case MonsterType::KONG:
-			break;
-		case MonsterType::MONKEY:
-			break;
-		case MonsterType::ENT:
-			break;
-		default:
-			break;
-		}
-		break;
-	case SubjectTag::WEAPON:
-		switch (_weaponType)
-		{
-		case WeaponType::BOOMERANG:
-			vecItems.emplace_back();
-			vecItems[vecItems.size() - 1] = new TestItem;
-			vecItems[vecItems.size() - 1]->Init(_pos, ItemType::WEAPON, _itemGrade, _weaponType);
-			break;
-		case WeaponType::LANCE:
-			vecItems.emplace_back();
-			vecItems[vecItems.size() - 1] = new TestItem;
-			vecItems[vecItems.size() - 1]->Init(_pos, ItemType::WEAPON, _itemGrade, _weaponType);
-			break;
-		default:
-			break;
-		}
-		break;
-	}
-
-
-
+	vecItems.emplace_back();
+	vecItems[vecItems.size() - 1] = new TestItem;
+	vecItems[vecItems.size() - 1]->Init(_pos, _itemType, _itemGrade, _weaponType);
 }
 
 bool ItemManager::CheckCollision(RECT shape, ItemType& itemType, ItemGrade& itemGrade, WeaponType& weaponType)

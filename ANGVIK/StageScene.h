@@ -1,28 +1,15 @@
 #pragma once
-#include "GameEntity.h"
 #include "Config.h"
-
-//enum class Action{ IDLE, JUMP, ATTACK, HIT };
-
-//struct Player
-//{
-//	POINTFLOAT pos = {};
-//	RECT collider = {};
-//	int bodySize_X = 0;
-//	int bodySize_Y = 0;
-//	Action action = Action::IDLE;
-//};
-//
+#include "GameEntity.h"
+#include "Observer.h"
 
 class Player;
-class Kong;
 class MonsterManager;
 class Image;
 class TrapManager;
-class CollisionManager;
 class ItemManager;
 class AmmoManager;
-class StageScene : public GameEntity	
+class StageScene : public GameEntity, public Observer
 {
 public:
 	virtual ~StageScene() = default;
@@ -32,13 +19,13 @@ public:
 	virtual void Render(HDC hdc) override;
 	virtual void Release() override;
 
+	virtual void OnNotify(Subject* _subject, MonsterType _monsterType, SubjectTag _subjectTag, EventTag _eventTag) override;
+
 private:
 	Image* stageBackgruond = nullptr;
 	Image* stageBackgruond2 = nullptr;
 	Image* stagePixelMap = nullptr;
 	Image* stageHiddenMap = nullptr;
-
-	Image* DBlogo = nullptr;
 
 	bool b_hiddenMapDiscovery = false;
 
@@ -47,19 +34,11 @@ private:
 	Player* player = nullptr;
 	MonsterManager* monsterManager = nullptr;
 	TrapManager* trapManager = nullptr;
-	CollisionManager* collisionManager = nullptr;
 	ItemManager* itemManager = nullptr;
 	AmmoManager* ammoManager = nullptr;
-	//Kong* kong = nullptr;
-
-	// 픽셀 충돌
-	//COLORREF color = {};
-	//WORD r, g, b = {};
 
 	//디버그용
 	bool debugPixelMap = false;
-	bool DBstop = false;
-
 
 };
 

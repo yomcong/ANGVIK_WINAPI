@@ -145,9 +145,7 @@ void Inventory::Update()
 				}
 				else
 				{
-					player->SetInventoryClose(false);
-					b_inventoryOpen = false;
-					b_enchant = false;
+					InventoryClose();
 				}
 			}
 			else if (inventoryType == InventoryType::ITEMBOX)
@@ -177,10 +175,7 @@ void Inventory::Update()
 							GetItem(tempType, ItemGrade::GOLD, tempWeaponType);
 							selectedNum = 0;
 
-
-							player->SetInventoryClose(false);
-							b_inventoryOpen = false;
-							b_enchant = false;
+							InventoryClose();
 						}
 					}
 					else
@@ -242,7 +237,11 @@ void Inventory::Update()
 				}
 				else if (selectedNum == 2)
 				{
-					// 아이템 드랍
+					player->ItemDrop(vecItemInfos[selectedItemNum].itemType, vecItemInfos[selectedItemNum].itemgrade, vecItemInfos[selectedItemNum].weaponType);
+					vecItemInfos.erase(vecItemInfos.begin() + selectedItemNum);
+					vecItems.erase(vecItems.begin() + selectedItemNum);
+
+					InventoryClose();
 				}
 			}
 			else if (inventoryType == InventoryType::SELECTOILS)
@@ -260,15 +259,17 @@ void Inventory::Update()
 				}
 				else if (selectedNum == 1)
 				{
-					// 아이템 드랍
+					player->ItemDrop(vecOilsInfos[selectedItemNum].itemType, vecOilsInfos[selectedItemNum].itemgrade, vecOilsInfos[selectedItemNum].weaponType);
+					vecOilsInfos.erase(vecOilsInfos.begin() + selectedItemNum);
+					vecOils.erase(vecOils.begin() + selectedItemNum);
+
+					InventoryClose();
 				}
 			}
 		}
 		if (Input::GetButtonDown(VK_ESCAPE))
 		{
-			b_enchant = false;
-			b_inventoryOpen = false;
-			player->SetInventoryClose(false);
+			InventoryClose();
 		}
 	}
 	PosUpdate();
@@ -417,15 +418,15 @@ void Inventory::InventoryOpen(POINTFLOAT pos)
 
 }
 
-bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType)
+bool Inventory::GetItem(ItemType _itemType, ItemGrade _itemGrade, WeaponType _weaponType)
 {
 	string itemName = "image/item/";
 	ItemInfo tempInfo = {};
-	if (itemType == ItemType::OLIS)
+	if (_itemType == ItemType::OLIS)
 	{
 		if (vecOils.size() == oilsMaximum)
 		{
-			// 아이템 드랍하기
+			player->ItemDrop(_itemType, _itemGrade, _weaponType);
 			return false;
 		}
 	}
@@ -433,16 +434,16 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 	{
 		if (vecItems.size() == itemMaximum)
 		{
-			// 아이템 드랍하기
+			player->ItemDrop(_itemType, _itemGrade, _weaponType);
 			return false;
 		}
 	}
-	switch (itemType)
+	switch (_itemType)
 	{
 	case ItemType::IDLE:
 		break;
 	case ItemType::HELMET:
-		switch (itemGrade)
+		switch (_itemGrade)
 		{
 		case ItemGrade::IDLE:
 			break;
@@ -459,7 +460,7 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 		}
 		break;
 	case ItemType::ARMOR:
-		switch (itemGrade)
+		switch (_itemGrade)
 		{
 		case ItemGrade::IDLE:
 			break;
@@ -480,10 +481,10 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 		}
 		break;
 	case ItemType::WEAPON:
-		switch (weaponType)
+		switch (_weaponType)
 		{
 		case WeaponType::IDLE:
-			switch (itemGrade)
+			switch (_itemGrade)
 			{
 			case ItemGrade::IDLE:
 				break;
@@ -496,7 +497,7 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 			}
 			break;
 		case WeaponType::SWORD:
-			switch (itemGrade)
+			switch (_itemGrade)
 			{
 			case ItemGrade::IDLE:
 				break;
@@ -519,7 +520,7 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 			}
 			break;
 		case WeaponType::BOOMERANG:
-			switch (itemGrade)
+			switch (_itemGrade)
 			{
 			case ItemGrade::IDLE:
 				break;
@@ -542,7 +543,7 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 			}
 			break;
 		case WeaponType::LANCE:
-			switch (itemGrade)
+			switch (_itemGrade)
 			{
 			case ItemGrade::IDLE:
 				break;
@@ -568,7 +569,7 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 
 		break;
 	case ItemType::SHOES:
-		switch (itemGrade)
+		switch (_itemGrade)
 		{
 		case ItemGrade::IDLE:
 			break;
@@ -591,7 +592,7 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 		}
 		break;
 	case ItemType::OLIS:
-		switch (itemGrade)
+		switch (_itemGrade)
 		{
 		case ItemGrade::IDLE:
 			break;
@@ -613,7 +614,7 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 	Image* tempImage = ImageManager::GetSingleton()->FindImage(itemName.c_str());
 
 
-	if (itemType == ItemType::OLIS)
+	if (_itemType == ItemType::OLIS)
 	{
 		if ((vecOils.size() == oilsMaximum) == false)
 		{
@@ -630,4 +631,11 @@ bool Inventory::GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weapo
 
 
 	return false;
+}
+
+void Inventory::InventoryClose()
+{
+	b_enchant = false;
+	b_inventoryOpen = false;
+	player->SetInventoryClose(false);
 }

@@ -19,9 +19,10 @@ public:
 
 	void PosUpdate();
 	void InventoryOpen(POINTFLOAT pos);
-	bool GetItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType = WeaponType::IDLE);
+	bool GetItem(ItemType _itemType, ItemGrade _itemGrade, WeaponType _weaponType = WeaponType::IDLE);
+	void InventoryClose();
 
-	inline void SetInventoryOpen(bool b_inventoryOpen) { this->b_inventoryOpen = b_inventoryOpen; }
+	inline void SetInventoryOpen(bool _b_inventoryOpen) { this->b_inventoryOpen = _b_inventoryOpen; }
 
 private:
 	Image* inventoryUi = nullptr;

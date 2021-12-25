@@ -1,7 +1,6 @@
 //#include "stdafx.h"
 #include "Kong.h"
 #include "Image.h"
-#include "Subject.h"
 #include "AmmoManager.h"
 
 // 플레이어 조준하는 삼각함수 계산 다시해야함
@@ -31,7 +30,7 @@ HRESULT Kong::Init(POINTFLOAT pos, AmmoManager* _ammoManager)
 
 	ammoManager = _ammoManager;
 
-	
+
 	this->pos = pos;
 
 	b_isAlive = true;
@@ -39,17 +38,15 @@ HRESULT Kong::Init(POINTFLOAT pos, AmmoManager* _ammoManager)
 	bodySize.x = 35;
 	bodySize.y = 35;
 
-	subject = new Subject;
-	
 	shape.left = (int)pos.x - bodySize.x / 2;
 	shape.top = (int)pos.y - bodySize.y / 2;
 	shape.right = (int)pos.x + bodySize.x / 2;
 	shape.bottom = (int)pos.y + bodySize.y / 2;
 
-	rangeRect.left = (int)pos.x - bodySize.x * 6;
-	rangeRect.top = (int)pos.y - bodySize.y * 6;
-	rangeRect.right = (int)pos.x + bodySize.x * 6;
-	rangeRect.bottom = (int)pos.y + bodySize.y * 6;
+	rangeRect.left = (int)pos.x - bodySize.x * 10;
+	rangeRect.top = (int)pos.y - bodySize.y * 8;
+	rangeRect.right = (int)pos.x + bodySize.x * 10;
+	rangeRect.bottom = (int)pos.y + bodySize.y * 8;
 
 	renderPos = pos;
 
@@ -58,13 +55,9 @@ HRESULT Kong::Init(POINTFLOAT pos, AmmoManager* _ammoManager)
 
 void Kong::Update()
 {
-
-	if (b_isAlive)
-	{
-		PlayAnimation();
-		CheckAttackRange();
-		CheckWindow();
-	}
+	PlayAnimation();
+	CheckAttackRange();
+	CheckWindow();
 
 	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
 	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
@@ -126,7 +119,7 @@ void Kong::Render(HDC hdc)
 
 void Kong::Release()
 {
-	SAFE_DELETE(subject);
+
 }
 
 void Kong::ToBeHit()
@@ -177,7 +170,7 @@ void Kong::CheckWindow()
 	{
 		if (false == b_windowIn)
 		{
-			subject->Notify(subject, myType, subTag, EventTag::INWINDOW);
+			Notify(this, subTag, EventTag::INWINDOW, myType);
 			b_windowIn = true;
 		}
 	}
@@ -185,7 +178,7 @@ void Kong::CheckWindow()
 	{
 		if (b_windowIn)
 		{
-			subject->Notify(subject, myType, subTag, EventTag::OUTWINDOW);
+			Notify(this, subTag, EventTag::OUTWINDOW, myType);
 			b_windowIn = false;
 		}
 	}

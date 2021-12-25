@@ -1,6 +1,7 @@
 #pragma once
 #include "Config.h"
 #include "GameObject.h"
+#include "Subject.h"
 
 enum class State { IDLE, JUMP, Fall, SITDOWN, HIT, ATTACK};
 enum class Action { IDLE, LEFTMOVE, RIGHTMOVE, BACKATTACK, FRONTATTACK};
@@ -8,7 +9,7 @@ enum class Action { IDLE, LEFTMOVE, RIGHTMOVE, BACKATTACK, FRONTATTACK};
 class AmmoManager;
 class Imgae;
 class Inventory;
-class Player : public GameObject
+class Player : public GameObject, public Subject
 {
 public:
 	//static enum class Action { IDLE, LeftMove, RightMove, Jump, SitDown, Attack, Hit };
@@ -19,6 +20,7 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
+	bool FindImage();
 	void ChangeAction(Action action);
 	void ChangeState(State state);
 	void PlayAnimation();
@@ -26,13 +28,15 @@ public:
 	void ToStepOn();
 	void ToBeHit();
 	bool CheckCollision(SubjectTag _subject, RECT _shape, EventTag _eventTag = EventTag::IDLE);
-	bool FindImage();
-	bool EquipItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType, bool ChangeItem = false, int dir = 0);
 	void AttackHit();
 	void Attacking();
+	bool EquipItem(ItemType itemType, ItemGrade itemGrade, WeaponType weaponType, bool ChangeItem = false, int dir = 0);
+	void ItemDrop(ItemType _itemType, ItemGrade _itemGrade, WeaponType _weaponType = WeaponType::IDLE);
 
 	inline bool SetIsPlatform(bool b_platform) { return this->b_platform = b_platform; }
 	inline bool SetInventoryClose(bool b_inventoryOpen) { return this->b_inventoryOpen = b_inventoryOpen; }
+	inline ItemInfo GetItemInfo() { return dropItemInfo; }
+	
 
 private:
 	Image* backArm = nullptr;	// 왼팔
@@ -131,21 +135,8 @@ private:
 	State state = State::IDLE;
 	SubjectTag subTag = SubjectTag::PLAYER;
 
-	// 디버그용
-	Image* DBbackArm = nullptr;
-	Image* DBfrontArm = nullptr;
-	Image* DBbody = nullptr;
-	Image* DBhead0 = nullptr;
-	Image* DBhead1 = nullptr;
-	Image* DBhead2 = nullptr;
-	Image* DBhead3 = nullptr;
-	Image* DBgoldBody = nullptr;
-	Image* DBgoldFoot = nullptr;
-
-	// 이미지 디버깅용 (인체실험)
-	POINT DBarmPos = { 0, 0 };
-	POINT DBbodyPos = { 0, 0 };
-
-	RECT DBattackShape = {};
+	ItemInfo dropItemInfo = {};
+	
+	RECT attackShape = {};
 };
 

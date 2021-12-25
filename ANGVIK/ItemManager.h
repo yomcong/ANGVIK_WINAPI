@@ -2,6 +2,7 @@
 #include "Config.h"
 #include "GameEntity.h"
  
+#define ItemInitCount 6
 
 class Image;
 class Item;
@@ -17,7 +18,7 @@ public:
 	void Render(HDC hdc);
 	void Release();
 
-	void CreateItem(SubjectTag _subTag, POINTFLOAT _pos, WeaponType _weaponType = WeaponType::IDLE, ItemGrade _itemGrade = ItemGrade::IDLE, MonsterType _monsterType = MonsterType::IDLE);
+	void CreateItem(POINTFLOAT _pos, ItemType _itemType, WeaponType _weaponType = WeaponType::IDLE, ItemGrade _itemGrade = ItemGrade::IDLE, MonsterType _monsterType = MonsterType::IDLE);
 	bool CheckCollision(RECT shape, ItemType& itemType, ItemGrade& itemGrade, WeaponType& weaponType);
 	//void UseItem();
 
@@ -28,7 +29,7 @@ private:
 
 	ItemFactory* itemFactory[6] = {};*/
 
-	TestItem* Titem[6] = {};
+	TestItem* Titem[ItemInitCount] = {};
 	vector<TestItem*> vecItems = {};
 
 };

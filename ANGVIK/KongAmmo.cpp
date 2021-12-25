@@ -30,12 +30,10 @@ HRESULT KongAmmo::Init()
 	bodySize.x = 8;
 	bodySize.y = 8;
 
-
 	shape.left = (int)pos.x - bodySize.x;
 	shape.top = (int)pos.y - bodySize.y;
 	shape.right = (int)pos.x + bodySize.x;
 	shape.bottom = (int)pos.y + bodySize.y;
-
 
 	return S_OK;
 }
@@ -44,79 +42,17 @@ void KongAmmo::Update()
 {
 	if (b_IsAlive)
 	{
-		// 애니메이션
-		frameCount += Timer::GetDeltaTime();
+		PlayAnimation();
+		DoAction();
+		PosUpdate();
 
-		if (frameCount > 0.0625)
-		{
-			if (b_ISHit)
-			{
-				if (effectFrame.x == effectMaxFrame.x)
-				{
-					effectFrame.x = 0;
-					b_ISHit = false;
-					b_IsAlive = false;
-				}
-				else
-				{
-					++effectFrame.x;
-				}
-			}
-			else
-			{
-				if (ammoFrame.x == ammoMaxFrame.x)
-				{
-					ammoFrame.x = 0;
-				}
-				else
-				{
-					++ammoFrame.x;
-				}
-			}
-
-			frameCount = 0;
-		}
-		// ------
-
-		// 히트하게되면 이동 X
-		if (false == b_ISHit)
-		{
-			pos.x += cos(moveAngle) * moveSpeed * Timer::GetDeltaTime();
-			pos.y -= sin(moveAngle) * moveSpeed * Timer::GetDeltaTime();
-
-			if (MapColliderManager::GetSingleton()->checkCollision(subTag, shape, (int)dir, bodySize) || 
-				CollisionManager::GetSingleton()->CheckCollision(subTag, shape))
-			{
-				b_ISHit = true;
-				effectFrame.x = 0;
-			}
-			
-			if (renderPos.x <0 || renderPos.x >WIN_SIZE_X ||
-				renderPos.y <0 || renderPos.y > WIN_SIZE_Y)
-			{
-				b_IsAlive = false;
-			}
-		}
-		// ---------
-
-		shape.left = (int)pos.x - bodySize.x;
-		shape.top = (int)pos.y - bodySize.y;
-		shape.right = (int)pos.x + bodySize.x;
-		shape.bottom = (int)pos.y + bodySize.y;
-
-		renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
-		renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
-
-		// 디버깅
 		if (Input::GetButtonDown(VK_NUMPAD1))
-			DBrect == false ? DBrect = true : DBrect = false;
+			DBrect = !DBrect;
 	}
-
 }
 
 void KongAmmo::Render(HDC hdc)
 {
-
 	if (b_IsAlive)
 	{
 		if (false == b_ISHit)
@@ -148,12 +84,78 @@ void KongAmmo::Render(HDC hdc)
 			}
 		}
 	}
-
-
 }
 
 void KongAmmo::Release()
 {
+}
+
+void KongAmmo::PlayAnimation()
+{
+	frameCount += Timer::GetDeltaTime();
+
+	if (frameCount > 0.0625)
+	{
+		if (b_ISHit)
+		{
+			if (effectFrame.x == effectMaxFrame.x)
+			{
+				effectFrame.x = 0;
+				b_ISHit = false;
+				b_IsAlive = false;
+			}
+			else
+			{
+				++effectFrame.x;
+			}
+		}
+		else
+		{
+			if (ammoFrame.x == ammoMaxFrame.x)
+			{
+				ammoFrame.x = 0;
+			}
+			else
+			{
+				++ammoFrame.x;
+			}
+		}
+
+		frameCount = 0;
+	}
+}
+
+void KongAmmo::PosUpdate()
+{
+	shape.left = (int)pos.x - bodySize.x;
+	shape.top = (int)pos.y - bodySize.y;
+	shape.right = (int)pos.x + bodySize.x;
+	shape.bottom = (int)pos.y + bodySize.y;
+
+	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
+	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
+}
+
+void KongAmmo::DoAction()
+{
+	if (false == b_ISHit)
+	{
+		pos.x += cos(moveAngle) * moveSpeed * Timer::GetDeltaTime();
+		pos.y -= sin(moveAngle) * moveSpeed * Timer::GetDeltaTime();
+
+		if (MapColliderManager::GetSingleton()->checkCollision(subTag, shape, (int)dir, bodySize) ||
+			CollisionManager::GetSingleton()->CheckCollision(subTag, shape))
+		{
+			b_ISHit = true;
+			effectFrame.x = 0;
+		}
+
+		if (renderPos.x <0 || renderPos.x >WIN_SIZE_X ||
+			renderPos.y <0 || renderPos.y > WIN_SIZE_Y)
+		{
+			b_IsAlive = false;
+		}
+	}
 }
 
 void KongAmmo::IsFire(POINTFLOAT pos, float angle, int dir)

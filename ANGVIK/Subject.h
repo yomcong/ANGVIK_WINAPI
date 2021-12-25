@@ -11,10 +11,8 @@ public:
 	void AddObserver(Observer* obs);
 	void RemoveObserver(Observer* obs);
 
-	//int GetObserverCount() { return mVecObserver.size(); }
+	Subject* GetSubject() { return this; }
 
-	//void Notify(GameEntity* obj, SubjectTag subjectTag, EventTag eventTag);
-	void Notify(Subject* subject, MonsterType monsterType, SubjectTag subjectTag, EventTag eventTag);
-
+	void Notify(Subject* subject, SubjectTag subjectTag, EventTag eventTag, MonsterType monsterType = MonsterType::IDLE);
 };
 

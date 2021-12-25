@@ -1,7 +1,6 @@
 //#include "stdafx.h"
 #include "Monkey.h"
 #include "Image.h"
-#include "Subject.h"
 
 HRESULT Monkey::Init(POINTFLOAT pos)
 {
@@ -15,8 +14,6 @@ HRESULT Monkey::Init(POINTFLOAT pos)
 	{
 		return E_FAIL;
 	}
-
-	subject = new Subject;
 
 	this->pos = pos;
 	renderPos = pos;
@@ -41,12 +38,9 @@ HRESULT Monkey::Init(POINTFLOAT pos)
 
 void Monkey::Update()
 {
-	if (b_isAlive)
-	{
-		PlayAnimation();
-		DoAction();
-	}
 
+	PlayAnimation();
+	DoAction();
 	PosUpdate();
 	CheckWindow();
 
@@ -79,7 +73,6 @@ void Monkey::Render(HDC hdc)
 
 void Monkey::Release()
 {
-	SAFE_DELETE(subject);
 }
 
 void Monkey::ToBeHit()
@@ -128,7 +121,7 @@ void Monkey::CheckWindow()
 	{
 		if (false == b_windowIn)
 		{
-			subject->Notify(subject, myType, subTag, EventTag::INWINDOW);
+			Notify(this, subTag, EventTag::INWINDOW, myType);
 			b_windowIn = true;
 		}
 	}
@@ -136,7 +129,7 @@ void Monkey::CheckWindow()
 	{
 		if (b_windowIn)
 		{
-			subject->Notify(subject, myType, subTag, EventTag::OUTWINDOW);
+			Notify(this, subTag, EventTag::OUTWINDOW, myType);
 			b_windowIn = false;
 		}
 	}
@@ -155,6 +148,7 @@ void Monkey::DoAction()
 	{
 		dir == direction::RIGHT ? dir = direction::LEFT : dir = direction::RIGHT;
 	}
+
 	pos.x += tempPos.x;
 	pos.y += tempPos.y;
 
