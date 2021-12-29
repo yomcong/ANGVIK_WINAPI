@@ -16,21 +16,17 @@ class ParticleManager : public Singleton<ParticleManager>
 public:
 	virtual ~ParticleManager() = default;
 
-	HRESULT Init();
 	void Update();
 	void Render(HDC hdc);
 	void Release();
 
-	void CallParticle(POINTFLOAT _pos);
-	void CallParticle(SubjectTag _subTag, POINTFLOAT _pos, MonsterType _monsterType = MonsterType::IDLE);
+	void CallParticle(SubjectTag _subTag, POINTFLOAT _pos, int _dir = 1, MonsterType _monsterType = MonsterType::IDLE);
 private:
-	//Image* deathEffect = nullptr;
-	//Image* WeaponMapEffect = nullptr;
-
 	float frameCount = 0.0f;
+
 	const int deathEffectMaxFrame = 5;
 	const int WeaponMapEffectMaxFrame =3;
-	//const int kongAmmoEffectMaxFrame = ;
+	const int kongAmmoEffectMaxFrame = 5;
 
 	vector<Particle> vecEffects = {};
 };

@@ -131,7 +131,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -146,22 +146,16 @@
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Ent.cpp" />
     <ClCompile Include="EntAmmo.cpp" />
-    <ClCompile Include="EntAmmoManager.cpp" />
     <ClCompile Include="Extern.cpp" />
     <ClCompile Include="GameEntity.cpp" />
-    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Inventory.cpp" />
-    <ClCompile Include="Item.cpp" />
-    <ClCompile Include="ItemFactory.cpp" />
     <ClCompile Include="ItemManager.cpp" />
-    <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Kong.cpp" />
     <ClCompile Include="KongAmmo.cpp" />
-    <ClCompile Include="KongAmmoManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="MapColliderManager.cpp" />
@@ -178,9 +172,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Subject.cpp" />
-    <ClCompile Include="TestItem.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="TimerManager.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Trap.cpp" />
     <ClCompile Include="TrapManager.cpp" />
@@ -194,22 +187,16 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="Ent.h" />
     <ClInclude Include="EntAmmo.h" />
-    <ClInclude Include="EntAmmoManager.h" />
     <ClInclude Include="Extern.h" />
     <ClInclude Include="GameEntity.h" />
-    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Inventory.h" />
-    <ClInclude Include="Item.h" />
-    <ClInclude Include="ItemFactory.h" />
     <ClInclude Include="ItemManager.h" />
-    <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Kong.h" />
     <ClInclude Include="KongAmmo.h" />
-    <ClInclude Include="KongAmmoManager.h" />
     <ClInclude Include="Macro.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MapColliderManager.h" />
@@ -225,9 +212,8 @@
     <ClInclude Include="StageScene.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Subject.h" />
-    <ClInclude Include="TestItem.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="TimerManager.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Trap.h" />
     <ClInclude Include="TrapManager.h" />

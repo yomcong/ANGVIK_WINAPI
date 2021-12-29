@@ -3,62 +3,59 @@
 
 HRESULT TitleScene::Init()
 {
-	titleBackgruond = ImageManager::GetSingleton()->FindImage("image/etc/배경.bmp");	//타이틀 백그라운드
+	titleBackgruond = ImageManager::GetSingleton()->FindImage("image/etc/배경.bmp");	
 	if (titleBackgruond == nullptr)
 	{
 		return E_FAIL;
 	}
-	titleMenuBar = ImageManager::GetSingleton()->FindImage("image/etc/메뉴바.bmp");	//타이틀 메뉴 바
+	titleMenuBar = ImageManager::GetSingleton()->FindImage("image/etc/메뉴바.bmp");
 	if (titleMenuBar == nullptr)
 	{
 		return E_FAIL;
 	}
-	startText = ImageManager::GetSingleton()->FindImage("image/etc/start.bmp");	//타이틀 start text
+	startText = ImageManager::GetSingleton()->FindImage("image/etc/start.bmp");	
 	if (startText == nullptr)
 	{
 		return E_FAIL;
 	}
-	optionText = ImageManager::GetSingleton()->FindImage("image/etc/options.bmp");	//타이틀 option text
+	optionText = ImageManager::GetSingleton()->FindImage("image/etc/options.bmp");	
 	if (optionText == nullptr)
 	{
 		return E_FAIL;
 	}
-	exitText = ImageManager::GetSingleton()->FindImage("image/etc/exit.bmp");	//타이틀 exit text
+	exitText = ImageManager::GetSingleton()->FindImage("image/etc/exit.bmp");	
 	if (exitText == nullptr)
 	{
 		return E_FAIL;
 	}
-	seletedBox = ImageManager::GetSingleton()->FindImage("image/etc/선택2.bmp");	// 선택 박스
+	seletedBox = ImageManager::GetSingleton()->FindImage("image/etc/선택2.bmp");
 	if (seletedBox == nullptr)
 	{
 		return E_FAIL;
 	}
-	angvikLogo = ImageManager::GetSingleton()->FindImage("image/etc/로고.bmp");	// 앙빅 로고
+	angvikLogo = ImageManager::GetSingleton()->FindImage("image/etc/로고.bmp");
 	if (angvikLogo == nullptr)
 	{
 		return E_FAIL;
 	}
 
-	// 셀렉 박스
 	seletedBoxPos.x = WIN_SIZE_X * 0.25;
 	seletedBoxPos.y = WIN_SIZE_Y * 0.75;
 
-	// 스타트 텍스트
 	startTextPos.x = WIN_SIZE_X * 0.25f;
 	startTextPos.y = WIN_SIZE_Y * 0.75f;
 
-	// 옵션 텍스트
 	optionTextPos.x = WIN_SIZE_X * 0.50f;
 	optionTextPos.y = WIN_SIZE_Y * 0.75f;
 
-	// 엑시트 텍스트
 	exitTextPos.x = WIN_SIZE_X * 0.75f;
 	exitTextPos.y = WIN_SIZE_Y * 0.75f;
-	
-	// 앙빅 로고 
+
 	logoPos.x = WIN_SIZE_X * 0.50f;
 	logoPos.y = WIN_SIZE_Y * 0.30f;
 
+	TilteMenuBar.x = WIN_SIZE_X / 2;
+	TilteMenuBar.y = WIN_SIZE_Y * 0.75;
 
 	return S_OK;
 }
@@ -78,12 +75,12 @@ void TitleScene::Update()
 		// 옵션
 		else if (seletedTitle == SeletedTitle::OPTION)
 		{
-			SceneManager::GetSingleton()->ChangeScene("StageScene");
+			//SceneManager::GetSingleton()->ChangeScene("StageScene");
 		}
 		// 종료
 		else
 		{
-			SceneManager::GetSingleton()->ChangeScene("StageScene");
+			//SceneManager::GetSingleton()->ChangeScene("StageScene");
 		}
 	}
 
@@ -143,15 +140,15 @@ void TitleScene::Update()
 
 void TitleScene::Render(HDC hdc)
 {
-	titleBackgruond->Render(hdc);																// 타이틀 백그라운드
+	titleBackgruond->Render(hdc);																
 
-	titleMenuBar->Render(hdc, WIN_SIZE_X / 2, (int)(WIN_SIZE_Y * 0.75));						// 타이틀 메뉴 바
+	titleMenuBar->Render(hdc, (int)TilteMenuBar.x, (int)TilteMenuBar.y);						
 
-	seletedBox->Render(hdc, (int)seletedBoxPos.x, (int)seletedBoxPos.y, seletedBoxFrame, 0);	// 셀렉 박스
+	seletedBox->Render(hdc, (int)seletedBoxPos.x, (int)seletedBoxPos.y, seletedBoxFrame, 0);	
 
 	angvikLogo->Render(hdc, (int)logoPos.x, (int)logoPos.y);
-	startText->Render(hdc, (int)startTextPos.x, (int)startTextPos.y);							// 스타트 text
-	optionText->Render(hdc, (int)optionTextPos.x, (int)optionTextPos.y);						// 옵션 text
+	startText->Render(hdc, (int)startTextPos.x, (int)startTextPos.y);							
+	optionText->Render(hdc, (int)optionTextPos.x, (int)optionTextPos.y);						
 	exitText->Render(hdc, (int)exitTextPos.x, (int)exitTextPos.y);
 }
 
@@ -211,7 +208,7 @@ void TitleScene::ChooseTitle()
 	}
 
 	// 흔들흔들 애니메이션
-	if (((int)elepsedCount)%2 < 1)
+	if (((int)elepsedCount) % 2 < 1)
 	{
 		frameHeight = FrameHeight::UP;
 	}

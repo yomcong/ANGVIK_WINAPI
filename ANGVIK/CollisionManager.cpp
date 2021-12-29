@@ -30,16 +30,6 @@ void CollisionManager::AddItem(ItemManager* itemManager)
 	this->itemManager = itemManager;
 }
 
-void CollisionManager::AddObject(SubjectTag subject, EventTag object, RECT* shape)
-{
-	vector<RECT*>::iterator iter = find(vecRects.begin(), vecRects.end(), shape);
-
-	if (iter == vecRects.end())
-	{
-		vecRects.push_back(shape);
-	}
-}
-
 bool CollisionManager::CheckCollision(SubjectTag _subject, RECT _shape, EventTag _eventTag)
 {
 	bool b_temp = false;

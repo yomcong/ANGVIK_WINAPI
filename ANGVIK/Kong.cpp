@@ -107,8 +107,6 @@ void Kong::Render(HDC hdc)
 
 		}
 
-		//attackMotion->Render(hdc, 375, 350, attackFrame.x, attackFrame.y);
-
 		if (DBrect)
 			Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x,
 				shape.top - (int)CameraManager::GetSingleton()->GetPos().y,
@@ -126,7 +124,7 @@ void Kong::ToBeHit()
 {
 	if (b_isAlive)
 	{
-		ParticleManager::GetSingleton()->CallParticle(pos);
+		ParticleManager::GetSingleton()->CallParticle(subTag, pos, (int)dir,  myType);
 		b_isAlive = false;
 	}
 }

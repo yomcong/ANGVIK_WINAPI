@@ -1,7 +1,6 @@
 //#include "stdafx.h"
 #include "MainGame.h"
 #include "Image.h"
-#include "GameManager.h"
 
 HRESULT MainGame::Init()
 {
@@ -9,16 +8,15 @@ HRESULT MainGame::Init()
 	SceneManager::GetSingleton()->Init();
 	MapColliderManager::GetSingleton()->Init();
 	CameraManager::GetSingleton()->Init();
-	ParticleManager::GetSingleton()->Init();
 	Input::Init(g_hWnd);
 	Timer::Init();
 
 	SceneManager::GetSingleton()->ChangeScene("TitleScene");
 
-	//srand((unsigned int)time(nullptr));
+	srand((unsigned int)time(nullptr));
 
 	hTimer = (HANDLE)SetTimer(g_hWnd, 0, 10, NULL);
-	
+
 	backBuffer = new Image;
 
 	backBuffer->Init("Image/mapImage.bmp", WIN_SIZE_X, WIN_SIZE_Y);
@@ -27,6 +25,7 @@ HRESULT MainGame::Init()
 
 void MainGame::Update()
 {
+
 	Input::Update();
 
 	SceneManager::GetSingleton()->Update();
@@ -45,7 +44,7 @@ void MainGame::Render(HDC hdc)
 	PatBlt(hBackBufferDC, 0, 0, WIN_SIZE_X, WIN_SIZE_Y, WHITENESS);
 
 	SceneManager::GetSingleton()->Render(hBackBufferDC);
-	
+
 	ParticleManager::GetSingleton()->Render(hBackBufferDC);
 	//fps Ç¥½Ã.
 #ifdef _DEBUG

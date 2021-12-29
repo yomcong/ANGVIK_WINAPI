@@ -2,22 +2,11 @@
 #include "ParticleManager.h"
 #include "Image.h"
 
-HRESULT ParticleManager::Init()
-{
-	/*deathEffect = ImageManager::GetSingleton()->FindImage("image/effect.bmp");
-	if (deathEffect == nullptr)
-	{
-		return E_FAIL;
-	}
-	WeaponMapEffect = ImageManager::GetSingleton()->FindImage("image/weaponEffect.bmp");
-	if (WeaponMapEffect == nullptr)
-	{
-		return E_FAIL;
-	}*/
-
-	
-	return S_OK;
-}
+//HRESULT ParticleManager::Init()
+//{
+//	
+//	return S_OK;
+//}
 
 void ParticleManager::Update()
 {
@@ -36,11 +25,15 @@ void ParticleManager::Update()
 
 		frameCount = 0.0f;
 
-		for (int i = 0; i < vecEffects.size(); ++i)
+		for (int i = 0; i < vecEffects.size();)
 		{
 			if (vecEffects[i].EffectFrame.x == vecEffects[i].EffectMaxFrame)
 			{
 				vecEffects.erase(vecEffects.begin() + i);
+			}
+			else
+			{
+				++i;
 			}
 		}
 	}
@@ -62,36 +55,17 @@ void ParticleManager::Release()
 	vecEffects.clear();
 }
 
-// 함수하나로 호출하는법 생각하기
-void ParticleManager::CallParticle(POINTFLOAT _pos)
-{
-	Particle tempParticl;
-	tempParticl.pos = _pos;
-	tempParticl.EffectFrame = { 0,0 };
-	tempParticl.EffectMaxFrame = deathEffectMaxFrame;
-	tempParticl.effect = ImageManager::GetSingleton()->FindImage("image/effect.bmp");
-	vecEffects.push_back(tempParticl);
-
-}
-
-void ParticleManager::CallParticle(SubjectTag _subTag, POINTFLOAT _pos, MonsterType _monsterType)
+void ParticleManager::CallParticle(SubjectTag _subTag, POINTFLOAT _pos, int _dir , MonsterType _monsterType)
 {
 	switch (_subTag)
 	{
 	case SubjectTag::PLAYER:
 		break;
 	case SubjectTag::MONSTER:
-		switch (_monsterType)
-		{
-		case MonsterType::KONG:
-			break;
-		case MonsterType::MONKEY:
-			break;
-		case MonsterType::ENT:
-			break;
-		default:
-			break;
-		}
+		vecEffects.emplace_back();
+		vecEffects[vecEffects.size() - 1].pos = _pos;
+		vecEffects[vecEffects.size() - 1].EffectMaxFrame = deathEffectMaxFrame;
+		vecEffects[vecEffects.size() - 1].effect = ImageManager::GetSingleton()->FindImage("image/effect.bmp");
 		break;
 	case SubjectTag::ITEM:
 		break;
@@ -100,23 +74,23 @@ void ParticleManager::CallParticle(SubjectTag _subTag, POINTFLOAT _pos, MonsterT
 	case SubjectTag::PLATFORM:
 		break;
 	case SubjectTag::AMMO:
-		switch (_monsterType)
+		vecEffects.emplace_back();
+		vecEffects[vecEffects.size() - 1].pos = _pos;
+		vecEffects[vecEffects.size() - 1].EffectMaxFrame = kongAmmoEffectMaxFrame;
+		if (_dir > 0)
 		{
-		case MonsterType::KONG:
-			break;
-		case MonsterType::ENT:
-			break;
-		default:
-			break;
+			vecEffects[vecEffects.size() - 1].effect = ImageManager::GetSingleton()->FindImage("image/monster/모다피_총알.bmp");
+		}
+		else
+		{
+			vecEffects[vecEffects.size() - 1].effect = ImageManager::GetSingleton()->FindImage("image/monster/R_모다피_총알.bmp");
 		}
 		break;
 	case SubjectTag::WEAPON:
-		Particle tempParticl;
-		tempParticl.pos = _pos;
-		tempParticl.EffectFrame = { 0,0 };
-		tempParticl.EffectMaxFrame = 3;
-		tempParticl.effect = ImageManager::GetSingleton()->FindImage("image/weaponEffect.bmp");
-		vecEffects.push_back(tempParticl);
+		vecEffects.emplace_back();
+		vecEffects[vecEffects.size() - 1].pos = _pos;
+		vecEffects[vecEffects.size() - 1].EffectMaxFrame = WeaponMapEffectMaxFrame;
+		vecEffects[vecEffects.size() - 1].effect = ImageManager::GetSingleton()->FindImage("image/weaponEffect.bmp");
 		break;
 	}
 	

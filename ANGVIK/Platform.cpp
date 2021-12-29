@@ -86,7 +86,6 @@ void Platform::Update()
 		}
 	}
 
-
 	renderPos.x = pos.x - CameraManager::GetSingleton()->GetPos().x;
 	renderPos.y = pos.y - CameraManager::GetSingleton()->GetPos().y;
 
@@ -94,6 +93,24 @@ void Platform::Update()
 	shape.top = (int)pos.y - bodySize.y / 2;
 	shape.right = (int)pos.x + bodySize.x / 2;
 	shape.bottom = (int)pos.y + bodySize.y / 2;
+
+	if (renderPos.x > 0 && renderPos.x < WIN_SIZE_X &&
+		renderPos.y > 0 && renderPos.y < WIN_SIZE_Y)
+	{
+		if (false == b_windowIn)
+		{
+			Notify(this, subTag, EventTag::INWINDOW);
+			b_windowIn = true;
+		}
+	}
+	else
+	{
+		if (b_windowIn)
+		{
+			Notify(this, subTag, EventTag::OUTWINDOW);
+			b_windowIn = false;
+		}
+	}
 
 	if (Input::GetButtonDown(VK_NUMPAD9))
 	{

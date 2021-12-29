@@ -12,15 +12,17 @@
 #define stage1Width 6709
 #define stage1Height 1290
 
+#define backgroundSize 1024
+
 HRESULT StageScene::Init()
 {
-	stageBackgruond = ImageManager::GetSingleton()->FindImage("image/Stage/Stage1-Background.bmp");
-	if (stageBackgruond == nullptr)
+	mainStage = ImageManager::GetSingleton()->FindImage("image/Stage/Stage1-Background.bmp");
+	if (mainStage == nullptr)
 	{
 		return E_FAIL;
 	}
-	stageBackgruond2 = ImageManager::GetSingleton()->FindImage("image/Stage/Stage1-Background2.bmp");
-	if (stageBackgruond2 == nullptr)
+	stageBackgruond_2 = ImageManager::GetSingleton()->FindImage("image/Stage/Stage1-Background2.bmp");
+	if (stageBackgruond_2 == nullptr)
 	{
 		return E_FAIL;
 	}
@@ -34,10 +36,16 @@ HRESULT StageScene::Init()
 	{
 		return E_FAIL;
 	}
+	stageBackgruond_1 = ImageManager::GetSingleton()->FindImage("image/Stage/Stage1-bg1.bmp");
+	if (stageBackgruond_1 == nullptr)
+	{
+		return E_FAIL;
+	}
+	mapPos.x = stage1Width / 2;
+	mapPos.y = stage1Height / 2;
 
-
-	mapPos.x = 6709 / 2;
-	mapPos.y = 1290 / 2;
+	backgroundMapPos.x = backgroundSize / 2;
+	backgroundMapPos.y = backgroundSize / 2;
 
 	player = new Player;
 	monsterManager = new MonsterManager;
@@ -62,39 +70,37 @@ HRESULT StageScene::Init()
 
 void StageScene::Update()
 {
-	player->Update();
-	monsterManager->Update();
-	trapManager->Update();
-	itemManager->Update();
-	ammoManager->Update();
-
-	// È÷µç¸Ê µð¹ö±ë ÀÌÈÄ ¿ÉÀú¹ö·Î ¾Ë¸²º¸³»ÁÖ±â
-	/*if (CameraManager::GetSingleton()->GetPos().x > 5060)
+	// µð¹ö±ë¿ë ÀÏ½ÃÁ¤Áö
+	if (DBstop==false)
 	{
-		if (CameraManager::GetSingleton()->GetPos().y > 590 &&
-			CameraManager::GetSingleton()->GetPos().y < 620)
-		{
-			b_hiddenMapDiscovery = true;
-		}
-	}*/
+		player->Update();
+		monsterManager->Update();
+		trapManager->Update();
+		itemManager->Update();
+		ammoManager->Update();
+	}
 
+	if (Input::GetButtonDown(VK_NUMPAD0))
+	{
+		DBstop = !DBstop;
+	}
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë ¿ë
 	if (Input::GetButtonDown(VK_NUMPAD7))
 	{
-		debugPixelMap == false ? debugPixelMap = true : debugPixelMap = false;
+		DBPixelMap = !DBPixelMap;
 	}
 }
 
 void StageScene::Render(HDC hdc)
 {
 	// ¹è°æ
-	stageBackgruond2->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
-		mapPos.y * 0.5 - (int)CameraManager::GetSingleton()->GetPos().y);
-	stageBackgruond2->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
-		mapPos.y * 1.5 - (int)CameraManager::GetSingleton()->GetPos().y);
+	stageBackgruond_2->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
+		(int)mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);
+
+	stageBackgruond_1->Render(hdc, (int)backgroundMapPos.x, (int)backgroundMapPos.y);
 
 	//¸Ê
-	stageBackgruond->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
+	mainStage->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
 		mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);
 
 	// ¼û°ÜÁø Áö¿ª 
@@ -110,7 +116,7 @@ void StageScene::Render(HDC hdc)
 	player->Render(hdc);
 
 	// ÇÈ¼¿ ¸Ê µð¹ö±ë
-	if (debugPixelMap)
+	if (DBPixelMap)
 	{
 		stagePixelMap->Render(hdc, mapPos.x - (int)CameraManager::GetSingleton()->GetPos().x,
 			mapPos.y - (int)CameraManager::GetSingleton()->GetPos().y);
@@ -124,7 +130,7 @@ void StageScene::Release()
 	SAFE_RELEASE(trapManager);
 	SAFE_RELEASE(itemManager);
 	SAFE_RELEASE(ammoManager);
-}
+}	
 
 void StageScene::OnNotify(Subject* _subject, MonsterType _monsterType, SubjectTag _subjectTag, EventTag _eventTag)
 {
@@ -145,7 +151,15 @@ void StageScene::OnNotify(Subject* _subject, MonsterType _monsterType, SubjectTa
 			b_hiddenMapDiscovery = true;
 			break;
 		case EventTag::MONSTERTRIGGER:
-			monsterManager->MonkeyTriggerSpawn();
+			if (oneTriggerOn == false)
+			{
+				monsterManager->MonkeyTriggerSpawn();
+				oneTriggerOn = true;
+			}
+			else
+			{
+				monsterManager->MonkeyTriggerSpawn2();
+			}
 			break;
 		}
 		break;

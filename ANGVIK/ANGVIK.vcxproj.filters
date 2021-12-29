@@ -37,18 +37,6 @@
     <Filter Include="MainGame\Object">
       <UniqueIdentifier>{586183bd-45bb-415c-b02a-241bec55ad3d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\Object\Monster">
-      <UniqueIdentifier>{573ea223-4e6d-49c4-b6df-573683a765bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Object\Monster\Kong">
-      <UniqueIdentifier>{422222e5-13a3-4b39-bb88-48b23d0a13f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Object\Monster\Monkey">
-      <UniqueIdentifier>{c28d8163-04d6-4bf6-bb38-9c6609ead7f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MainGame\Object\Monster\Ent">
-      <UniqueIdentifier>{0e158ece-5918-4a20-a9d7-f50002846171}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MainGame\Object\Player">
       <UniqueIdentifier>{f3fc1883-7150-4751-afd7-825120884e55}</UniqueIdentifier>
     </Filter>
@@ -61,6 +49,21 @@
     <Filter Include="MainGame\Object\TrapManager">
       <UniqueIdentifier>{18eed0a5-12c6-4890-848f-faa29b454979}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Object\MonsterManager">
+      <UniqueIdentifier>{573ea223-4e6d-49c4-b6df-573683a765bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Object\MonsterManager\Kong">
+      <UniqueIdentifier>{422222e5-13a3-4b39-bb88-48b23d0a13f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Object\MonsterManager\Monkey">
+      <UniqueIdentifier>{c28d8163-04d6-4bf6-bb38-9c6609ead7f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Object\MonsterManager\Ent">
+      <UniqueIdentifier>{0e158ece-5918-4a20-a9d7-f50002846171}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Object\AmmoManager">
+      <UniqueIdentifier>{388006a8-1656-4de6-a491-9fe1ba700fbf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -71,9 +74,6 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>2D Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyManager.cpp">
-      <Filter>2D Framework\Manager</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>2D Framework\Manager</Filter>
@@ -87,25 +87,13 @@
     <ClCompile Include="Timer.cpp">
       <Filter>2D Framework\Timer</Filter>
     </ClCompile>
-    <ClCompile Include="TimerManager.cpp">
-      <Filter>2D Framework\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="TitleScene.cpp">
       <Filter>MainGame\Tilte</Filter>
     </ClCompile>
     <ClCompile Include="MainGame.cpp">
       <Filter>MainGame</Filter>
     </ClCompile>
-    <ClCompile Include="GameManager.cpp">
-      <Filter>2D Framework\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="ItemManager.cpp">
-      <Filter>MainGame\Object\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>MainGame\Object\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemFactory.cpp">
       <Filter>MainGame\Object\Item</Filter>
     </ClCompile>
     <ClCompile Include="StageScene.cpp">
@@ -124,16 +112,16 @@
       <Filter>헤더 파일</Filter>
     </ClCompile>
     <ClCompile Include="MonsterManager.cpp">
-      <Filter>MainGame\Object\Monster</Filter>
+      <Filter>MainGame\Object\MonsterManager</Filter>
     </ClCompile>
     <ClCompile Include="Kong.cpp">
-      <Filter>MainGame\Object\Monster\Kong</Filter>
+      <Filter>MainGame\Object\MonsterManager\Kong</Filter>
     </ClCompile>
     <ClCompile Include="KongAmmo.cpp">
-      <Filter>MainGame\Object\Monster\Kong</Filter>
+      <Filter>MainGame\Object\MonsterManager\Kong</Filter>
     </ClCompile>
     <ClCompile Include="Monkey.cpp">
-      <Filter>MainGame\Object\Monster\Monkey</Filter>
+      <Filter>MainGame\Object\MonsterManager\Monkey</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
       <Filter>2D Framework\Manager</Filter>
@@ -145,10 +133,10 @@
       <Filter>MainGame\Observer</Filter>
     </ClCompile>
     <ClCompile Include="Ent.cpp">
-      <Filter>MainGame\Object\Monster\Ent</Filter>
+      <Filter>MainGame\Object\MonsterManager\Ent</Filter>
     </ClCompile>
     <ClCompile Include="EntAmmo.cpp">
-      <Filter>MainGame\Object\Monster\Ent</Filter>
+      <Filter>MainGame\Object\MonsterManager\Ent</Filter>
     </ClCompile>
     <ClCompile Include="TrapManager.cpp">
       <Filter>MainGame\Object\TrapManager</Filter>
@@ -162,12 +150,6 @@
     <ClCompile Include="CollisionManager.cpp">
       <Filter>2D Framework\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="KongAmmoManager.cpp">
-      <Filter>MainGame\Object\Monster\Kong</Filter>
-    </ClCompile>
-    <ClCompile Include="EntAmmoManager.cpp">
-      <Filter>MainGame\Object\Monster\Ent</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleManager.cpp">
       <Filter>2D Framework\Manager</Filter>
     </ClCompile>
@@ -177,14 +159,14 @@
     <ClCompile Include="Inventory.cpp">
       <Filter>MainGame\Object\Player\Inventory</Filter>
     </ClCompile>
-    <ClCompile Include="TestItem.cpp">
+    <ClCompile Include="Item.cpp">
       <Filter>MainGame\Object\Item</Filter>
     </ClCompile>
     <ClCompile Include="playerWeapon.cpp">
       <Filter>MainGame\Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="AmmoManager.cpp">
-      <Filter>MainGame\Object</Filter>
+      <Filter>MainGame\Object\AmmoManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -196,9 +178,6 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>2D Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyManager.h">
-      <Filter>2D Framework\Manager</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>2D Framework\Manager</Filter>
@@ -218,22 +197,10 @@
     <ClInclude Include="Timer.h">
       <Filter>2D Framework\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="TimerManager.h">
-      <Filter>2D Framework\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="TitleScene.h">
       <Filter>MainGame\Tilte</Filter>
     </ClInclude>
-    <ClInclude Include="GameManager.h">
-      <Filter>2D Framework\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="ItemManager.h">
-      <Filter>MainGame\Object\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>MainGame\Object\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemFactory.h">
       <Filter>MainGame\Object\Item</Filter>
     </ClInclude>
     <ClInclude Include="StageScene.h">
@@ -258,16 +225,16 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="MonsterManager.h">
-      <Filter>MainGame\Object\Monster</Filter>
+      <Filter>MainGame\Object\MonsterManager</Filter>
     </ClInclude>
     <ClInclude Include="Kong.h">
-      <Filter>MainGame\Object\Monster\Kong</Filter>
+      <Filter>MainGame\Object\MonsterManager\Kong</Filter>
     </ClInclude>
     <ClInclude Include="KongAmmo.h">
-      <Filter>MainGame\Object\Monster\Kong</Filter>
+      <Filter>MainGame\Object\MonsterManager\Kong</Filter>
     </ClInclude>
     <ClInclude Include="Monkey.h">
-      <Filter>MainGame\Object\Monster\Monkey</Filter>
+      <Filter>MainGame\Object\MonsterManager\Monkey</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>2D Framework\Manager</Filter>
@@ -279,10 +246,10 @@
       <Filter>MainGame\Observer</Filter>
     </ClInclude>
     <ClInclude Include="Ent.h">
-      <Filter>MainGame\Object\Monster\Ent</Filter>
+      <Filter>MainGame\Object\MonsterManager\Ent</Filter>
     </ClInclude>
     <ClInclude Include="EntAmmo.h">
-      <Filter>MainGame\Object\Monster\Ent</Filter>
+      <Filter>MainGame\Object\MonsterManager\Ent</Filter>
     </ClInclude>
     <ClInclude Include="TrapManager.h">
       <Filter>MainGame\Object\TrapManager</Filter>
@@ -299,12 +266,6 @@
     <ClInclude Include="CommonFunction.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="KongAmmoManager.h">
-      <Filter>MainGame\Object\Monster\Kong</Filter>
-    </ClInclude>
-    <ClInclude Include="EntAmmoManager.h">
-      <Filter>MainGame\Object\Monster\Ent</Filter>
-    </ClInclude>
     <ClInclude Include="ParticleManager.h">
       <Filter>2D Framework\Manager</Filter>
     </ClInclude>
@@ -314,14 +275,14 @@
     <ClInclude Include="Inventory.h">
       <Filter>MainGame\Object\Player\Inventory</Filter>
     </ClInclude>
-    <ClInclude Include="TestItem.h">
+    <ClInclude Include="Item.h">
       <Filter>MainGame\Object\Item</Filter>
     </ClInclude>
     <ClInclude Include="playerWeapon.h">
       <Filter>MainGame\Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="AmmoManager.h">
-      <Filter>MainGame\Object</Filter>
+      <Filter>MainGame\Object\AmmoManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

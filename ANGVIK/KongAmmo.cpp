@@ -14,16 +14,6 @@ HRESULT KongAmmo::Init()
 	{
 		return E_FAIL;
 	}
-	ammoEffect = ImageManager::GetSingleton()->FindImage("image/monster/¸ð´ÙÇÇ_ÃÑ¾Ë.bmp");
-	if (ammoEffect == nullptr)
-	{
-		return E_FAIL;
-	}
-	R_ammoEffect = ImageManager::GetSingleton()->FindImage("image/monster/R_¸ð´ÙÇÇ_ÃÑ¾Ë.bmp");
-	if (R_ammoEffect == nullptr)
-	{
-		return E_FAIL;
-	}
 
 	moveSpeed = 200.0f;
 
@@ -55,34 +45,21 @@ void KongAmmo::Render(HDC hdc)
 {
 	if (b_IsAlive)
 	{
-		if (false == b_ISHit)
+		if (dir == direction::RIGHT)
 		{
-			if (dir == direction::RIGHT)
-			{
-				ammoRight->Render(hdc, (int)renderPos.x, (int)renderPos.y, ammoFrame.x, ammoFrame.y);
-			}
-			else
-			{
-				ammoLeft->Render(hdc, (int)renderPos.x, (int)renderPos.y, ammoFrame.x, ammoFrame.y);
-			}
-			// µð¹ö±ë
-			if (DBrect)
-				Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x
-					, shape.top - (int)CameraManager::GetSingleton()->GetPos().y
-					, shape.right - (int)CameraManager::GetSingleton()->GetPos().x
-					, shape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
+			ammoRight->Render(hdc, (int)renderPos.x, (int)renderPos.y, ammoFrame.x, ammoFrame.y);
 		}
 		else
 		{
-			if (dir == direction::RIGHT)
-			{
-				ammoEffect->Render(hdc, (int)renderPos.x, (int)renderPos.y, effectFrame.x, effectFrame.y);
-			}
-			else
-			{
-				R_ammoEffect->Render(hdc, (int)renderPos.x, (int)renderPos.y, effectFrame.x, effectFrame.y);
-			}
+			ammoLeft->Render(hdc, (int)renderPos.x, (int)renderPos.y, ammoFrame.x, ammoFrame.y);
 		}
+		// µð¹ö±ë
+		if (DBrect)
+			Rectangle(hdc, shape.left - (int)CameraManager::GetSingleton()->GetPos().x
+				, shape.top - (int)CameraManager::GetSingleton()->GetPos().y
+				, shape.right - (int)CameraManager::GetSingleton()->GetPos().x
+				, shape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
+
 	}
 }
 
@@ -96,31 +73,14 @@ void KongAmmo::PlayAnimation()
 
 	if (frameCount > 0.0625)
 	{
-		if (b_ISHit)
+		if (ammoFrame.x == ammoMaxFrame.x)
 		{
-			if (effectFrame.x == effectMaxFrame.x)
-			{
-				effectFrame.x = 0;
-				b_ISHit = false;
-				b_IsAlive = false;
-			}
-			else
-			{
-				++effectFrame.x;
-			}
+			ammoFrame.x = 0;
 		}
 		else
 		{
-			if (ammoFrame.x == ammoMaxFrame.x)
-			{
-				ammoFrame.x = 0;
-			}
-			else
-			{
-				++ammoFrame.x;
-			}
+			++ammoFrame.x;
 		}
-
 		frameCount = 0;
 	}
 }
@@ -138,30 +98,32 @@ void KongAmmo::PosUpdate()
 
 void KongAmmo::DoAction()
 {
-	if (false == b_ISHit)
+	pos.x += cos(moveAngle) * moveSpeed * Timer::GetDeltaTime();
+	pos.y -= sin(moveAngle) * moveSpeed * Timer::GetDeltaTime();
+
+	if (MapColliderManager::GetSingleton()->checkCollision(subTag, shape, (int)dir, bodySize))
 	{
-		pos.x += cos(moveAngle) * moveSpeed * Timer::GetDeltaTime();
-		pos.y -= sin(moveAngle) * moveSpeed * Timer::GetDeltaTime();
-
-		if (MapColliderManager::GetSingleton()->checkCollision(subTag, shape, (int)dir, bodySize) ||
-			CollisionManager::GetSingleton()->CheckCollision(subTag, shape))
-		{
-			b_ISHit = true;
-			effectFrame.x = 0;
-		}
-
-		if (renderPos.x <0 || renderPos.x >WIN_SIZE_X ||
-			renderPos.y <0 || renderPos.y > WIN_SIZE_Y)
-		{
-			b_IsAlive = false;
-		}
+		b_IsAlive = false;
 	}
+
+	if (CollisionManager::GetSingleton()->CheckCollision(subTag, shape))
+	{
+		ParticleManager::GetSingleton()->CallParticle(subTag, pos, (int)dir);
+		b_IsAlive = false;
+
+	}
+
+	if (renderPos.x <0 || renderPos.x >WIN_SIZE_X ||
+		renderPos.y <0 || renderPos.y > WIN_SIZE_Y)
+	{
+		b_IsAlive = false;
+	}
+
 }
 
 void KongAmmo::IsFire(POINTFLOAT pos, float angle, int dir)
 {
 	b_IsAlive = true;
-	b_ISHit = false;
 
 	this->moveAngle = angle;
 	if (dir > 0)

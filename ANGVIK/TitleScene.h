@@ -42,6 +42,7 @@ private:
 	POINTFLOAT exitTextPos = {};		
 	POINTFLOAT seletedBoxPos = {};		
 	POINTFLOAT logoPos = {};			
+	POINTFLOAT TilteMenuBar = {};
 
 	int seletedBoxFrame = 0;		// 셀렉박스 프레임관리 변수
 };

@@ -4,28 +4,19 @@
 
 void ImageManager::Init()
 {
-	// 아이템 
-	/*AddImage("Image/Item/Item1.bmp", 32, 32, true, RGB(255, 0, 255));
-	AddImage("Image/Item/Item2.bmp", 32, 32, true, RGB(255, 0, 255));
-	AddImage("Image/Item/Item3.bmp", 32, 32, true, RGB(255, 0, 255));
-	AddImage("Image/Item/Item4.bmp", 32, 32, true, RGB(255, 0, 255));
-	AddImage("Image/Item/Item5.bmp", 32, 32, true, RGB(255, 0, 255));
-	AddImage("Image/Item/Item6.bmp", 32, 32, true, RGB(255, 0, 255));
-	AddImage("Image/Item/Item7.bmp", 32, 32, true, RGB(255, 0, 255));*/
-
 	// 타이틀 씬
 	AddImage("image/etc/배경.bmp", 960, 540);								//타이틀 씬
 	AddImage("image/etc/메뉴바.bmp", 960, 36);								//타이틀 메뉴 바
 	AddImage("image/etc/start.bmp", 64, 14, true, RGB(0, 0, 0));		//타이틀 메뉴 start text
 	AddImage("image/etc/options.bmp", 79, 18, true, RGB(0, 0, 0));	//타이틀 메뉴 option text
 	AddImage("image/etc/exit.bmp", 47, 14, true, RGB(0, 0, 0));		//타이틀 메뉴 exit text
-	//AddImage("image/etc/선택.bmp", 1363, 34, 8, 1, true, RGB(255, 255, 255));//	선택창 에니매이션
 	AddImage("image/etc/선택2.bmp", 1384, 34, 8, 1, true, RGB(0, 0, 0));// 선택창 에니매이션
 	AddImage("image/etc/로고.bmp", 330, 78, true, RGB(255, 255, 255));//타이틀 메뉴 ANGVIK 로고
 
 	// 스테이지 
-	AddImage("image/Stage/Stage1-Background.bmp", 6709, 1290, true, RGB(255, 255, 255)); // 스테이지1 백그라운드
-	AddImage("image/Stage/Stage1-Background2.bmp", 6709, 1290); // 스테이지1 백그라운드(배경)
+	AddImage("image/Stage/Stage1-Background.bmp", 6709, 1290, true, RGB(255, 255, 255)); // 스테이지1 메인 스테이지
+	AddImage("image/Stage/Stage1-Background2.bmp", 6709, 2000); // 스테이지1 백그라운드(하늘색)
+	AddImage("image/Stage/Stage1-bg1.bmp", 1024, 1024); // 스테이지1 백그라운드(구름, 산)
 	AddImage("image/Stage/Stage1-Hidden.bmp", 6709, 1290, true, RGB(255, 255, 255)); // 스테이지1 히든지역
 
 	// 픽셀 맵
@@ -46,6 +37,10 @@ void ImageManager::Init()
 	AddImage("image/player/unarmed/head_1.bmp", 40, 40, true, RGB(255, 255, 255));	// 머리 2
 	AddImage("image/player/unarmed/head_2.bmp", 40, 40, true, RGB(255, 255, 255));	// 머리 3 
 	AddImage("image/player/unarmed/head_3.bmp", 40, 40, true, RGB(255, 255, 255));	// 머리 4
+
+	AddImage("image/player/bone_body.bmp", 20, 21, true, RGB(255, 0, 255));	// 머리 2
+	AddImage("image/player/bone_etc.bmp", 18, 12, true, RGB(255, 0, 255));	// 뼈
+	AddImage("image/player/bone_head.bmp", 23, 22, true, RGB(255, 0, 255));	// 해골 머리
 
 	AddImage("image/player/gold/body.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 갑옷 스프라이트
 	AddImage("image/player/gold/foot.bmp", 480, 100, 12, 2, true, RGB(255, 255, 255));	// 황금 신발 스프라이트
@@ -112,7 +107,7 @@ void ImageManager::Init()
 	AddImage("image/item/골드오일.bmp", 15, 22, true, RGB(255, 255, 255));	// 황금 오일
 
 	// 데스 이펙트
-	AddImage("image/effect.bmp", 600, 100, 6, 1, true, RGB(255, 255, 255));		// 데스 이펙트
+	AddImage("image/effect.bmp", 600, 100, 6, 1, true, RGB(255, 255, 255));		// 몬스터 데스 이펙트
 	AddImage("image/weaponEffect.bmp", 108, 21, 4, 1, true, RGB(255, 255, 255));// 무기 -> 맵 이펙트
 
 	// 몬스터

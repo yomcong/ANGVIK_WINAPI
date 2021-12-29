@@ -79,7 +79,7 @@ void Monkey::ToBeHit()
 {
 	if (b_isAlive)
 	{
-		ParticleManager::GetSingleton()->CallParticle(pos);
+		ParticleManager::GetSingleton()->CallParticle(subTag, pos, (int)dir, myType);
 		b_isAlive = false;
 	}
 }

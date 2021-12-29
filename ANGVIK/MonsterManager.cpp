@@ -54,10 +54,6 @@ void MonsterManager::Update()
 
 void MonsterManager::Render(HDC hdc)
 {
-	// 각 객체수 만큼 불타입 배열을 선언.
-	// 윈도우 영역에 들어온 객체들은 true , 밖에있으면 false;
-	// 포문을 돌때 false인 객체는 continue;
-
 	for (int i = 0; i < currKongSpawn; ++i)
 	{
 		if (false == kongInWindow[i])
@@ -150,6 +146,18 @@ void MonsterManager::EntSpawn()
 }
 
 void MonsterManager::MonkeyTriggerSpawn()
+{
+	// 매직넘버 고칠방법....
+	for (int i = currMonkeySpawn; i < vecMonkeys.size() - 2; ++i)
+	{
+		vecMonkeys[i] = new Monkey;
+		vecMonkeys[i]->Init({ spawnMonkeyPosX[i],spawnMonkeyPosY[i] });
+		vecMonkeys[i]->GetSubject()->AddObserver(this);
+		++currMonkeySpawn;
+	}
+}
+
+void MonsterManager::MonkeyTriggerSpawn2()
 {
 	for (int i = currMonkeySpawn; i < vecMonkeys.size(); ++i)
 	{

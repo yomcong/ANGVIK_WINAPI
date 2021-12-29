@@ -416,6 +416,7 @@ void Inventory::InventoryOpen(POINTFLOAT pos)
 
 	selectedNum = 0;
 
+	b_enchant = false;
 }
 
 bool Inventory::GetItem(ItemType _itemType, ItemGrade _itemGrade, WeaponType _weaponType)
@@ -558,7 +559,7 @@ bool Inventory::GetItem(ItemType _itemType, ItemGrade _itemGrade, WeaponType _we
 				break;
 			case ItemGrade::SILVER:
 				itemName += "Èò»ö·£½º.bmp";
-				tempInfo.itemgrade = ItemGrade::GOLD;
+				tempInfo.itemgrade = ItemGrade::SILVER;
 				tempInfo.itemType = ItemType::WEAPON;
 				tempInfo.weaponType = WeaponType::LANCE;
 				vecItemInfos.push_back(tempInfo);

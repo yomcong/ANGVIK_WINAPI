@@ -15,6 +15,7 @@ struct ItemInfo
 	ItemGrade itemgrade = ItemGrade::IDLE;
 	WeaponType weaponType = WeaponType::IDLE;
 };
+
 #include <Windows.h>
 #include <stdlib.h>
 #include <math.h>
@@ -25,11 +26,8 @@ struct ItemInfo
 
 using namespace std;
 
-//#include "TimerManager.h"
 #include "ImageManager.h"
-#include "KeyManager.h"
 #include "SceneManager.h"
-#include "GameManager.h"
 #include "MapColliderManager.h"
 #include "CameraManager.h"
 #include "InputManager.h"

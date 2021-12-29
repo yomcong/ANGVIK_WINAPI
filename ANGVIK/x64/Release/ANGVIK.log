@@ -1,0 +1,48 @@
+﻿  AmmoManager.cpp
+  CameraManager.cpp
+  CollisionManager.cpp
+  Ent.cpp
+  EntAmmo.cpp
+  Extern.cpp
+  GameEntity.cpp
+  GameObject.cpp
+  Image.cpp
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Image.cpp(44,32): error C2664: 'HANDLE LoadImageW(HINSTANCE,LPCWSTR,UINT,int,int,UINT)': 인수 2을(를) 'const char *'에서 'LPCWSTR'(으)로 변환할 수 없습니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Image.cpp(44,55): message : 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winuser.h(10824,1): message : 'LoadImageW' 선언을 참조하십시오.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Image.cpp(74,32): error C2664: 'HANDLE LoadImageW(HINSTANCE,LPCWSTR,UINT,int,int,UINT)': 인수 2을(를) 'const char *'에서 'LPCWSTR'(으)로 변환할 수 없습니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\Image.cpp(74,55): message : 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winuser.h(10824,1): message : 'LoadImageW' 선언을 참조하십시오.
+  ImageManager.cpp
+  InputManager.cpp
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\InputManager.cpp(17,12): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Inventory.cpp
+  ItemManager.cpp
+  Kong.cpp
+  KongAmmo.cpp
+  main.cpp
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\main.cpp(36,38): error C2440: '=': 'LPSTR'에서 'LPCWSTR'(으)로 변환할 수 없습니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\main.cpp(36,27): message : 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\main.cpp(37,37): error C2440: '=': 'LPSTR'에서 'LPCWSTR'(으)로 변환할 수 없습니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\main.cpp(37,26): message : 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\main.cpp(44,1): error C2664: 'HWND CreateWindowExW(DWORD,LPCWSTR,LPCWSTR,DWORD,int,int,int,int,HWND,HMENU,HINSTANCE,LPVOID)': 인수 2을(를) 'LPSTR'에서 'LPCWSTR'(으)로 변환할 수 없습니다.
+C:\Users\LEE\Desktop\ANGVIK\ANGVIK\main.cpp(44,1): message : 가리킨 형식이 관련이 없습니다. 변환하려면 reinterpret_cast, C 스타일 캐스트 또는 함수 스타일 캐스트가 필요합니다.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\um\winuser.h(4432,1): message : 'CreateWindowExW' 선언을 참조하십시오.
+  MainGame.cpp
+  MapColliderManager.cpp
+  Monkey.cpp
+  MonsterManager.cpp
+  컴파일하고 있습니다...
+  Observer.cpp
+  ParticleManager.cpp
+  Platform.cpp
+  Player.cpp
+  playerWeapon.cpp
+  SceneManager.cpp
+  StageScene.cpp
+  Subject.cpp
+  Item.cpp
+  Timer.cpp
+  TitleScene.cpp
+  Trap.cpp
+  TrapManager.cpp

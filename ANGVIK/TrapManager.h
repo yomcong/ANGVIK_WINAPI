@@ -1,10 +1,14 @@
 #pragma once
 #include "Config.h"
 #include "GameEntity.h"
+#include "Observer.h"
+
+#define TrapMaxCount 15
+#define PlatformMaxCount 10
 
 class Trap;
 class Platform;
-class TrapManager : public GameEntity
+class TrapManager : public GameEntity, public Observer
 {
 public:
 	virtual ~TrapManager() = default;
@@ -19,12 +23,13 @@ public:
 
 	bool CheckCollision(RECT rect, bool &b_temp);
 
+	virtual void OnNotify(Subject* _subject, MonsterType _monsterType, SubjectTag _subjectTag, EventTag _eventTag) override;
 
 private:
-	int trapMaxCount = 15;
-	int PlatformMaxCount = 10;
-
 	vector<Trap*> vecTraps = {};
 	vector<Platform*> vecPlatforms = {};
+
+	bool trapInWindow[TrapMaxCount] = { true };
+	bool platformInWindow[PlatformMaxCount] = { true };
 };
 

@@ -1,8 +1,9 @@
 #pragma once
 #include "Config.h"
 #include "GameObject.h"
+#include "Subject.h"
 
-class Trap : public GameObject
+class Trap : public GameObject, public Subject
 {
 public:
 	virtual ~Trap() = default;
@@ -12,10 +13,10 @@ public:
 	virtual void Render(HDC hdc);
 	virtual void Release();
 
-
 private:
+	bool b_windowIn = false;
 
-
+	SubjectTag subTag = SubjectTag::TRAP;
 
 };
 

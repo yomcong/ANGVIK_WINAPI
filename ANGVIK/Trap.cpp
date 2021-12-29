@@ -31,9 +31,27 @@ void Trap::Update()
 	shape.right = (int)pos.x + bodySize.x / 2;
 	shape.bottom = (int)pos.y + bodySize.y / 2;
 
+	if (renderPos.x > 0 && renderPos.x < WIN_SIZE_X &&
+		renderPos.y > 0 && renderPos.y < WIN_SIZE_Y)
+	{
+		if (false == b_windowIn)
+		{
+			Notify(this, subTag, EventTag::INWINDOW);
+			b_windowIn = true;
+		}
+	}
+	else
+	{
+		if (b_windowIn)
+		{
+			Notify(this, subTag, EventTag::OUTWINDOW);
+			b_windowIn = false;
+		}
+	}
+
 	if (Input::GetButtonDown(VK_NUMPAD9))
 	{
-		DBrect == false ? DBrect = true : DBrect = false;
+		DBrect = !DBrect;
 	}
 }
 
@@ -44,7 +62,6 @@ void Trap::Render(HDC hdc)
 			shape.top - (int)CameraManager::GetSingleton()->GetPos().y,
 			shape.right - (int)CameraManager::GetSingleton()->GetPos().x,
 			shape.bottom - (int)CameraManager::GetSingleton()->GetPos().y);
-
 
 }
 

@@ -1,9 +1,10 @@
 #pragma once
 #include "Config.h"
 #include "GameObject.h"
+#include "Subject.h"
 
 class Image;
-class Platform : public GameObject
+class Platform : public GameObject, public Subject
 {
 public:
 	virtual ~Platform() = default;
@@ -26,6 +27,9 @@ private:
 	bool b_isCollision = false;
 
 	SubjectTag subTag = SubjectTag::PLATFORM;
+
+	bool b_windowIn = false;
+
 
 };
 

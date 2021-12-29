@@ -22,14 +22,18 @@ public:
 	virtual void OnNotify(Subject* _subject, MonsterType _monsterType, SubjectTag _subjectTag, EventTag _eventTag) override;
 
 private:
-	Image* stageBackgruond = nullptr;
-	Image* stageBackgruond2 = nullptr;
+	Image* mainStage = nullptr;
+	Image* stageBackgruond_1 = nullptr;
+	Image* stageBackgruond_2 = nullptr;
 	Image* stagePixelMap = nullptr;
 	Image* stageHiddenMap = nullptr;
 
 	bool b_hiddenMapDiscovery = false;
 
+	bool oneTriggerOn = false;
+
 	POINT mapPos = {};
+	POINT backgroundMapPos = {};
 
 	Player* player = nullptr;
 	MonsterManager* monsterManager = nullptr;
@@ -38,7 +42,9 @@ private:
 	AmmoManager* ammoManager = nullptr;
 
 	//디버그용
-	bool debugPixelMap = false;
+	bool DBPixelMap = false;
+
+	bool DBstop = false;
 
 };
 
